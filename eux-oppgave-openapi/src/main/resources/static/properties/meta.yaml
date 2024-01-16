@@ -1,0 +1,8 @@
+opprettetTidspunkt:
+  type: string
+  format: date-time
+  description: Tidspunkt da entiteten ble opprettet.
+
+opprettetBruker:
+  type: string
+  description: Brukeren som opprettet entiteten. Kan være saksbehandler eller system.

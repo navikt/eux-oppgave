@@ -1,0 +1,15 @@
+name: eux-oppgave-q2
+ingress: https://eux-oppgave-q2.intern.dev.nav.no
+database:
+  name: eux-oppgave-db-q2
+  tier: db-f1-micro
+application:
+  eux-neessi:
+    name: eux-neessi-q2
+    namespace: eessibasis
+  eux-fagmodul-journalfoering:
+    name: eux-fagmodul-journalfoering-q2
+    namespace: eessibasis
+cluster:
+  fss: dev-fss
+  gcp: dev-gcp

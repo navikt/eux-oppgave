@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/eux-oppgave-model/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-model/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-openapi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-openapi/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-openapi/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-persistence/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-persistence/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-service/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-webapp/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eux-oppgave-webapp/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

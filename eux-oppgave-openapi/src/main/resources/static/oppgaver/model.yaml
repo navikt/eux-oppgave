@@ -1,0 +1,7 @@
+OppgaveCreateType:
+  type: object
+  required:
+    - rinasakId
+  properties:
+    rinasakId:
+      $ref: '../properties/rinasak.yaml#/rinasakId'
