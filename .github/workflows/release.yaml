@@ -92,7 +92,7 @@ jobs:
         id: docker-build-push
         with:
           team: eessibasis
-          tag: ${IMAGE}:${{ steps.versions.outputs.version }}
+          tag: ${{ steps.versions.outputs.version }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
@@ -101,7 +101,7 @@ jobs:
 
     outputs:
       docker-image: >
-        ${{ env.IMAGE }}:${{ steps.versions.outputs.version }}
+        ${{ steps.docker-build-push.outputs.image }}
 
 #  deploy-q1:
 #    name: 'Deploy to q1'
