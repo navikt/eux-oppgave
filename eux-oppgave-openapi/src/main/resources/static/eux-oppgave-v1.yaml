@@ -1,16 +1,16 @@
 openapi: 3.0.3
 info:
-  title: EUX Oppgave API
-  description: API til bruk av EUX apper for å håndtere i NAV Oppgaver
+  title: Eux Oppgave API
+  description: API til bruk av EUX apper for å håndtere NAV Oppgaver
   contact:
     name: vegard.lundeberg.hillestad@nav.no
   version: v1
 servers:
   - url: 'http://localhost:8080/api/v1'
 tags:
-  - name: Nav Rinasak API
+  - name: Eux Oppgave API
     description: >-
-      API til bruk av EUX apper for å håndtere i NAV Oppgaver
+      API til bruk av EUX apper for å håndtere NAV Oppgaver
 
 paths:
   '/oppgaver':

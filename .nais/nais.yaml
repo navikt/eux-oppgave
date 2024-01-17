@@ -69,3 +69,13 @@ spec:
         - application: {{ application.eux-fagmodul-journalfoering.name }}
           namespace: {{ application.eux-fagmodul-journalfoering.namespace }}
           cluster: {{ cluster.fss }}
+    outbound:
+      external:
+        - host: oppgave.prod-fss-pub.nais.io
+        - host: oppgave.dev-fss-pub.nais.io
+        - host: oppgave-q1.dev-fss-pub.nais.io
+  env:
+    - name: CLIENT_OPPGAVE_ENDPOINT
+      value: {{ client.oppgave.endpoint }}
+    - name: CLIENT_OPPGAVE_SCOPE
+      value: {{ client.oppgave.scope }}

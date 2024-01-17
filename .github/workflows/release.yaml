@@ -77,10 +77,6 @@ jobs:
           echo "version=$(mvn -q --no-transfer-progress --settings ./.github/settings.xml 
           -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
 
-      - name: Set Image Name
-        run: >
-          echo "DOCKER_IMAGE=${IMAGE}:${{ steps.versions.outputs.version }}" >> $GITHUB_ENV
-
       - name: Test and build
         run: >
           mvn clean package scm:tag -B -e -U 

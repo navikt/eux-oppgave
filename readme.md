@@ -1,4 +1,4 @@
-### EUX NAV Rinasak
+### EUX Oppgave
 
 Integrasjoner mellom EUX og NAV Oppgave
 

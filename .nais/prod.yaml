@@ -1,8 +1,10 @@
 name: eux-oppgave
 ingress: https://eux-oppgave.intern.nav.no
+
 database:
   name: eux-oppgave-db
   tier: db-custom-1-3840
+
 application:
   eux-neessi:
     name: eux-neessi
@@ -10,6 +12,12 @@ application:
   eux-fagmodul-journalfoering:
     name: eux-fagmodul-journalfoering
     namespace: eessibasis
+
+client:
+  oppgave:
+    endpoint: https://oppgave.dev-fss-pub.nais.io
+    scope: api://prod-fss.oppgavehandtering.oppgave/.default
+
 cluster:
   fss: prod-fss
   gcp: prod-gcp

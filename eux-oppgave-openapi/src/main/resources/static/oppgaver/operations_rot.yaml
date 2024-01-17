@@ -1,19 +1,23 @@
 post:
   tags:
-    - Nav Rinasak API
+    - Eux Oppgave API
   summary: Opprett
-  description: Opprett ny NAV Rinasak
-  operationId: opprettNavRinasak
+  description: Opprett ny NAV Oppgave
+  operationId: opprettOppgave
   requestBody:
     required: true
     content:
       'application/json':
         schema:
-          $ref: 'model.yaml#/OppgaveCreateType'
+          $ref: 'model.yaml#/OppgaveCreateOpenApiType'
 
   responses:
     '201':
-      $ref: '../common/responses.yaml#/201'
+      description: Created
+      content:
+        'application/json':
+          schema:
+            $ref: 'model.yaml#/OppgaveOpenApiType'
     '400':
       $ref: '../common/responses.yaml#/400'
     '401':

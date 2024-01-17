@@ -1,7 +1,90 @@
-OppgaveCreateType:
+OppgaveOpenApiType:
   type: object
   required:
-    - rinasakId
+    - id
+    - tildeltEnhetsnr
+    - tema
+    - oppgavetype
+    - prioritet
+    - aktivDato
+    - versjon
   properties:
-    rinasakId:
-      $ref: '../properties/rinasak.yaml#/rinasakId'
+    id:
+      $ref: '../properties/oppgave.yaml#/id'
+    aktoerId:
+      $ref: '../properties/person.yaml#/aktoerId'
+    oppgavetype:
+      $ref: '../properties/oppgave.yaml#/oppgavetype'
+    behandlingstema:
+      $ref: '../properties/oppgave.yaml#/behandlingstema'
+    behandlingstype:
+      $ref: '../properties/oppgave.yaml#/behandlingstype'
+    journalpostId:
+      $ref: '../properties/oppgave.yaml#/journalpostId'
+    saksreferanse:
+      $ref: '../properties/oppgave.yaml#/saksreferanse'
+    tildeltEnhetsnr:
+      $ref: '../properties/oppgave.yaml#/tildeltEnhetsnr'
+    aktivDato:
+      $ref: '../properties/oppgave.yaml#/aktivDato'
+    beskrivelse:
+      $ref: '../properties/oppgave.yaml#/beskrivelse'
+    prioritet:
+      $ref: '../properties/oppgave.yaml#/prioritet'
+    fristFerdigstillelse:
+      $ref: '../properties/oppgave.yaml#/fristFerdigstillelse'
+    opprettetAvEnhetsnr:
+      $ref: '../properties/oppgave.yaml#/opprettetAvEnhetsnr'
+    status:
+      $ref: '../properties/oppgave.yaml#/status'
+    versjon:
+      $ref: '../properties/meta.yaml#/versjon'
+    opprettetTidspunkt:
+      $ref: '../properties/meta.yaml#/opprettetTidspunkt'
+    ferdigstiltTidspunkt:
+      $ref: '../properties/oppgave.yaml#/ferdigstiltTidspunkt'
+    endretTidspunkt:
+      $ref: '../properties/oppgave.yaml#/endretTidspunkt'
+    tema:
+      $ref: '../properties/oppgave.yaml#/tema'
+    behandlesAvApplikasjon:
+      $ref: '../properties/oppgave.yaml#/behandlesAvApplikasjon'
+
+OppgaveCreateOpenApiType:
+  type: object
+  required:
+    - aktoerId
+    - tema
+    - aktivDato
+    - prioritet
+  properties:
+    aktoerId:
+      $ref: '../properties/person.yaml#/aktoerId'
+    oppgavetype:
+      $ref: '../properties/oppgave.yaml#/oppgavetype'
+    behandlingstema:
+      $ref: '../properties/oppgave.yaml#/behandlingstema'
+    behandlingstype:
+      $ref: '../properties/oppgave.yaml#/behandlingstype'
+    journalpostId:
+      $ref: '../properties/oppgave.yaml#/journalpostId'
+    saksreferanse:
+      $ref: '../properties/oppgave.yaml#/saksreferanse'
+    tildeltEnhetsnr:
+      $ref: '../properties/oppgave.yaml#/tildeltEnhetsnr'
+    aktivDato:
+      $ref: '../properties/oppgave.yaml#/aktivDato'
+    beskrivelse:
+      $ref: '../properties/oppgave.yaml#/beskrivelse'
+    prioritet:
+      $ref: '../properties/oppgave.yaml#/prioritet'
+    fristFerdigstillelse:
+      $ref: '../properties/oppgave.yaml#/fristFerdigstillelse'
+    opprettetAvEnhetsnr:
+      $ref: '../properties/oppgave.yaml#/opprettetAvEnhetsnr'
+    behandlesAvApplikasjon:
+      $ref: '../properties/oppgave.yaml#/behandlesAvApplikasjon'
+    tilordnetRessurs:
+      $ref: '../properties/oppgave.yaml#/tilordnetRessurs'
+    tema:
+      $ref: '../properties/oppgave.yaml#/tema'

@@ -10,11 +10,12 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>eux-oppgave-webapp</module>
-        <module>eux-oppgave-service</module>
-        <module>eux-oppgave-persistence</module>
         <module>eux-oppgave-openapi</module>
         <module>eux-oppgave-model</module>
+        <module>eux-oppgave-service</module>
+        <module>eux-oppgave-persistence</module>
+        <module>eux-oppgave-integration</module>
+        <module>eux-oppgave-webapp</module>
     </modules>
 
     <parent>
