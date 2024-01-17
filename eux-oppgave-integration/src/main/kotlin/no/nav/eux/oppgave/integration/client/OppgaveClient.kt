@@ -89,6 +89,7 @@ class OppgaveClient(
         UriComponentsBuilder
             .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
+            .queryParam("statuskategori", "AAPEN")
             .build()
             .toUri()
 
