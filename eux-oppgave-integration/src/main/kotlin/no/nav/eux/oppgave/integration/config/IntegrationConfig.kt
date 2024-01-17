@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
+import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
+import java.util.UUID.randomUUID
 
 @EnableOAuth2Client(cacheEnabled = true)
 @Configuration
@@ -36,6 +38,13 @@ class IntegrationConfig {
     ) = ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
         val response = oAuth2AccessTokenService.getAccessToken(clientProperties)
         request.headers.setBearerAuth(response.accessToken)
+        request.headers.set("X-Correlation-ID", randomUUID().toString())
         execution.execute(request, body)
     }
 }
+
+val RestTemplate.restClient get() = RestClient.create(this)
+val RestTemplate.post get() = restClient.post()
+val RestTemplate.patch get() = restClient.patch()
+val RestTemplate.get get() = restClient.get()
+val RestClient.RequestBodySpec.randomCorrelationId get() = header("X-Correlation-ID", randomUUID().toString())

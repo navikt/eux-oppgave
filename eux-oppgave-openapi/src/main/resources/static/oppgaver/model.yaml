@@ -86,3 +86,20 @@ OppgaveCreateOpenApiType:
       $ref: '../properties/oppgave.yaml#/tilordnetRessurs'
     tema:
       $ref: '../properties/oppgave.yaml#/tema'
+
+FerdigstillOpenApiType:
+  type: object
+  required:
+    - journalpostIder
+  properties:
+    journalpostIder:
+      $ref: '../properties/oppgave.yaml#/journalpostIder'
+
+FerdigstillResponsOpenApiType:
+  type: object
+  properties:
+    oppgaver:
+      type: array
+      items:
+        $ref: '#/OppgaveOpenApiType'
+      description: Oppdaterte oppgaver

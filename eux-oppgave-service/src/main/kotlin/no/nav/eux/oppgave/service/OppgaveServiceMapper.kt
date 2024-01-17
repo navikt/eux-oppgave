@@ -2,7 +2,6 @@ package no.nav.eux.oppgave.service
 
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
-import no.nav.eux.oppgave.integration.model.Prioritet
 import no.nav.eux.oppgave.model.EuxOppgave
 import no.nav.eux.oppgave.model.EuxOppgaveOpprettelse
 import no.nav.eux.oppgave.model.EuxOppgaveStatus
@@ -17,7 +16,7 @@ val EuxOppgaveOpprettelse.oppgaveOpprettelse
             aktivDato = aktivDato,
             fristFerdigstillelse = fristFerdigstillelse,
             opprettetAvEnhetsnr = opprettetAvEnhetsnr,
-            prioritet = Prioritet.valueOf(prioritet.name),
+            prioritet = prioritet.name.toEnum(),
             behandlingstema = behandlingstema,
             saksreferanse = saksreferanse,
             oppgavetype = oppgavetype,

@@ -44,6 +44,13 @@ journalpostId:
   description: Id for en journalpostreferanse
   example: "84938201"
 
+journalpostIder:
+  type: array
+  items:
+    $ref: '#/journalpostId'
+  description: Ider på journalposter
+  example: ["84938201", "84938202"]
+
 tildeltEnhetsnr:
   maxLength: 4
   minLength: 4

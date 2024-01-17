@@ -19,4 +19,3 @@ class OppgaveService(
         return oppgave.euxOppgave
     }
 }
-

@@ -3,6 +3,7 @@ package no.nav.eux.oppgave.webapp
 import no.nav.eux.oppgave.model.EuxOppgave
 import no.nav.eux.oppgave.model.EuxOppgaveOpprettelse
 import no.nav.eux.oppgave.model.toEnum
+import no.nav.eux.oppgave.openapi.model.FerdigstillResponsOpenApiType
 import no.nav.eux.oppgave.openapi.model.OppgaveCreateOpenApiType
 import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
 import no.nav.eux.oppgave.openapi.model.Status
@@ -49,3 +50,6 @@ val OppgaveCreateOpenApiType.euxOppgaveOpprettelse
             behandlesAvApplikasjon = behandlesAvApplikasjon,
             tema = tema,
         )
+
+val List<EuxOppgave>.ferdigstillResponsOpenApiType
+    get() = FerdigstillResponsOpenApiType(oppgaver = map { it.oppgaveOpenApiType })

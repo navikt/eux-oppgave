@@ -1,0 +1,30 @@
+post:
+  tags:
+    - Eux Oppgave API
+  summary: Ferdigstill
+  description: Ferdigstill NAV Oppgaver
+  operationId: ferdigstillOppgaver
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/FerdigstillOpenApiType'
+
+  responses:
+    '200':
+      description: Oppdatert
+      content:
+        'application/json':
+          schema:
+            $ref: 'model.yaml#/FerdigstillResponsOpenApiType'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

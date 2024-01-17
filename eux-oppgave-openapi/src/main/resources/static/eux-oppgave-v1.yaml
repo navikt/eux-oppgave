@@ -15,3 +15,5 @@ tags:
 paths:
   '/oppgaver':
     $ref: 'oppgaver/operations_rot.yaml'
+  '/oppgaver/ferdigstill':
+    $ref: 'oppgaver/operations_ferdigstill.yaml'
