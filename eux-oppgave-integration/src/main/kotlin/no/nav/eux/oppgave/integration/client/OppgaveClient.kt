@@ -79,43 +79,37 @@ class OppgaveClient(
     }
 
     fun UriBuilder.uri(journalpostId: String) =
-        path("${oppgaveUrl}/api/v1/oppgaver")
+        host("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
             .build()
 
     fun opprettelseException(
         oppgaveOpprettelse: OppgaveOpprettelse,
         entity: ResponseEntity<Oppgave>
-    ): RuntimeException {
-        val msg = "Feil under opprettelse av oppgave. journalpostId=${oppgaveOpprettelse.journalpostId}"
-        log.error { "$msg, body=${entity.body}" }
-        return RuntimeException(msg)
-    }
+    ) = oppgaveException(
+        "Feil under opprettelse av oppgave. journalpostId=${oppgaveOpprettelse.journalpostId}", entity.body
+    )
 
     fun patchException(
         id: Int,
         entity: ResponseEntity<Oppgave>
-    ): RuntimeException {
-        val msg = "Feil under patching av oppgaven. id=$id"
-        log.error { "$msg, body=${entity.body}" }
-        return RuntimeException(msg)
-    }
+    ) = oppgaveException("Feil under patching av oppgaven. id=$id", entity.body)
 
     fun hentException(
         journalpostId: String,
         entity: ResponseEntity<Oppgaver>
-    ): RuntimeException {
-        val msg = "Feil under henting av oppgaver. journalpostId=$journalpostId"
-        log.error { "$msg, body=${entity.body}" }
-        return RuntimeException(msg)
-    }
+    ) = oppgaveException("Feil under henting av oppgaver. journalpostId=$journalpostId", entity.body)
 
     fun hentOppgaveException(
         journalpostId: String,
         entity: ResponseEntity<Oppgave>
+    ) = oppgaveException("Feil under henting av oppgave. id=$journalpostId", entity.body)
+
+    fun oppgaveException(
+        msg: String,
+        body: Any?
     ): RuntimeException {
-        val msg = "Feil under henting av oppgave. id=$journalpostId"
-        log.error { "$msg, body=${entity.body}" }
+        log.error { "$msg, body=$body" }
         return RuntimeException(msg)
     }
 }
