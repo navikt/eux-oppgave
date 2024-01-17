@@ -11,7 +11,6 @@ import no.nav.eux.oppgave.model.toEnum
 val EuxOppgaveOpprettelse.oppgaveOpprettelse
     get() =
         OppgaveOpprettelse(
-            aktoerId = aktoerId,
             beskrivelse = beskrivelse,
             tildeltEnhetsnr = tildeltEnhetsnr,
             journalpostId = journalpostId,

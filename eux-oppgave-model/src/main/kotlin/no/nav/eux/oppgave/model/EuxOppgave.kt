@@ -7,7 +7,7 @@ data class EuxOppgave(
     val id: Int,
     val oppgavetype: String,
     val tildeltEnhetsnr: String,
-    val aktivDato: String,
+    val aktivDato: LocalDate,
     val euxOppgavePrioritet: EuxOppgavePrioritet,
     val versjon: Int,
     val tema: String,

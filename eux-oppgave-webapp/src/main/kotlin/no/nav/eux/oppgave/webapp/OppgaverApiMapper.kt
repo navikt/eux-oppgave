@@ -35,7 +35,6 @@ val EuxOppgave.oppgaveOpenApiType
 val OppgaveCreateOpenApiType.euxOppgaveOpprettelse
     get() =
         EuxOppgaveOpprettelse(
-            aktoerId = aktoerId,
             aktivDato = aktivDato,
             prioritet = prioritet.name.toEnum(),
             oppgavetype = oppgavetype,
@@ -48,5 +47,5 @@ val OppgaveCreateOpenApiType.euxOppgaveOpprettelse
             fristFerdigstillelse = fristFerdigstillelse,
             opprettetAvEnhetsnr = opprettetAvEnhetsnr,
             behandlesAvApplikasjon = behandlesAvApplikasjon,
-            tema = tema
+            tema = tema,
         )

@@ -77,9 +77,10 @@ saksreferanse:
 aktivDato:
   type: string
   description: ->
-    Brukes av saksbehandlere for å planlegge arbeidsdagene sine,
-    aktivDato forteller noe om når saksbehandler selv ønsker å begynne å
-    jobbe på oppgaven
+    Benyttes for å legge en oppgave "på vent". Sette normalt
+    til dagens dato for nye oppgaver. Styrer visning i arbeidsflater, der
+    oppgaver med dato <= dagens dato vises.
+  format: date
 
 fristFerdigstillelse:
   type: string

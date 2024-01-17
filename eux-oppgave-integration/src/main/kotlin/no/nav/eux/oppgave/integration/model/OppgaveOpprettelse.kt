@@ -1,8 +1,9 @@
 package no.nav.eux.oppgave.integration.model
 
+import java.time.LocalDate
+
 data class OppgaveOpprettelse(
-    val aktoerId: String,
-    val aktivDato: String,
+    val aktivDato: LocalDate,
     val prioritet: Prioritet,
     val tema: String,
     val oppgavetype: String?,
@@ -12,6 +13,6 @@ data class OppgaveOpprettelse(
     val saksreferanse: String?,
     val tildeltEnhetsnr: String?,
     val beskrivelse: String?,
-    val fristFerdigstillelse: java.time.LocalDate?,
+    val fristFerdigstillelse: LocalDate?,
     val opprettetAvEnhetsnr: String?
 )

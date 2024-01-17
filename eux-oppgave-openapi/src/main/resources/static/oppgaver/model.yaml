@@ -53,13 +53,11 @@ OppgaveOpenApiType:
 OppgaveCreateOpenApiType:
   type: object
   required:
-    - aktoerId
-    - tema
     - aktivDato
+    - oppgavetype
     - prioritet
+    - tema
   properties:
-    aktoerId:
-      $ref: '../properties/person.yaml#/aktoerId'
     oppgavetype:
       $ref: '../properties/oppgave.yaml#/oppgavetype'
     behandlingstema:
