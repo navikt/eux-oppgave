@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.toEntity
 import org.springframework.web.util.UriBuilder
+import org.springframework.web.util.UriComponentsBuilder
+
 
 @Component
 class OppgaveClient(
@@ -68,7 +70,7 @@ class OppgaveClient(
     fun hentOppgaver(journalpostId: String): List<Oppgave> {
         val entity: ResponseEntity<Oppgaver> = oppgaveRestTemplate
             .get
-            .uri { it.uri(journalpostId) }
+            .uri(hentOppgaverUri(journalpostId))
             .accept(APPLICATION_JSON)
             .retrieve()
             .toEntity()
@@ -82,6 +84,13 @@ class OppgaveClient(
         host("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
             .build()
+
+    fun hentOppgaverUri(journalpostId: String) =
+        UriComponentsBuilder
+            .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
+            .queryParam("journalpostId", journalpostId)
+            .build()
+            .toUri()
 
     fun opprettelseException(
         oppgaveOpprettelse: OppgaveOpprettelse,
