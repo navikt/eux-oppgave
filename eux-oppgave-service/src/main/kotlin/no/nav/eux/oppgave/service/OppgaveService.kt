@@ -21,7 +21,7 @@ class OppgaveService(
         val euxOppgaveStatus = exuOppgaveStatusRepository.save(euxOppgaveOpprettelse.euxOppgaveStatus)
         try {
             val oppgave = client.opprettOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
-            exuOppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTET))
+            exuOppgaveStatusRepository.save(euxOppgaveStatus.copy(oppgaveId = oppgave.id, status = OPPRETTET))
             log.info { "Oppgave opprettet. id=${oppgave.id}, journalpostId=${oppgave.journalpostId}" }
             return oppgave.euxOppgave
         } catch (e: Exception) {
