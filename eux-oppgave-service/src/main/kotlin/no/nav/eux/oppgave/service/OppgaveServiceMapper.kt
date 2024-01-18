@@ -2,10 +2,11 @@ package no.nav.eux.oppgave.service
 
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
-import no.nav.eux.oppgave.model.EuxOppgave
-import no.nav.eux.oppgave.model.EuxOppgaveOpprettelse
-import no.nav.eux.oppgave.model.EuxOppgaveStatus
-import no.nav.eux.oppgave.model.toEnum
+import no.nav.eux.oppgave.model.common.toEnum
+import no.nav.eux.oppgave.model.dto.EuxOppgave
+import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
+import no.nav.eux.oppgave.model.dto.EuxOppgaveStatusEnum
+import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
 
 val EuxOppgaveOpprettelse.oppgaveOpprettelse
     get() =
@@ -41,10 +42,27 @@ val Oppgave.euxOppgave
             beskrivelse = beskrivelse,
             fristFerdigstillelse = fristFerdigstillelse,
             opprettetAvEnhetsnr = opprettetAvEnhetsnr,
-            euxOppgaveStatus = status.name.toEnum<EuxOppgaveStatus>(),
+            euxOppgaveStatus = status.name.toEnum<EuxOppgaveStatusEnum>(),
             opprettetTidspunkt = opprettetTidspunkt,
             ferdigstiltTidspunkt = ferdigstiltTidspunkt,
             endretTidspunkt = endretTidspunkt,
             tema = tema,
             behandlesAvApplikasjon = behandlesAvApplikasjon,
         )
+
+val EuxOppgaveOpprettelse.euxOppgaveStatus
+    get() = EuxOppgaveStatus(
+        tema = tema,
+        status = EuxOppgaveStatus.Status.UNDER_OPPRETTELSE,
+        beskrivelse = beskrivelse,
+        opprettetBruker = opprettetBruker
+    )
+
+val Oppgave.euxOppgaveStatusUnderFerdigstilling
+    get() = EuxOppgaveStatus(
+        oppgaveId = id,
+        tema = tema,
+        status = EuxOppgaveStatus.Status.UNDER_FERDIGSTILLING,
+        beskrivelse = beskrivelse,
+        opprettetBruker = "under-ferdigstilling"
+    )

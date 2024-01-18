@@ -19,7 +19,8 @@ spring:
         format_sql: false
 
   flyway:
-    clean-disabled: true
+    clean-disabled: false
+    clean-on-validation-error: true
 
   main:
     banner-mode: "off"

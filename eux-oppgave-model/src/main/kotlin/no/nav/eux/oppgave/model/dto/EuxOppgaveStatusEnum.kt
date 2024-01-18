@@ -1,5 +1,5 @@
-package no.nav.eux.oppgave.model
+package no.nav.eux.oppgave.model.dto
 
-enum class EuxOppgaveStatus {
+enum class EuxOppgaveStatusEnum {
     OPPRETTET, AAPNET, UNDER_BEHANDLING, FERDIGSTILT, FEILREGISTRERT
 }

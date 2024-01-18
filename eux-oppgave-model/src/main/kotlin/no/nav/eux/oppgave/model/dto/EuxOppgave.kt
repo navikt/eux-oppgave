@@ -1,4 +1,4 @@
-package no.nav.eux.oppgave.model
+package no.nav.eux.oppgave.model.dto
 
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -8,7 +8,7 @@ data class EuxOppgave(
     val oppgavetype: String,
     val tildeltEnhetsnr: String,
     val aktivDato: LocalDate,
-    val euxOppgavePrioritet: EuxOppgavePrioritet,
+    val euxOppgavePrioritet: EuxOppgavePrioritetEnum,
     val versjon: Int,
     val tema: String,
     val aktoerId: String?,
@@ -19,7 +19,7 @@ data class EuxOppgave(
     val beskrivelse: String?,
     val fristFerdigstillelse: LocalDate?,
     val opprettetAvEnhetsnr: String?,
-    val euxOppgaveStatus: EuxOppgaveStatus?,
+    val euxOppgaveStatus: EuxOppgaveStatusEnum?,
     val opprettetTidspunkt: OffsetDateTime?,
     val ferdigstiltTidspunkt: OffsetDateTime?,
     val endretTidspunkt: OffsetDateTime?,

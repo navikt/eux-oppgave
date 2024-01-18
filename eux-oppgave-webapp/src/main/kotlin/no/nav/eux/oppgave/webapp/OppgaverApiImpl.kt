@@ -7,6 +7,7 @@ import no.nav.eux.oppgave.openapi.model.OppgaveCreateOpenApiType
 import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
 import no.nav.eux.oppgave.service.FerdigstillService
 import no.nav.eux.oppgave.service.OppgaveService
+import no.nav.eux.oppgave.service.TokenContextService
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class OppgaverApiImpl(
     val oppgaveService: OppgaveService,
     val ferdigstillService: FerdigstillService,
+    val tokenContextService: TokenContextService,
 ) : OppgaverApi {
 
     @Protected
@@ -22,7 +24,7 @@ class OppgaverApiImpl(
         oppgaveCreateOpenApiType: OppgaveCreateOpenApiType
     ): ResponseEntity<OppgaveOpenApiType> =
         oppgaveService
-            .opprettOppgave(oppgaveCreateOpenApiType.euxOppgaveOpprettelse)
+            .opprettOppgave(oppgaveCreateOpenApiType.euxOppgaveOpprettelse(tokenContextService.navIdent))
             .oppgaveOpenApiType
             .toCreatedResponseEntity()
 
