@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.toEntity
-import org.springframework.web.util.UriBuilder
 import org.springframework.web.util.UriComponentsBuilder
 
 
@@ -80,16 +79,12 @@ class OppgaveClient(
         }
     }
 
-    fun UriBuilder.uri(journalpostId: String) =
-        host("${oppgaveUrl}/api/v1/oppgaver")
-            .queryParam("journalpostId", journalpostId)
-            .build()
-
     fun hentOppgaverUri(journalpostId: String) =
         UriComponentsBuilder
             .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
             .queryParam("statuskategori", "AAPEN")
+            .queryParam("oppgavetype", listOf("JFR", "FDR"))
             .build()
             .toUri()
 
