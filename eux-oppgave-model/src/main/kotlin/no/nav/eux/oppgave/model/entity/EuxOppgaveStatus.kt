@@ -1,8 +1,7 @@
 package no.nav.eux.oppgave.model.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
+import jakarta.persistence.*
+import jakarta.persistence.EnumType.STRING
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
 import java.util.*
@@ -13,6 +12,7 @@ data class EuxOppgaveStatus(
     val oppgaveUuid: UUID = UUID.randomUUID(),
     val oppgaveId: Int? = null,
     val tema: String,
+    @Enumerated(STRING)
     val status: Status,
     val beskrivelse: String?,
     @Column(updatable = false)
