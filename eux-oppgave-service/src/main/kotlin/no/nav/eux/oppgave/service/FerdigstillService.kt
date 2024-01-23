@@ -22,13 +22,13 @@ class FerdigstillService(
 ) {
     val log = logger {}
 
-    fun ferdigstillOppgaver(journalpostIder: List<String>): List<OppgaveFerdigstilling> =
+    fun ferdigstillOppgaver(journalpostIder: List<String>, navIdent: String): List<OppgaveFerdigstilling> =
         journalpostIder
             .also { log.info { "Starter ferdigstilling av journalposter: $journalpostIder" } }
             .flatMap { client.hentOppgaver(it) }
             .also { log.info { "Ferdigstiller ${it.size} oppgaver" } }
             .also { it.settStatusUnderFerdigstilling() }
-            .map { patch(it.id, OppgavePatch(it.versjon, FERDIGSTILT)) }
+            .map { patch(it.id, OppgavePatch(it.versjon, navIdent, FERDIGSTILT)) }
             .map { it.oppdaterEuxStatus() }
 
     fun List<Oppgave>.settStatusUnderFerdigstilling() =
@@ -66,7 +66,7 @@ class FerdigstillService(
 
     fun patch(id: Int, patch: OppgavePatch) =
         try {
-            val oppgave = client.patch(id, OppgavePatch(patch.versjon, patch.status))
+            val oppgave = client.patch(id, patch)
             when (oppgave.status) {
                 FERDIGSTILT -> OppgaveFerdigstilling(
                     euxOppgave = oppgave.euxOppgave,
