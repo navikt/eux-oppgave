@@ -1,7 +1,10 @@
 package no.nav.eux.oppgave.model.entity
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
 import jakarta.persistence.EnumType.STRING
+import jakarta.persistence.Enumerated
+import jakarta.persistence.Id
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
 import java.util.*
@@ -29,5 +32,6 @@ data class EuxOppgaveStatus(
         OPPRETTET,
         UNDER_FERDIGSTILLING,
         FERDIGSTILT,
+        FERDIGSTILLING_FEILET
     }
 }

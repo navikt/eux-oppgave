@@ -135,3 +135,16 @@ behandlesAvApplikasjon:
   description: >-
     Angis for å indikere hvilken applikasjon oppgaven skal behandles i
   example: FS22
+
+ferdigstillingStatus:
+  type: string
+  description: Status på ferdigstillingen utført av EUX
+  example: OPPGAVE_FERDIGSTILT
+  enum:
+    - OPPGAVE_FERDIGSTILT
+    - FERDIGSTILLING_FEILET
+
+ferdigstillingBeskrivelse:
+  type: string
+  description: >-
+    Kort beskrivelse på utfallet av forsøkt ferdigstilling.

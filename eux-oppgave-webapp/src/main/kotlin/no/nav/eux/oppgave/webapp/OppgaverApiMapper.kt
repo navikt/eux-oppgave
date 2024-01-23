@@ -3,10 +3,8 @@ package no.nav.eux.oppgave.webapp
 import no.nav.eux.oppgave.model.common.toEnum
 import no.nav.eux.oppgave.model.dto.EuxOppgave
 import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
-import no.nav.eux.oppgave.openapi.model.FerdigstillResponsOpenApiType
-import no.nav.eux.oppgave.openapi.model.OppgaveCreateOpenApiType
-import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
-import no.nav.eux.oppgave.openapi.model.Status
+import no.nav.eux.oppgave.model.dto.OppgaveFerdigstilling
+import no.nav.eux.oppgave.openapi.model.*
 
 val EuxOppgave.oppgaveOpenApiType
     get() =
@@ -51,5 +49,12 @@ fun OppgaveCreateOpenApiType.euxOppgaveOpprettelse(navIdent: String) =
         opprettetBruker = navIdent
     )
 
-val List<EuxOppgave>.ferdigstillResponsOpenApiType
-    get() = FerdigstillResponsOpenApiType(oppgaver = map { it.oppgaveOpenApiType })
+val List<OppgaveFerdigstilling>.ferdigstillResponsOpenApiType
+    get() = FerdigstillResponsOpenApiType(oppgaver = map { it.oppgaveFerdigstillingOpenApiType })
+
+val OppgaveFerdigstilling.oppgaveFerdigstillingOpenApiType
+    get() = OppgaveFerdigstillingOpenApiType(
+        status = status.name.toEnum(),
+        oppgave = euxOppgave?.oppgaveOpenApiType,
+        beskrivelse = beskrivelse
+    )

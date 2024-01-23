@@ -101,5 +101,17 @@ FerdigstillResponsOpenApiType:
     oppgaver:
       type: array
       items:
-        $ref: '#/OppgaveOpenApiType'
-      description: Oppdaterte oppgaver
+        $ref: '#/OppgaveFerdigstillingOpenApiType'
+      description: Oppdaterte oppgaver med status på ferdigstilling
+
+OppgaveFerdigstillingOpenApiType:
+  type: object
+  required:
+    - status
+  properties:
+    oppgave:
+      $ref: '#/OppgaveOpenApiType'
+    status:
+      $ref: '../properties/oppgave.yaml#/ferdigstillingStatus'
+    beskrivelse:
+      $ref: '../properties/oppgave.yaml#/ferdigstillingBeskrivelse'
