@@ -83,7 +83,7 @@ class FerdigstillService(
             log.error(e) { "Ferdigstilling av oppgave $id feilet" }
             OppgaveFerdigstilling(
                 status = FERDIGSTILLING_FEILET,
-                beskrivelse = "Kall mot oppgave feilet"
+                beskrivelse = "Ferdigstilling av oppgave $id feilet pga. manglende respons fra oppgave-systemet"
             )
         }
 }
