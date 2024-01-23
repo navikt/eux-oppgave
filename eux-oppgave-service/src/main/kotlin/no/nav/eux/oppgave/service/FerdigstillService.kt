@@ -70,7 +70,8 @@ class FerdigstillService(
             when (oppgave.status) {
                 FERDIGSTILT -> OppgaveFerdigstilling(
                     euxOppgave = oppgave.euxOppgave,
-                    status = OPPGAVE_FERDIGSTILT
+                    status = OPPGAVE_FERDIGSTILT,
+                    beskrivelse = "Oppgave ${oppgave.id} ble ferdigstilt"
                 )
                 else -> OppgaveFerdigstilling(
                     euxOppgave = oppgave.euxOppgave,
