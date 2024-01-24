@@ -19,14 +19,28 @@ import java.util.UUID.randomUUID
 class IntegrationConfig {
 
     @Bean
-    fun oppgaveRestTemplate(
+    fun oppgaveRestTemplateClientSecretBasic(
         restTemplateBuilder: RestTemplateBuilder,
         clientConfigurationProperties: ClientConfigurationProperties,
         oAuth2AccessTokenService: OAuth2AccessTokenService
     ): RestTemplate {
         val clientProperties: ClientProperties = clientConfigurationProperties
-            .registration["oppgave-credentials"]
-            ?: throw RuntimeException("could not find oauth2 client config for oppgave-credentials")
+            .registration["oppgave-credentials-client-secret-basic"]
+            ?: throw RuntimeException("could not find oauth2 client config for oppgave-credentials-client-secret-basic")
+        return restTemplateBuilder
+            .additionalInterceptors(bearerTokenInterceptor(clientProperties, oAuth2AccessTokenService))
+            .build()
+    }
+
+    @Bean
+    fun oppgaveRestTemplatePrivateKeyJwt(
+        restTemplateBuilder: RestTemplateBuilder,
+        clientConfigurationProperties: ClientConfigurationProperties,
+        oAuth2AccessTokenService: OAuth2AccessTokenService
+    ): RestTemplate {
+        val clientProperties: ClientProperties = clientConfigurationProperties
+            .registration["oppgave-credentials-private-key-jwt"]
+            ?: throw RuntimeException("could not find oauth2 client config for oppgave-credentials-private-key-jwt")
         return restTemplateBuilder
             .additionalInterceptors(bearerTokenInterceptor(clientProperties, oAuth2AccessTokenService))
             .build()

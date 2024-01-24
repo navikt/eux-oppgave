@@ -21,12 +21,13 @@ import org.springframework.web.util.UriComponentsBuilder
 class OppgaveClient(
     @Value("\${endpoint.oppgave}")
     val oppgaveUrl: String,
-    val oppgaveRestTemplate: RestTemplate
+    val oppgaveRestTemplatePrivateKeyJwt: RestTemplate,
+    val oppgaveRestTemplateClientSecretBasic: RestTemplate,
 ) {
     val log = logger {}
 
     fun opprettOppgave(oppgaveOpprettelse: OppgaveOpprettelse): Oppgave {
-        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplate
+        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplatePrivateKeyJwt
             .post
             .uri("${oppgaveUrl}/api/v1/oppgaver")
             .contentType(APPLICATION_JSON)
@@ -40,7 +41,7 @@ class OppgaveClient(
     }
 
     fun patch(id: Int, patch: OppgavePatch): Oppgave {
-        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplate
+        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplateClientSecretBasic
             .patch
             .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
             .contentType(APPLICATION_JSON)
@@ -54,7 +55,7 @@ class OppgaveClient(
     }
 
     fun hentOppgave(id: String): Oppgave {
-        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplate
+        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplateClientSecretBasic
             .get
             .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
             .accept(APPLICATION_JSON)
@@ -67,7 +68,7 @@ class OppgaveClient(
     }
 
     fun hentOppgaver(journalpostId: String): List<Oppgave> {
-        val entity: ResponseEntity<Oppgaver> = oppgaveRestTemplate
+        val entity: ResponseEntity<Oppgaver> = oppgaveRestTemplateClientSecretBasic
             .get
             .uri(hentOppgaverUri(journalpostId))
             .accept(APPLICATION_JSON)
