@@ -1,9 +1,7 @@
 package no.nav.eux.oppgave.integration.client
 
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
-import no.nav.eux.oppgave.integration.config.get
-import no.nav.eux.oppgave.integration.config.patch
-import no.nav.eux.oppgave.integration.config.post
+import no.nav.eux.oppgave.integration.config.DualOppgaveRestTemplate
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
 import no.nav.eux.oppgave.integration.model.OppgavePatch
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.toEntity
 import org.springframework.web.util.UriComponentsBuilder
 
@@ -21,14 +18,13 @@ import org.springframework.web.util.UriComponentsBuilder
 class OppgaveClient(
     @Value("\${endpoint.oppgave}")
     val oppgaveUrl: String,
-    val oppgaveRestTemplatePrivateKeyJwt: RestTemplate,
-    val oppgaveRestTemplateClientSecretBasic: RestTemplate,
+    val dualOppgaveRestTemplate: DualOppgaveRestTemplate
 ) {
     val log = logger {}
 
     fun opprettOppgave(oppgaveOpprettelse: OppgaveOpprettelse): Oppgave {
-        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplatePrivateKeyJwt
-            .post
+        val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
+            .post()
             .uri("${oppgaveUrl}/api/v1/oppgaver")
             .contentType(APPLICATION_JSON)
             .body(oppgaveOpprettelse)
@@ -41,8 +37,8 @@ class OppgaveClient(
     }
 
     fun patch(id: Int, patch: OppgavePatch): Oppgave {
-        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplateClientSecretBasic
-            .patch
+        val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
+            .patch()
             .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
             .contentType(APPLICATION_JSON)
             .body(patch)
@@ -55,8 +51,8 @@ class OppgaveClient(
     }
 
     fun hentOppgave(id: String): Oppgave {
-        val entity: ResponseEntity<Oppgave> = oppgaveRestTemplateClientSecretBasic
-            .get
+        val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
+            .get()
             .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
             .accept(APPLICATION_JSON)
             .retrieve()
@@ -68,8 +64,8 @@ class OppgaveClient(
     }
 
     fun hentOppgaver(journalpostId: String): List<Oppgave> {
-        val entity: ResponseEntity<Oppgaver> = oppgaveRestTemplateClientSecretBasic
-            .get
+        val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
+            .get()
             .uri(hentOppgaverUri(journalpostId))
             .accept(APPLICATION_JSON)
             .retrieve()
