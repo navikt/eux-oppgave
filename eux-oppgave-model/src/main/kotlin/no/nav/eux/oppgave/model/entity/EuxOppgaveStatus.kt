@@ -24,6 +24,8 @@ data class EuxOppgaveStatus(
     val opprettetTidspunkt: LocalDateTime = now(),
     @Column
     val endretTidspunkt: LocalDateTime = now(),
+    @Column
+    val endretBruker: String,
 ) {
 
     enum class Status {

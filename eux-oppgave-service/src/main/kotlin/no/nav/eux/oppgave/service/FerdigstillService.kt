@@ -12,57 +12,63 @@ import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.UNDER_FERDIGSTILLING
 import no.nav.eux.oppgave.persistence.EuxOppgaveStatusRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime.now
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.FERDIGSTILLING_FEILET as EUX_FERDIGSTILLING_FEILET
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.FERDIGSTILT as EUX_FERDIGSTILT
 
 @Service
 class FerdigstillService(
     val client: OppgaveClient,
-    val exuOppgaveStatusRepository: EuxOppgaveStatusRepository,
+    val statusRepository: EuxOppgaveStatusRepository,
+    val contextService: TokenContextService,
 ) {
     val log = logger {}
 
-    fun ferdigstillOppgaver(journalpostIder: List<String>, navIdent: String): List<OppgaveFerdigstilling> =
+    fun ferdigstillOppgaver(
+        journalpostIder: List<String>,
+        personident: String?
+    ): List<OppgaveFerdigstilling> =
         journalpostIder
             .also { log.info { "Starter ferdigstilling av journalposter: $journalpostIder" } }
             .flatMap { client.hentOppgaver(it) }
             .also { log.info { "Ferdigstiller ${it.size} oppgaver" } }
             .also { it.settStatusUnderFerdigstilling() }
-            .map { patch(it.id, OppgavePatch(it.versjon, navIdent, FERDIGSTILT)) }
+            .map { patch(it.id, OppgavePatch(it.versjon, contextService.navIdent, FERDIGSTILT, personident)) }
             .map { it.oppdaterEuxStatus() }
 
     fun List<Oppgave>.settStatusUnderFerdigstilling() =
         filter { it.status != FERDIGSTILT }
             .forEach { it.settStatusUnderFerdigstilling() }
 
-    fun Oppgave.settStatusUnderFerdigstilling() = exuOppgaveStatusRepository
+    fun Oppgave.settStatusUnderFerdigstilling() = statusRepository
         .findByOppgaveId(id)
         ?.settUnderFerdigstilling()
         ?: ikkeOpprettetAvEux()
 
     fun EuxOppgaveStatus.settUnderFerdigstilling() =
-        exuOppgaveStatusRepository.save(copy(status = UNDER_FERDIGSTILLING))
+        statusRepository.save(copy(status = UNDER_FERDIGSTILLING, endretTidspunkt = now()))
             .also { log.info { "Ferdigstiller oppgave opprettet av EUX $oppgaveId" } }
 
     fun Oppgave.ikkeOpprettetAvEux(): Oppgave {
         log.info { "Ferdigstiller oppgave ikke opprettet av EUX $id" }
-        exuOppgaveStatusRepository.save(euxOppgaveStatusUnderFerdigstilling)
+        statusRepository.save(toEuxOppgaveStatusUnderFerdigstilling(contextService.navIdent))
         return this
     }
 
     fun OppgaveFerdigstilling.oppdaterEuxStatus(): OppgaveFerdigstilling {
         if (status == OPPGAVE_FERDIGSTILT) {
             log.info { "Ferdigstilte oppgave ${euxOppgave!!.id}" }
-            exuOppgaveStatusRepository
-                .findByOppgaveId(euxOppgave!!.id)
-                ?.also { exuOppgaveStatusRepository.save(it.copy(status = EUX_FERDIGSTILT)) }
+            saveExuOppgaveStatus(euxOppgave!!.id, EUX_FERDIGSTILT)
         } else {
-            exuOppgaveStatusRepository
-                .findByOppgaveId(euxOppgave!!.id)
-                ?.also { exuOppgaveStatusRepository.save(it.copy(status = EUX_FERDIGSTILLING_FEILET)) }
+            saveExuOppgaveStatus(euxOppgave!!.id, EUX_FERDIGSTILLING_FEILET)
         }
         return this
     }
+
+    fun saveExuOppgaveStatus(oppgaveId: Int, status: EuxOppgaveStatus.Status) =
+        statusRepository
+            .findByOppgaveId(oppgaveId = oppgaveId)
+            ?.also { statusRepository.save(it.copy(status = status, endretTidspunkt = now())) }
 
     fun patch(id: Int, patch: OppgavePatch) =
         try {

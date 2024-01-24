@@ -92,6 +92,8 @@ FerdigstillOpenApiType:
   required:
     - journalpostIder
   properties:
+    personident:
+      $ref: '../properties/person.yaml#/personident'
     journalpostIder:
       $ref: '../properties/oppgave.yaml#/journalpostIder'
 

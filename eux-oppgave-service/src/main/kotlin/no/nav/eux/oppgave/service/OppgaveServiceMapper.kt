@@ -55,14 +55,16 @@ val EuxOppgaveOpprettelse.euxOppgaveStatus
         tema = tema,
         status = EuxOppgaveStatus.Status.UNDER_OPPRETTELSE,
         beskrivelse = beskrivelse,
-        opprettetBruker = opprettetBruker
+        opprettetBruker = opprettetBruker,
+        endretBruker = opprettetBruker,
     )
 
-val Oppgave.euxOppgaveStatusUnderFerdigstilling
-    get() = EuxOppgaveStatus(
+fun Oppgave.toEuxOppgaveStatusUnderFerdigstilling(navIdent: String) =
+    EuxOppgaveStatus(
         oppgaveId = id,
         tema = tema,
         status = EuxOppgaveStatus.Status.UNDER_FERDIGSTILLING,
         beskrivelse = beskrivelse,
-        opprettetBruker = "under-ferdigstilling"
+        opprettetBruker = "under-ferdigstilling",
+        endretBruker = navIdent
     )

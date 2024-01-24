@@ -7,5 +7,6 @@ create table eux_oppgave_status
     beskrivelse         text,
     opprettet_bruker    text             not null,
     opprettet_tidspunkt timestamp        not null,
+    endret_bruker       text             not null,
     endret_tidspunkt    timestamp        not null
 );

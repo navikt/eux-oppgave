@@ -33,7 +33,10 @@ class OppgaverApiImpl(
         ferdigstillOpenApiType: FerdigstillOpenApiType
     ): ResponseEntity<FerdigstillResponsOpenApiType> =
         ferdigstillService
-            .ferdigstillOppgaver(ferdigstillOpenApiType.journalpostIder, tokenContextService.navIdent)
+            .ferdigstillOppgaver(
+                journalpostIder = ferdigstillOpenApiType.journalpostIder,
+                personident = ferdigstillOpenApiType.personident
+            )
             .ferdigstillResponsOpenApiType
             .toOkResponseEntity()
 }

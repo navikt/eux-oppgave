@@ -20,3 +20,14 @@ fnr:
     og kalles folkeregisteridentifikator. NPID er en identifikator som opprettes i PDL. NPID 
     ble tidligere kalt BOST-nummer eller BNR. Opprinnelig ble nummeret brukt i bidragssaker. I PDL 
     er det mulig å bruke NPID i andre tilfeller der man ikke trenger eller man ikke kan få DNR.
+
+personident:
+  maxLength: 13
+  minLength: 11
+  type: string
+  description: >-
+    ident for person oppgaven gjelder, dvs. fnr, dnr, npid eller
+    aktørid. Kan ikke nullstilles. Kun én av personident eller orgnr kan
+    angis. Merk at det kun er i helt spesielle tilfeller ident skal endres,
+    i.e ifm journalføring
+  example: "12345678911"

@@ -4,4 +4,5 @@ data class OppgavePatch(
     val versjon: Int,
     val tilordnetRessurs: String,
     val status: Status? = null,
+    val personident: String?
 )
