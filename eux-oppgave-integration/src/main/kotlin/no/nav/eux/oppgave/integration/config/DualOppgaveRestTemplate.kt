@@ -35,4 +35,3 @@ class DualOppgaveRestTemplate(
             ?.jwtTokenClaims
             ?.get("NAVident") != null
 }
-
