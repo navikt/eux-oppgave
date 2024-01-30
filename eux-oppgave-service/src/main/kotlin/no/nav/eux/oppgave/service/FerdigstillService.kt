@@ -68,7 +68,15 @@ class FerdigstillService(
     fun saveExuOppgaveStatus(oppgaveId: Int, status: EuxOppgaveStatus.Status) =
         statusRepository
             .findByOppgaveId(oppgaveId = oppgaveId)
-            ?.also { statusRepository.save(it.copy(status = status, endretTidspunkt = now())) }
+            ?.also {
+                statusRepository.save(
+                    it.copy(
+                        status = status,
+                        endretTidspunkt = now(),
+                        endretBruker = contextService.navIdent
+                    )
+                )
+            }
 
     fun patch(id: Int, patch: OppgavePatch) =
         try {

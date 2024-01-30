@@ -11,6 +11,7 @@ import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
 val EuxOppgaveOpprettelse.oppgaveOpprettelse
     get() =
         OppgaveOpprettelse(
+            aktoerId = aktoerId,
             beskrivelse = beskrivelse,
             tildeltEnhetsnr = tildeltEnhetsnr,
             journalpostId = journalpostId,
