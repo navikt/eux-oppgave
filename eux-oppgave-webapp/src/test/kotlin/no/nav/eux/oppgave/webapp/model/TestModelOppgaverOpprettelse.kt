@@ -3,6 +3,7 @@ package no.nav.eux.oppgave.webapp.model
 import java.time.LocalDate
 
 data class TestModelOppgaverOpprettelse(
+    val aktoerId: String,
     val aktivDato: LocalDate,
     val prioritet: EuxOppgavePrioritetEnum,
     val tema: String,
