@@ -3,6 +3,7 @@ package no.nav.eux.oppgave.webapp
 import no.nav.eux.oppgave.Application
 import no.nav.eux.oppgave.webapp.common.httpEntity
 import no.nav.eux.oppgave.webapp.common.voidHttpEntity
+import no.nav.eux.oppgave.webapp.mock.RequestBodies
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.BeforeEach
@@ -30,6 +31,9 @@ abstract class AbstractOppgaverApiImplTest {
 
     @Autowired
     lateinit var jdbcTemplate: JdbcTemplate
+
+    @Autowired
+    lateinit var requestBodies: RequestBodies
 
     @BeforeEach
     fun initialiseRestAssuredMockMvcWebApplicationContext() {

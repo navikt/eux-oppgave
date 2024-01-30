@@ -15,9 +15,11 @@ import java.time.Instant
 
 @Configuration
 class MockWebServerConfiguration(
-    private val server: MockWebServer = MockWebServer()
+    val requestBodies: List<String>
 ) {
+
     val log = logger {}
+    private final val server = MockWebServer()
 
     init {
         server.start(9500)
@@ -46,7 +48,7 @@ class MockWebServerConfiguration(
             setBody(oppgaverResponse)
         }
 
-    val oppgaverResponse = javaClass.getResource("/oppgaver-opprettelse-respons.json")!!.readText()
+    val oppgaverResponse = javaClass.getResource("/oppgave.json")!!.readText()
 
     fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {
@@ -80,6 +82,7 @@ class MockWebServerConfiguration(
     private final fun dispatcher() = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             log.info { "received request on url=${request.requestUrl} with headers=${request.headers}" }
+            requestBodies.addLast(request.body.readUtf8())
             return mockResponse(request)
         }
     }
