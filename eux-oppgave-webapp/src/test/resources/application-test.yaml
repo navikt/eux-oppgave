@@ -10,7 +10,7 @@ no.nav.security.jwt:
     registration:
 
       oppgave-credentials-client-secret-basic:
-        token-endpoint-url: http://localhost:8181/oauth2/v2.0/token
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
         grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
         scope: test
         authentication:
@@ -19,7 +19,7 @@ no.nav.security.jwt:
           client-auth-method: client_secret_basic
 
       oppgave-credentials-private-key-jwt:
-        token-endpoint-url: http://localhost:8181/oauth2/v2.0/token
+        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
         grant-type: client_credentials
         scope: test
         authentication:
@@ -33,7 +33,7 @@ spring:
     clean-on-validation-error: true
 
 endpoint:
-  oppgave: http://localhost:9400
+  oppgave: http://localhost:9500/mock
 
 mockwebserver:
   port: 8181

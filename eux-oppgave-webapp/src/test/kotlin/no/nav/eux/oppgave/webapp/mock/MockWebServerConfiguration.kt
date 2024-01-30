@@ -1,16 +1,13 @@
 package no.nav.eux.oppgave.webapp.mock
 
+import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import jakarta.annotation.PreDestroy
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
-import org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import java.net.URLDecoder.decode
 import java.nio.charset.StandardCharsets.UTF_8
@@ -18,35 +15,38 @@ import java.time.Instant
 
 @Configuration
 class MockWebServerConfiguration(
-    @param:Value("\${mockwebserver.port}") private val port: Int
+    private val server: MockWebServer = MockWebServer()
 ) {
-
-    val server = MockWebServer()
+    val log = logger {}
 
     init {
-        setup()
+        server.start(9500)
+        server.dispatcher = dispatcher()
     }
 
-    private fun setup() {
-        server.start(port)
-        server.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                log.info("received request on url={} with headers={}", request.requestUrl, request.headers)
-                return mockResponse(request)
-                    .also { println("respons::    ${it.getBody()}") }
-            }
+    fun mockResponse(request: RecordedRequest) =
+        when (request.uriEndsWith) {
+            "/oauth2/v2.0/token" -> tokenResponse(formParameters(request.body.readUtf8()))
+            "/api/v1/oppgaver" -> oppgaverResponse()
+            else -> defaultResponse()
         }
-    }
 
-    private fun mockResponse(request: RecordedRequest) =
-        if (isTokenRequest(request)) {
-            tokenResponse(formParameters(request.body.readUtf8()))
-        } else {
-            MockResponse().apply {
-                setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                setBody(DEFAULT_JSON_RESPONSE)
-            }
+    fun defaultResponse() =
+        MockResponse().apply {
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody("""{"ping": "pong"}""")
         }
+
+    val RecordedRequest.uriEndsWith get() = requestUrl.toString().split("/mock")[1]
+
+    fun oppgaverResponse() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(oppgaverResponse)
+        }
+
+    val oppgaverResponse = javaClass.getResource("/oppgaver-opprettelse-respons.json")!!.readText()
 
     fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {
@@ -60,18 +60,13 @@ class MockWebServerConfiguration(
         server.shutdown()
     }
 
-    fun isTokenRequest(request: RecordedRequest): Boolean {
-        return request.requestUrl.toString().endsWith(tokenEndpointUri) &&
-                request.getHeader(CONTENT_TYPE)?.contains(APPLICATION_FORM_URLENCODED_VALUE) ?: false
-    }
-
     fun formParameters(formUrlEncodedString: String) =
         formUrlEncodedString.split("&")
             .filter { it.isNotEmpty() }
             .map { decode(it).split("=", limit = 2) }
             .associate { it[0] to it.getOrElse(1) { "" } }
 
-    fun decode(value: String) = decode(value, UTF_8)
+    fun decode(value: String): String = decode(value, UTF_8)
 
     val tokenResponse = """{
           "token_type": "Bearer",
@@ -79,18 +74,13 @@ class MockWebServerConfiguration(
           "expires_at": "${Instant.now().plusSeconds(3600).epochSecond}",
           "ext_expires_in": "30",
           "expires_in": "30",
-          "access_token": "somerandomaccesstoken"
-        }""".trimIndent().trim()
+          "access_token": "token"
+        }"""
 
-    private val DEFAULT_JSON_RESPONSE = """
-        {
-          "ping": "pong"
+    private final fun dispatcher() = object : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            log.info { "received request on url=${request.requestUrl} with headers=${request.headers}" }
+            return mockResponse(request)
         }
-        
-        """.trimIndent()
-
-    val tokenEndpointUri = "/oauth2/v2.0/token"
-
-    val log: Logger = LoggerFactory.getLogger(MockWebServerConfiguration::class.java)
-
+    }
 }
