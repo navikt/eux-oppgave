@@ -16,6 +16,6 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 oppgaverOpprettelse.httpEntity
             )
         println(createResponse.body)
-        assertThat(createResponse.statusCode.value()).isEqualTo(400)
+        assertThat(createResponse.statusCode.value()).isEqualTo(201)
     }
 }

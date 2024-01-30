@@ -33,7 +33,7 @@ spring:
     clean-on-validation-error: true
 
 endpoint:
-  oppgave: http://test
+  oppgave: http://localhost:9400
 
 mockwebserver:
   port: 8181

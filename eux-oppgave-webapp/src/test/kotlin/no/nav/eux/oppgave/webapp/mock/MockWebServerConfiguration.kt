@@ -21,7 +21,7 @@ class MockWebServerConfiguration(
     @param:Value("\${mockwebserver.port}") private val port: Int
 ) {
 
-    private val server = MockWebServer()
+    val server = MockWebServer()
 
     init {
         setup()
@@ -48,45 +48,32 @@ class MockWebServerConfiguration(
             }
         }
 
-    private fun tokenResponse(formParams: Map<String, String>) =
+    fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {
             setResponseCode(200)
             setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            setBody(
-                TOKEN_RESPONSE
-//                TOKEN_RESPONSE_TEMPLATE
-//                    .replace("\$scope", formParams["scope"]!!)
-//                    .replace("\$expires_at", "" + Instant.now().plusSeconds(3600).epochSecond)
-//                    .replace("\$ext_expires_in", "30")
-//                    .replace("\$expires_in", "30")
-//                    .replace("\$access_token", "somerandomaccesstoken")
-            )
+            setBody(tokenResponse)
         }
-
 
     @PreDestroy
     fun shutdown() {
         server.shutdown()
     }
 
-    private fun isTokenRequest(request: RecordedRequest): Boolean {
-        return request.requestUrl.toString().endsWith(TOKEN_ENDPOINT_URI) &&
+    fun isTokenRequest(request: RecordedRequest): Boolean {
+        return request.requestUrl.toString().endsWith(tokenEndpointUri) &&
                 request.getHeader(CONTENT_TYPE)?.contains(APPLICATION_FORM_URLENCODED_VALUE) ?: false
-
     }
 
-    private fun formParameters(formUrlEncodedString: String) =
+    fun formParameters(formUrlEncodedString: String) =
         formUrlEncodedString.split("&")
             .filter { it.isNotEmpty() }
             .map { decode(it).split("=", limit = 2) }
             .associate { it[0] to it.getOrElse(1) { "" } }
 
-    private fun decode(value: String) = decode(value, UTF_8)
+    fun decode(value: String) = decode(value, UTF_8)
 
-    companion object {
-
-        private val TOKEN_RESPONSE= """
-        {
+    val tokenResponse = """{
           "token_type": "Bearer",
           "scope": "test",
           "expires_at": "${Instant.now().plusSeconds(3600).epochSecond}",
@@ -95,26 +82,15 @@ class MockWebServerConfiguration(
           "access_token": "somerandomaccesstoken"
         }""".trimIndent().trim()
 
-        private val TOKEN_RESPONSE_TEMPLATE = """
-        {
-          "token_type": "Bearer",
-          "scope": "${'$'}scope",
-          "expires_at": ${'$'}expires_at",
-          "ext_expires_in": ${'$'}ext_expires_in",
-          "expires_in": ${'$'}expires_in",
-          "access_token": "${'$'}access_token"
-        }
-        
-        """.trimIndent()
-
-        private val DEFAULT_JSON_RESPONSE = """
+    private val DEFAULT_JSON_RESPONSE = """
         {
           "ping": "pong"
         }
         
         """.trimIndent()
 
-        private const val TOKEN_ENDPOINT_URI = "/oauth2/v2.0/token"
-        private val log: Logger = LoggerFactory.getLogger(MockWebServerConfiguration::class.java)
-    }
+    val tokenEndpointUri = "/oauth2/v2.0/token"
+
+    val log: Logger = LoggerFactory.getLogger(MockWebServerConfiguration::class.java)
+
 }
