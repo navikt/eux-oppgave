@@ -3,4 +3,4 @@ package no.nav.eux.oppgave.webapp.mock
 import org.springframework.stereotype.Component
 
 @Component
-class RequestBodies : ArrayList<String>()
+class RequestBodies : HashMap<String, String>()

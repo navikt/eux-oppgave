@@ -1,5 +1,5 @@
 no.nav.security.jwt:
-  expirythreshold: 1 #threshold in minutes until token expires
+  expirythreshold: 1
   issuer:
     azuread:
       discoveryurl: http://localhost:${mock-oauth2-server.port}/issuer1/.well-known/openid-configuration
