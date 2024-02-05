@@ -15,7 +15,7 @@ application:
 
 client:
   oppgave:
-    endpoint: https://oppgave.dev-fss-pub.nais-feilurl.io
+    endpoint: https://oppgave.dev-fss-pub.nais.io
     scope: api://dev-fss.oppgavehandtering.oppgave/.default
 
 cluster:
