@@ -1,6 +1,5 @@
 package no.nav.eux.oppgave.webapp
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.eux.oppgave.webapp.common.oppgaverFerdigstillUrl
 import no.nav.eux.oppgave.webapp.common.oppgaverUrl
@@ -11,6 +10,9 @@ import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillingStatus.OPPGAVE_FER
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 
 class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
 
@@ -26,7 +28,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
         )
             .isEqualTo(
                 ObjectMapper().readTree(
-                    javaClass.getResource("/oppgave-opprett.json")!!.readText()
+                    javaClass.getResource("/dataset/oppgave-opprett.json")!!.readText()
                 )
             )
         assertThat(createResponse.statusCode.value()).isEqualTo(201)
@@ -44,7 +46,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
         )
             .isEqualTo(
                 ObjectMapper().readTree(
-                    javaClass.getResource("/oppgaver-ferdigstill.json")!!.readText()
+                    javaClass.getResource("/dataset/oppgaver-ferdigstill.json")!!.readText()
                 )
             )
         assertThat(createResponse.statusCode.value()).isEqualTo(200)
@@ -54,6 +56,24 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             .isEqualTo("Oppgave 190402 ble ferdigstilt")
     }
 
-    val String.jsonNode: JsonNode get() = ObjectMapper().readTree(this)
+    @Test
+    fun `POST oppgaver - ikke autentisert - 401`() {
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        val entity = HttpEntity<String>("{}", headers)
+        val createResponse = restTemplate.postForEntity<Void>(
+            oppgaverUrl,
+            entity
+        )
+        assertThat(createResponse.statusCode.value()).isEqualTo(401)
+    }
 
+    @Test
+    fun `POST oppgaver - ugyldig request - 400`() {
+        val createResponse = restTemplate.postForEntity<Void>(
+            oppgaverUrl,
+            ".".httpEntity
+        )
+        assertThat(createResponse.statusCode.value()).isEqualTo(400)
+    }
 }

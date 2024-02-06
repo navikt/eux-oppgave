@@ -77,9 +77,9 @@ class MockWebServerConfiguration(
             setBody(getOppgaverResponse)
         }
 
-    val oppgaverResponse = javaClass.getResource("/oppgave.json")!!.readText()
+    val oppgaverResponse = javaClass.getResource("/dataset/oppgave.json")!!.readText()
 
-    val getOppgaverResponse = javaClass.getResource("/oppgaver.json")!!.readText()
+    val getOppgaverResponse = javaClass.getResource("/dataset/oppgaver.json")!!.readText()
 
     fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {

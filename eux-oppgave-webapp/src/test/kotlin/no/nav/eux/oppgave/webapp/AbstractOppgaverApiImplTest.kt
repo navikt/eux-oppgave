@@ -1,8 +1,9 @@
 package no.nav.eux.oppgave.webapp
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.eux.oppgave.Application
 import no.nav.eux.oppgave.webapp.common.httpEntity
-import no.nav.eux.oppgave.webapp.common.voidHttpEntity
 import no.nav.eux.oppgave.webapp.mock.RequestBodies
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -43,7 +44,7 @@ abstract class AbstractOppgaverApiImplTest {
         )
     }
 
-    fun httpEntity() = voidHttpEntity(mockOAuth2Server)
+    val String.jsonNode: JsonNode get() = ObjectMapper().readTree(this)
 
     val <T> T.httpEntity: HttpEntity<T>
         get() = httpEntity(mockOAuth2Server)
