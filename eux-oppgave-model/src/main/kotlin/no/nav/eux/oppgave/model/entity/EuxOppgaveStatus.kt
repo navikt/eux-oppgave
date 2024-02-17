@@ -34,6 +34,9 @@ data class EuxOppgaveStatus(
         OPPRETTET,
         UNDER_FERDIGSTILLING,
         FERDIGSTILT,
-        FERDIGSTILLING_FEILET
+        FERDIGSTILLING_FEILET,
+        TILDELER_ENHETSNR,
+        ENHETSNR_TILDELT,
+        TILDEL_ENHETSNR_FEILET,
     }
 }

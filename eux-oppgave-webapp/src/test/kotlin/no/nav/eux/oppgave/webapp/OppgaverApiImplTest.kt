@@ -2,9 +2,11 @@ package no.nav.eux.oppgave.webapp
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.eux.oppgave.webapp.common.oppgaverFerdigstillUrl
+import no.nav.eux.oppgave.webapp.common.oppgaverTildelEnhetsnrUrl
 import no.nav.eux.oppgave.webapp.common.oppgaverUrl
 import no.nav.eux.oppgave.webapp.dataset.oppgaverFerdigstillDataset
 import no.nav.eux.oppgave.webapp.dataset.oppgaverOpprettelse
+import no.nav.eux.oppgave.webapp.dataset.oppgaverTildelEnhetsnrDataset
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillRespons
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillingStatus.OPPGAVE_FERDIGSTILT
 import org.assertj.core.api.Assertions.assertThat
@@ -54,6 +56,24 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             .isEqualTo(OPPGAVE_FERDIGSTILT)
         assertThat(createResponse.body!!.oppgaver[0].beskrivelse)
             .isEqualTo("Oppgave 190402 ble ferdigstilt")
+    }
+
+    @Test
+    fun `POST oppgaver tildel enhetsnummer - forespørsel, valid - 204`() {
+        val createResponse = restTemplate
+            .postForEntity<Void>(
+                oppgaverTildelEnhetsnrUrl,
+                oppgaverTildelEnhetsnrDataset.httpEntity
+            )
+        assertThat(
+            requestBodies["/api/v1/oppgaver/190402"]!!.jsonNode
+        )
+            .isEqualTo(
+                ObjectMapper().readTree(
+                    javaClass.getResource("/dataset/oppgaver-tildelt-enhetsnr.json")!!.readText()
+                )
+            )
+        assertThat(createResponse.statusCode.value()).isEqualTo(204)
     }
 
     @Test

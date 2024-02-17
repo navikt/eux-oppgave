@@ -4,7 +4,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.config.DualOppgaveRestTemplate
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
-import no.nav.eux.oppgave.integration.model.OppgavePatch
 import no.nav.eux.oppgave.integration.model.Oppgaver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType.APPLICATION_JSON
@@ -36,7 +35,7 @@ class OppgaveClient(
         }
     }
 
-    fun patch(id: Int, patch: OppgavePatch): Oppgave {
+    fun patch(id: Int, patch: Any): Oppgave {
         val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
             .patch()
             .uri("${oppgaveUrl}/api/v1/oppgaver/$id")

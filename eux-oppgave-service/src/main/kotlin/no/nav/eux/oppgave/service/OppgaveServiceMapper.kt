@@ -7,6 +7,7 @@ import no.nav.eux.oppgave.model.dto.EuxOppgave
 import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
 import no.nav.eux.oppgave.model.dto.EuxOppgaveStatusEnum
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
+import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.TILDELER_ENHETSNR
 
 val EuxOppgaveOpprettelse.oppgaveOpprettelse
     get() =
@@ -67,5 +68,15 @@ fun Oppgave.toEuxOppgaveStatusUnderFerdigstilling(navIdent: String) =
         status = EuxOppgaveStatus.Status.UNDER_FERDIGSTILLING,
         beskrivelse = beskrivelse,
         opprettetBruker = "under-ferdigstilling",
+        endretBruker = navIdent
+    )
+
+fun Oppgave.toEuxOppgaveTildelerEnhetsnummer(navIdent: String) =
+    EuxOppgaveStatus(
+        oppgaveId = id,
+        tema = tema,
+        status = TILDELER_ENHETSNR,
+        beskrivelse = beskrivelse,
+        opprettetBruker = "tildeler-enhetsnummer",
         endretBruker = navIdent
     )

@@ -1,0 +1,26 @@
+post:
+  tags:
+    - Eux Oppgave API
+  summary: Tildel enhetsnummer
+  description: Tildel enhetsnummer
+  operationId: tildelEnhetsnummer
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/TildelEnhetsnrOpenApiType'
+
+  responses:
+    '204':
+      $ref: '../common/responses.yaml#/204'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

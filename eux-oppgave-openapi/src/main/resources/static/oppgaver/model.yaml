@@ -119,3 +119,14 @@ OppgaveFerdigstillingOpenApiType:
       $ref: '../properties/oppgave.yaml#/ferdigstillingStatus'
     beskrivelse:
       $ref: '../properties/oppgave.yaml#/ferdigstillingBeskrivelse'
+
+TildelEnhetsnrOpenApiType:
+  type: object
+  required:
+    - tildeltEnhetsnr
+    - journalpostId
+  properties:
+    tildeltEnhetsnr:
+      $ref: '../properties/oppgave.yaml#/tildeltEnhetsnr'
+    journalpostId:
+      $ref: '../properties/oppgave.yaml#/journalpostId'

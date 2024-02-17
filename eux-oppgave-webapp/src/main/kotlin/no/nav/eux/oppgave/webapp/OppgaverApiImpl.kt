@@ -1,12 +1,10 @@
 package no.nav.eux.oppgave.webapp
 
 import no.nav.eux.oppgave.openapi.api.OppgaverApi
-import no.nav.eux.oppgave.openapi.model.FerdigstillOpenApiType
-import no.nav.eux.oppgave.openapi.model.FerdigstillResponsOpenApiType
-import no.nav.eux.oppgave.openapi.model.OppgaveCreateOpenApiType
-import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
+import no.nav.eux.oppgave.openapi.model.*
 import no.nav.eux.oppgave.service.FerdigstillService
 import no.nav.eux.oppgave.service.OppgaveService
+import no.nav.eux.oppgave.service.TildelEnhetsnummerService
 import no.nav.eux.oppgave.service.TokenContextService
 import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.ResponseEntity
@@ -17,6 +15,7 @@ class OppgaverApiImpl(
     val oppgaveService: OppgaveService,
     val ferdigstillService: FerdigstillService,
     val tokenContextService: TokenContextService,
+    val tildelEnhetsnummerService: TildelEnhetsnummerService
 ) : OppgaverApi {
 
     @Protected
@@ -39,4 +38,16 @@ class OppgaverApiImpl(
             )
             .ferdigstillResponsOpenApiType
             .toOkResponseEntity()
+
+    @Protected
+    override fun tildelEnhetsnummer(
+        tildelEnhetsnrOpenApiType: TildelEnhetsnrOpenApiType
+    ): ResponseEntity<Unit> =
+        tildelEnhetsnummerService
+            .tildelEnhetsnummer(
+                tildelEnhetsnrOpenApiType.journalpostId,
+                tildelEnhetsnrOpenApiType.tildeltEnhetsnr
+            )
+            .toEmptyResponseEntity()
+
 }
