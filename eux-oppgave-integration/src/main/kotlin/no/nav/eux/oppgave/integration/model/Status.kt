@@ -6,5 +6,4 @@ enum class Status {
     UNDER_BEHANDLING,
     FERDIGSTILT,
     FEILREGISTRERT,
-
 }
