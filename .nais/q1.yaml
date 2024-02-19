@@ -12,6 +12,9 @@ application:
   eux-fagmodul-journalfoering:
     name: eux-fagmodul-journalfoering-q1
     namespace: eessibasis
+  eux-journal:
+    name: eux-journal-q1
+    namespace: eessibasis
 
 client:
   oppgave:
