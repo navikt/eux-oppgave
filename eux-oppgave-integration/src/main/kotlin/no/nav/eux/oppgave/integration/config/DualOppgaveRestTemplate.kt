@@ -4,7 +4,6 @@ import no.nav.security.token.support.core.context.TokenValidationContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
-import kotlin.jvm.optionals.getOrNull
 
 @Component
 class DualOppgaveRestTemplate(
@@ -29,9 +28,8 @@ class DualOppgaveRestTemplate(
 
     fun contextHasNavIdent(): Boolean =
         tokenValidationContextHolder
-            .tokenValidationContext
-            ?.firstValidToken
-            ?.getOrNull()
+            .getTokenValidationContext()
+            .firstValidToken
             ?.jwtTokenClaims
             ?.get("NAVident") != null
 }

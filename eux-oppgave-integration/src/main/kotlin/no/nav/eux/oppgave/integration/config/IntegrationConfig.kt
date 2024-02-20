@@ -50,7 +50,7 @@ class IntegrationConfig {
         oAuth2AccessTokenService: OAuth2AccessTokenService
     ) = ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
         val response = oAuth2AccessTokenService.getAccessToken(clientProperties)
-        request.headers.setBearerAuth(response.accessToken)
+        request.headers.setBearerAuth(response.accessToken!!)
         request.headers.set("X-Correlation-ID", randomUUID().toString())
         execution.execute(request, body)
     }

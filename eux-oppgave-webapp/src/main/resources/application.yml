@@ -30,7 +30,6 @@ no.nav.security.jwt:
     azuread:
       discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
       accepted-audience: ${AZURE_APP_CLIENT_ID}
-      cookie-name: openam-idtoken
 
   client:
     registration:
