@@ -47,10 +47,10 @@ class FerdigstillService(
 
     fun EuxOppgaveStatus.settUnderFerdigstilling() =
         statusRepository.save(copy(status = UNDER_FERDIGSTILLING, endretTidspunkt = now()))
-            .also { log.info { "Ferdigstiller oppgave opprettet av EUX $oppgaveId" } }
+            .also { log.info { "Ferdigstiller oppgave opprettet av EUX ($oppgaveId)" } }
 
     fun Oppgave.ikkeOpprettetAvEux(): Oppgave {
-        log.info { "Ferdigstiller oppgave ikke opprettet av EUX $id" }
+        log.info { "Ferdigstiller oppgave ikke opprettet av EUX ($id)" }
         statusRepository.save(toEuxOppgaveStatusUnderFerdigstilling(contextService.navIdent))
         return this
     }
