@@ -1,5 +1,8 @@
 {
   "versjon": 4,
   "tildeltEnhetsnr": "2950",
-  "kommentar": ""
+  "kommentar": {
+    "tekst": "",
+    "automatiskGenerert": false
+  }
 }
