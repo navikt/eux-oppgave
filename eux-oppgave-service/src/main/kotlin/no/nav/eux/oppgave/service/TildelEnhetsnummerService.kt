@@ -3,6 +3,7 @@ package no.nav.eux.oppgave.service
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.client.OppgaveClient
 import no.nav.eux.oppgave.integration.model.Oppgave
+import no.nav.eux.oppgave.integration.model.OppgavePatchKommentar
 import no.nav.eux.oppgave.integration.model.OppgaveTildeltEnhetsnrPatch
 import no.nav.eux.oppgave.integration.model.Status
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
@@ -28,7 +29,7 @@ class TildelEnhetsnummerService(
             .hentOppgaver(journalpostId)
             .also { log.info { "Tildeler enhetsnummer for ${it.size} oppgaver" } }
             .also { it.settStatusTildelerEnhetsnummer() }
-            .forEach { patch(it.id, OppgaveTildeltEnhetsnrPatch(it.versjon, tildeltEnhetsnr, kommentar)) }
+            .forEach { it.patch(tildeltEnhetsnr, kommentar) }
     }
 
     fun List<Oppgave>.settStatusTildelerEnhetsnummer() =
@@ -50,14 +51,19 @@ class TildelEnhetsnummerService(
         return this
     }
 
-    fun patch(id: Int, patch: OppgaveTildeltEnhetsnrPatch) =
+    fun Oppgave.patch(tildeltEnhetsnr: String, kommentar: String) =
         try {
-            client.patch(id, patch)
+            client.patch(id, OppgaveTildeltEnhetsnrPatch(
+                versjon = versjon,
+                tildeltEnhetsnr = tildeltEnhetsnr,
+                kommentar = OppgavePatchKommentar(tekst = kommentar)
+            ))
             saveExuOppgaveStatus(id, ENHETSNR_TILDELT)
         } catch (e: Exception) {
             saveExuOppgaveStatus(id, TILDEL_ENHETSNR_FEILET)
             throw e
         }
+
 
     fun saveExuOppgaveStatus(oppgaveId: Int, status: EuxOppgaveStatus.Status) =
         statusRepository
