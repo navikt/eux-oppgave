@@ -3,6 +3,7 @@ package no.nav.eux.oppgave.service
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.client.OppgaveClient
 import no.nav.eux.oppgave.integration.model.Oppgave
+import no.nav.eux.oppgave.integration.model.OppgavePatchKommentar
 import no.nav.eux.oppgave.integration.model.OppgaveTildeltEnhetsnrPatch
 import no.nav.eux.oppgave.integration.model.Status
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
@@ -55,7 +56,7 @@ class TildelEnhetsnummerService(
             client.patch(id, OppgaveTildeltEnhetsnrPatch(
                 versjon = versjon,
                 tildeltEnhetsnr = tildeltEnhetsnr,
-                kommentar = kommentar
+                kommentar = OppgavePatchKommentar(tekst = kommentar)
             ))
             saveExuOppgaveStatus(id, ENHETSNR_TILDELT)
         } catch (e: Exception) {
