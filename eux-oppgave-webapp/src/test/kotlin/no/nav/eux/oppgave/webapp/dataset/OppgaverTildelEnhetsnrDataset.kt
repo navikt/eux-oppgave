@@ -4,5 +4,6 @@ import no.nav.eux.oppgave.webapp.model.TestModelTildelEnhetsnr
 
 val oppgaverTildelEnhetsnrDataset = TestModelTildelEnhetsnr(
     tildeltEnhetsnr = "2950",
-    journalpostId = "1234"
+    journalpostId = "1234",
+    kommentar = "en kommentar"
 )
