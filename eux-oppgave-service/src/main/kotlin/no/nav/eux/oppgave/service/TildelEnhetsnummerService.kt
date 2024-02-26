@@ -1,6 +1,6 @@
 package no.nav.eux.oppgave.service
 
-import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.client.OppgaveClient
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveTildeltEnhetsnrPatch
@@ -17,14 +17,18 @@ class TildelEnhetsnummerService(
     val statusRepository: EuxOppgaveStatusRepository,
     val contextService: TokenContextService,
 ) {
-    val log = KotlinLogging.logger {}
+    val log = logger {}
 
-    fun tildelEnhetsnummer(journalpostId: String, tildeltEnhetsnr: String) {
+    fun tildelEnhetsnummer(
+        journalpostId: String,
+        tildeltEnhetsnr: String,
+        kommentar: String
+    ) {
         client
             .hentOppgaver(journalpostId)
             .also { log.info { "Tildeler enhetsnummer for ${it.size} oppgaver" } }
             .also { it.settStatusTildelerEnhetsnummer() }
-            .forEach { patch(it.id, OppgaveTildeltEnhetsnrPatch(it.versjon, tildeltEnhetsnr)) }
+            .forEach { patch(it.id, OppgaveTildeltEnhetsnrPatch(it.versjon, tildeltEnhetsnr, kommentar)) }
     }
 
     fun List<Oppgave>.settStatusTildelerEnhetsnummer() =

@@ -44,8 +44,9 @@ class OppgaverApiImpl(
         tildelEnhetsnummerService
             .mdc(journalpostId = tildelEnhetsnrOpenApiType.journalpostId)
             .tildelEnhetsnummer(
-                tildelEnhetsnrOpenApiType.journalpostId,
-                tildelEnhetsnrOpenApiType.tildeltEnhetsnr
+                journalpostId = tildelEnhetsnrOpenApiType.journalpostId,
+                tildeltEnhetsnr = tildelEnhetsnrOpenApiType.tildeltEnhetsnr,
+                kommentar = tildelEnhetsnrOpenApiType.kommentar ?: ""
             )
             .toEmptyResponseEntity()
 

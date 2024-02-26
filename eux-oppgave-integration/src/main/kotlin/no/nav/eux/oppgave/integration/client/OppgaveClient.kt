@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.toEntity
 import org.springframework.web.util.UriComponentsBuilder
 
-
 @Component
 class OppgaveClient(
     @Value("\${endpoint.oppgave}")
@@ -62,10 +61,14 @@ class OppgaveClient(
         }
     }
 
-    fun hentOppgaver(journalpostId: String): List<Oppgave> {
+    fun hentOppgaver(
+        journalpostId: String,
+        oppgavetype: List<String> = listOf("JFR", "FDR"),
+        statuskategori: String = "AAPEN"
+    ): List<Oppgave> {
         val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
             .get()
-            .uri(hentOppgaverUri(journalpostId))
+            .uri(hentOppgaverUri(journalpostId, oppgavetype, statuskategori))
             .accept(APPLICATION_JSON)
             .retrieve()
             .toEntity()
@@ -75,12 +78,16 @@ class OppgaveClient(
         }
     }
 
-    fun hentOppgaverUri(journalpostId: String) =
+    fun hentOppgaverUri(
+        journalpostId: String,
+        oppgavetype: List<String>,
+        statuskategori: String
+    ) =
         UriComponentsBuilder
             .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
-            .queryParam("statuskategori", "AAPEN")
-            .queryParam("oppgavetype", listOf("JFR", "FDR"))
+            .queryParam("statuskategori", statuskategori)
+            .queryParam("oppgavetype", oppgavetype)
             .build()
             .toUri()
 

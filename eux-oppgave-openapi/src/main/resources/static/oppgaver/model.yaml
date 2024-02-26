@@ -130,3 +130,5 @@ TildelEnhetsnrOpenApiType:
       $ref: '../properties/oppgave.yaml#/tildeltEnhetsnr'
     journalpostId:
       $ref: '../properties/oppgave.yaml#/journalpostId'
+    kommentar:
+      $ref: '../properties/oppgave.yaml#/kommentar'
