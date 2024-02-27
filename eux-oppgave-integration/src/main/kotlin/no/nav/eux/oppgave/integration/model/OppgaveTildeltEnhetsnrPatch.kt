@@ -4,6 +4,7 @@ data class OppgaveTildeltEnhetsnrPatch(
     val versjon: Int,
     val tildeltEnhetsnr: String,
     val kommentar: OppgavePatchKommentar,
+    val beskrivelse: String,
 )
 
 data class OppgavePatchKommentar(

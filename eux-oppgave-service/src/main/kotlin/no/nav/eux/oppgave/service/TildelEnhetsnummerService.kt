@@ -53,17 +53,23 @@ class TildelEnhetsnummerService(
 
     fun Oppgave.patch(tildeltEnhetsnr: String, kommentar: String) =
         try {
-            client.patch(id, OppgaveTildeltEnhetsnrPatch(
-                versjon = versjon,
-                tildeltEnhetsnr = tildeltEnhetsnr,
-                kommentar = OppgavePatchKommentar(tekst = kommentar)
-            ))
+            val nyOppgaveBeskrivelse = OppgaveBeskrivelse(
+                navIdent = contextService.navIdent,
+                tekst = kommentar
+            )
+            client.patch(
+                id, OppgaveTildeltEnhetsnrPatch(
+                    versjon = versjon,
+                    tildeltEnhetsnr = tildeltEnhetsnr,
+                    kommentar = OppgavePatchKommentar(tekst = kommentar),
+                    beskrivelse = beskrivelse med nyOppgaveBeskrivelse
+                )
+            )
             saveExuOppgaveStatus(id, ENHETSNR_TILDELT)
         } catch (e: Exception) {
             saveExuOppgaveStatus(id, TILDEL_ENHETSNR_FEILET)
             throw e
         }
-
 
     fun saveExuOppgaveStatus(oppgaveId: Int, status: EuxOppgaveStatus.Status) =
         statusRepository
