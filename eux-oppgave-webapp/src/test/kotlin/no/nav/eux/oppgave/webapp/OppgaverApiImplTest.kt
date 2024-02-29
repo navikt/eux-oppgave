@@ -65,11 +65,15 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 oppgaverTildelEnhetsnrUrl,
                 oppgaverTildelEnhetsnrDataset.httpEntity
             )
-        val result = ObjectMapper().readTree(
-            javaClass.getResource("/dataset/oppgaver-tildelt-enhetsnr.json")!!.readText()
-        )
+        val requestBody = requestBodies["/api/v1/oppgaver/190402"]!!
+        println(requestBody)
+        assertThat(requestBody).contains("tilordnetRessurs")
+        assertThat(requestBody).contains("kommentar")
+        assertThat(requestBody).contains("beskrivelse")
+        val result = ObjectMapper().readTree(requestBody)
         assertThat(result["versjon"].intValue()).isEqualTo(4)
         assertThat(result["tildeltEnhetsnr"].textValue()).isEqualTo("2950")
+        assertThat(result["tilordnetRessurs"].textValue()).isNull()
         assertThat(createResponse.statusCode.value()).isEqualTo(204)
     }
 
