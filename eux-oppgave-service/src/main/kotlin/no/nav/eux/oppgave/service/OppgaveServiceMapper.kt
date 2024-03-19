@@ -25,6 +25,7 @@ val EuxOppgaveOpprettelse.oppgaveOpprettelse
             oppgavetype = oppgavetype,
             behandlingstype = behandlingstype,
             tema = tema,
+            metadata = metadata
         )
 
 val Oppgave.euxOppgave

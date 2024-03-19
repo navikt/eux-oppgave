@@ -88,6 +88,8 @@ OppgaveCreateOpenApiType:
       $ref: '../properties/oppgave.yaml#/tilordnetRessurs'
     tema:
       $ref: '../properties/oppgave.yaml#/tema'
+    metadata:
+      $ref: '../properties/oppgave.yaml#/metadata'
 
 FerdigstillOpenApiType:
   type: object

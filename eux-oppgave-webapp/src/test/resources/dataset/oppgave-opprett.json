@@ -11,5 +11,8 @@
   "tildeltEnhetsnr": "test",
   "beskrivelse": "desc",
   "fristFerdigstillelse": "2024-12-01",
-  "opprettetAvEnhetsnr": "test"
+  "opprettetAvEnhetsnr": "test",
+  "metadata": {
+    "RINA_SAKID": "123"
+  }
 }

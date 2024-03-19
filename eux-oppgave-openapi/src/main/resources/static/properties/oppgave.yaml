@@ -154,3 +154,10 @@ kommentar:
   description: Kommentar i tilknytning til endringer. Hensyntas kun ved patch
   example: >-
     Den mottatte SEDen kan ikke journalføres. Dokumentet skal derfor settes til "utgått" i Joark.
+
+metadata:
+  type: object
+  additionalProperties:
+    type: object
+    properties:
+      type: string

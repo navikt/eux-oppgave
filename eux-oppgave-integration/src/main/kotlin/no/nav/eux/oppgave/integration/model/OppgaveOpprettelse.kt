@@ -15,5 +15,6 @@ data class OppgaveOpprettelse(
     val tildeltEnhetsnr: String?,
     val beskrivelse: String?,
     val fristFerdigstillelse: LocalDate?,
-    val opprettetAvEnhetsnr: String?
+    val opprettetAvEnhetsnr: String?,
+    val metadata: Map<String, String>,
 )

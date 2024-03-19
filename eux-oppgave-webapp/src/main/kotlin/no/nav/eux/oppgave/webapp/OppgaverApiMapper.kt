@@ -47,7 +47,8 @@ fun OppgaveCreateOpenApiType.euxOppgaveOpprettelse(navIdent: String) =
         opprettetAvEnhetsnr = opprettetAvEnhetsnr,
         behandlesAvApplikasjon = behandlesAvApplikasjon,
         tema = tema,
-        opprettetBruker = navIdent
+        opprettetBruker = navIdent,
+        metadata = metadata?.mapValues { it.value.toString() } ?: emptyMap()
     )
 
 val List<OppgaveFerdigstilling>.ferdigstillResponsOpenApiType

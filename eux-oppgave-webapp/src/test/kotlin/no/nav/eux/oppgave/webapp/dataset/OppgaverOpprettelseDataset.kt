@@ -19,5 +19,6 @@ val oppgaverOpprettelse = TestModelOppgaverOpprettelse(
     fristFerdigstillelse = LocalDate.parse("2024-12-01"),
     opprettetAvEnhetsnr = "test",
     behandlesAvApplikasjon = "test",
-    opprettetBruker = "test"
+    opprettetBruker = "test",
+    metadata = mapOf(Pair("RINA_SAKID", "123"))
 )
