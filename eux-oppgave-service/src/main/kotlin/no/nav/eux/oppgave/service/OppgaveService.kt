@@ -32,6 +32,13 @@ class OppgaveService(
     }
 
     fun behandleSedFraJournalpostId(journalpostId: String): EuxOppgave {
+        client
+            .hentOppgaver(journalpostId = journalpostId)
+            .firstOrNull { it.oppgavetype == "BEH_SED" }
+            ?.let {
+                log.info { "Oppgave for journalpostId=$journalpostId finnes allerede" }
+                return it.euxOppgave
+            }
         val eksisterendeOppgave = client
             .hentOppgaver(journalpostId = journalpostId, statuskategori = null)
             .firstOrNull()
