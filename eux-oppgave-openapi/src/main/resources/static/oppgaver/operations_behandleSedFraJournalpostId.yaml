@@ -1,0 +1,30 @@
+post:
+  tags:
+    - Eux Oppgave API
+  summary: Opprett
+  description: Opprett ny NAV Oppgave basert en eksisterende oppgave knyttet til journalpostId
+  operationId: behandleSedFraJournalpostId
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/BehandleSedFraJournalpostIdOpenApiType'
+
+  responses:
+    '201':
+      description: Created
+      content:
+        'application/json':
+          schema:
+            $ref: 'model.yaml#/OppgaveOpenApiType'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

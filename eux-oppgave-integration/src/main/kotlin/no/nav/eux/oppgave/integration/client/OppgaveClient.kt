@@ -64,11 +64,11 @@ class OppgaveClient(
     fun hentOppgaver(
         journalpostId: String,
         oppgavetype: List<String> = listOf("JFR", "FDR"),
-        statuskategori: String = "AAPEN"
+        statuskategori: String? = "AAPEN"
     ): List<Oppgave> {
         val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
             .get()
-            .uri(hentOppgaverUri(journalpostId, oppgavetype, statuskategori))
+            .uri(hentOppgaverUriOptionalStatuskategori(journalpostId, oppgavetype, statuskategori))
             .accept(APPLICATION_JSON)
             .retrieve()
             .toEntity()
@@ -77,6 +77,27 @@ class OppgaveClient(
             else -> throw hentException(journalpostId, entity)
         }
     }
+
+    fun hentOppgaverUriOptionalStatuskategori(
+        journalpostId: String,
+        oppgavetype: List<String>,
+        statuskategori: String?
+    ) =
+        when {
+            statuskategori == null -> hentOppgaverUri(journalpostId, oppgavetype)
+            else -> hentOppgaverUri(journalpostId, oppgavetype, statuskategori)
+        }
+
+    fun hentOppgaverUri(
+        journalpostId: String,
+        oppgavetype: List<String>
+    ) =
+        UriComponentsBuilder
+            .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
+            .queryParam("journalpostId", journalpostId)
+            .queryParam("oppgavetype", oppgavetype)
+            .build()
+            .toUri()
 
     fun hentOppgaverUri(
         journalpostId: String,

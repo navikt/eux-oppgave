@@ -1,12 +1,14 @@
 package no.nav.eux.oppgave.webapp
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import no.nav.eux.oppgave.webapp.common.behandleSedFraJournalpostIdUrl
 import no.nav.eux.oppgave.webapp.common.oppgaverFerdigstillUrl
 import no.nav.eux.oppgave.webapp.common.oppgaverTildelEnhetsnrUrl
 import no.nav.eux.oppgave.webapp.common.oppgaverUrl
 import no.nav.eux.oppgave.webapp.dataset.oppgaverFerdigstillDataset
 import no.nav.eux.oppgave.webapp.dataset.oppgaverOpprettelse
 import no.nav.eux.oppgave.webapp.dataset.oppgaverTildelEnhetsnrDataset
+import no.nav.eux.oppgave.webapp.model.TestModelBehandleSedFraJournalpostId
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillRespons
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillingStatus.OPPGAVE_FERDIGSTILT
 import org.assertj.core.api.Assertions.assertThat
@@ -31,6 +33,26 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             .isEqualTo(
                 ObjectMapper().readTree(
                     javaClass.getResource("/dataset/oppgave-opprett.json")!!.readText()
+                )
+            )
+        assertThat(createResponse.statusCode.value()).isEqualTo(201)
+    }
+
+    @Test
+    fun `POST oppgaver behandleSedFraJournalpostId - forespørsel, valid - 201`() {
+        val createResponse = restTemplate
+            .postForEntity<String>(
+                behandleSedFraJournalpostIdUrl,
+                TestModelBehandleSedFraJournalpostId("453857122").httpEntity
+            )
+        assertThat(
+            requestBodies["/api/v1/oppgaver"]!!.jsonNode
+        )
+            .isEqualTo(
+                ObjectMapper().readTree(
+                    javaClass
+                        .getResource("/dataset/oppgave-opprett-behandleSedFraJournalpostId.json")!!
+                        .readText()
                 )
             )
         assertThat(createResponse.statusCode.value()).isEqualTo(201)

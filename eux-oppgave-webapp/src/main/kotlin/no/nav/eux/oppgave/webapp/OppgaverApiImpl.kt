@@ -50,4 +50,13 @@ class OppgaverApiImpl(
             )
             .toEmptyResponseEntity()
 
+    @Protected
+    override fun behandleSedFraJournalpostId(
+        behandleSedFraJournalpostIdOpenApiType: BehandleSedFraJournalpostIdOpenApiType
+    ) =
+        oppgaveService
+            .mdc(journalpostId = behandleSedFraJournalpostIdOpenApiType.journalpostId)
+            .behandleSedFraJournalpostId(behandleSedFraJournalpostIdOpenApiType.journalpostId)
+            .oppgaveOpenApiType
+            .toCreatedResponseEntity()
 }

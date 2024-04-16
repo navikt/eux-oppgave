@@ -28,6 +28,25 @@ val EuxOppgaveOpprettelse.oppgaveOpprettelse
             metadata = metadata
         )
 
+val Oppgave.oppgaveOpprettelse
+    get() =
+        OppgaveOpprettelse(
+            aktoerId = aktoerId,
+            beskrivelse = beskrivelse,
+            tildeltEnhetsnr = tildeltEnhetsnr,
+            journalpostId = journalpostId,
+            aktivDato = aktivDato,
+            fristFerdigstillelse = fristFerdigstillelse,
+            opprettetAvEnhetsnr = opprettetAvEnhetsnr,
+            prioritet = prioritet.name.toEnum(),
+            behandlingstema = behandlingstema,
+            saksreferanse = saksreferanse,
+            oppgavetype = oppgavetype,
+            behandlingstype = behandlingstype,
+            tema = tema,
+            metadata = emptyMap(),
+        )
+
 val Oppgave.euxOppgave
     get() =
         EuxOppgave(
@@ -60,6 +79,15 @@ val EuxOppgaveOpprettelse.euxOppgaveStatus
         beskrivelse = beskrivelse,
         opprettetBruker = opprettetBruker,
         endretBruker = opprettetBruker,
+    )
+
+val Oppgave.euxOppgaveStatus
+    get() = EuxOppgaveStatus(
+        tema = tema,
+        status = EuxOppgaveStatus.Status.UNDER_OPPRETTELSE,
+        beskrivelse = beskrivelse,
+        opprettetBruker = "ukjent",
+        endretBruker = "ukjent",
     )
 
 fun Oppgave.toEuxOppgaveStatusUnderFerdigstilling(navIdent: String) =

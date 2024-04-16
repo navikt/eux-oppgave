@@ -52,6 +52,7 @@ class MockWebServerConfiguration(
     fun mockResponseGet(request: RecordedRequest) =
         when (request.uriEndsWith) {
             getOppgaverUri -> getOppgaverResponse()
+            getOppgaverUriUtenStatuskategori -> getOppgaverResponse()
             else -> defaultResponse()
         }
 
@@ -112,6 +113,9 @@ class MockWebServerConfiguration(
 
     val getOppgaverUri = "/api/v1/oppgaver" +
             "?journalpostId=1234&statuskategori=AAPEN&oppgavetype=JFR&oppgavetype=FDR"
+
+    val getOppgaverUriUtenStatuskategori = "/api/v1/oppgaver" +
+            "?journalpostId=453857122&oppgavetype=JFR&oppgavetype=FDR"
 
     private final fun dispatcher() = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
