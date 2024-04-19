@@ -15,6 +15,9 @@ application:
   eux-journal:
     name: eux-journal
     namespace: eessibasis
+  eux-journalarkivar:
+    name: eux-journalarkivar
+    namespace: eessibasis
 
 client:
   oppgave:

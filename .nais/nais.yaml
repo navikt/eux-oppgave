@@ -72,6 +72,9 @@ spec:
         - application: {{ application.eux-journal.name }}
           namespace: {{ application.eux-journal.namespace }}
           cluster: {{ cluster.gcp }}
+        - application: {{ application.eux-journalarkivar.name }}
+          namespace: {{ application.eux-journalarkivar.namespace }}
+          cluster: {{ cluster.gcp }}
     outbound:
       external:
         - host: oppgave.prod-fss-pub.nais.io
