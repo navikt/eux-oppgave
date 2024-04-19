@@ -51,9 +51,9 @@ class MockWebServerConfiguration(
 
     fun mockResponseGet(request: RecordedRequest) =
         when (request.uriEndsWith) {
-            getOppgaverUri(1234) -> getOppgaverResponse()
-            getOppgaverUri(453857122) -> getOppgaverResponse()
-            getOppgaverUriUtenStatuskategori -> getOppgaverResponse()
+            getOppgaverUri(1234, "AAPEN") -> getOppgaverResponse()
+            getOppgaverUri(453857122, "AAPEN") -> getOppgaverResponse()
+            getOppgaverUri(453857122, "AVSLUTTET") -> getOppgaverResponse()
             else -> defaultResponse()
         }
 
@@ -112,11 +112,8 @@ class MockWebServerConfiguration(
           "access_token": "token"
         }"""
 
-    fun getOppgaverUri(journalpostId: Int) = "/api/v1/oppgaver" +
-            "?journalpostId=$journalpostId&statuskategori=AAPEN&oppgavetype=JFR&oppgavetype=FDR"
-
-    val getOppgaverUriUtenStatuskategori = "/api/v1/oppgaver" +
-            "?journalpostId=453857122&oppgavetype=JFR&oppgavetype=FDR"
+    fun getOppgaverUri(journalpostId: Int, statuskategori: String) = "/api/v1/oppgaver" +
+            "?journalpostId=$journalpostId&statuskategori=$statuskategori&oppgavetype=JFR&oppgavetype=FDR"
 
     private final fun dispatcher() = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
