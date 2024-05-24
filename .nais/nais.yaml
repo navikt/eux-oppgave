@@ -75,6 +75,9 @@ spec:
         - application: {{ application.eux-journalarkivar.name }}
           namespace: {{ application.eux-journalarkivar.namespace }}
           cluster: {{ cluster.gcp }}
+        - application: {{ application.eux-barnetrygd.name }}
+          namespace: {{ application.eux-barnetrygd.namespace }}
+          cluster: {{ cluster.fss }}
     outbound:
       external:
         - host: oppgave.prod-fss-pub.nais.io

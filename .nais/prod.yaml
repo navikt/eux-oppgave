@@ -18,6 +18,9 @@ application:
   eux-journalarkivar:
     name: eux-journalarkivar
     namespace: eessibasis
+  eux-barnetrygd:
+    name: eux-barnetrygd
+    namespace: eessibasis
 
 client:
   oppgave:
