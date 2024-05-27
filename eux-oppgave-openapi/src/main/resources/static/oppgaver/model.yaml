@@ -143,3 +143,34 @@ BehandleSedFraJournalpostIdOpenApiType:
   properties:
     journalpostId:
       $ref: '../properties/oppgave.yaml#/journalpostId'
+
+FinnOppgaverOpenApiType:
+  type: object
+  required:
+    - fristFom
+    - fristTom
+    - tema
+    - oppgavetype
+  properties:
+    fristFom:
+      $ref: '../properties/oppgave.yaml#/fristFerdigstillelse'
+    fristTom:
+      $ref: '../properties/oppgave.yaml#/fristFerdigstillelse'
+    tema:
+      $ref: '../properties/oppgave.yaml#/tema'
+    oppgavetype:
+      $ref: '../properties/oppgave.yaml#/oppgavetype'
+    behandlingstema:
+      $ref: '../properties/oppgave.yaml#/behandlingstema'
+    behandlingstype:
+      $ref: '../properties/oppgave.yaml#/behandlingstype'
+
+FinnOppgaverResponsOpenApiType:
+  type: object
+  properties:
+    oppgaver:
+      type: array
+      items:
+        $ref: '#/OppgaveOpenApiType'
+      description: Funnede oppgaver
+

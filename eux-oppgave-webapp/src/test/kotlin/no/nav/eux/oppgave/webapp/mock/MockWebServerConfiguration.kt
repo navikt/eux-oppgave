@@ -13,6 +13,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import java.net.URLDecoder.decode
 import java.nio.charset.StandardCharsets.UTF_8
 import java.time.Instant
+import java.time.LocalDate
 
 @Configuration
 class MockWebServerConfiguration(
@@ -54,6 +55,8 @@ class MockWebServerConfiguration(
             getOppgaverUri(1234, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AVSLUTTET") -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstema(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ab0058") -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstype(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ae0106") -> getOppgaverResponse()
             else -> defaultResponse()
         }
 
@@ -114,6 +117,28 @@ class MockWebServerConfiguration(
 
     fun getOppgaverUri(journalpostId: Int, statuskategori: String) = "/api/v1/oppgaver" +
             "?journalpostId=$journalpostId&statuskategori=$statuskategori&oppgavetype=JFR&oppgavetype=FDR"
+
+    fun finnOppgaverUriBehandlingstema(
+        fristFom: LocalDate,
+        fristTom: LocalDate,
+        tema: String,
+        oppgavetype: String,
+        statuskategori: String,
+        behandlingstema: String
+    ) = "/api/v1/oppgaver" +
+            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=$oppgavetype&statuskategori=$statuskategori" +
+            "&behandlingstema=$behandlingstema"
+
+    fun finnOppgaverUriBehandlingstype(
+        fristFom: LocalDate,
+        fristTom: LocalDate,
+        tema: String,
+        oppgavetype: String,
+        statuskategori: String,
+        behandlingstype: String
+    ) = "/api/v1/oppgaver" +
+            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=$oppgavetype&statuskategori=$statuskategori" +
+            "&behandlingstype=$behandlingstype"
 
     private final fun dispatcher() = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {

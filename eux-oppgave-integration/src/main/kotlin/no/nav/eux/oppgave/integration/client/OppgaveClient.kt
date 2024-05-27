@@ -10,7 +10,10 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.toEntity
+import org.springframework.web.util.UriComponents
 import org.springframework.web.util.UriComponentsBuilder
+import java.net.URI
+import java.time.LocalDate
 
 @Component
 class OppgaveClient(
@@ -78,6 +81,37 @@ class OppgaveClient(
         }
     }
 
+    fun finnOppgaver(
+        fristFom: LocalDate,
+        fristTom: LocalDate,
+        tema: String,
+        oppgavetype: String,
+        statuskategori: String,
+        behandlingstema: String?,
+        behandlingstype: String?
+    ): List<Oppgave> {
+        val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
+            .get()
+            .uri(
+                finnOppgaverUriOptionalBehandlingstemaBehandlingstype(
+                    fristFom,
+                    fristTom,
+                    tema,
+                    oppgavetype,
+                    statuskategori,
+                    behandlingstema,
+                    behandlingstype
+                )
+            )
+            .accept(APPLICATION_JSON)
+            .retrieve()
+            .toEntity()
+        when {
+            entity.statusCode.is2xxSuccessful -> return entity.body!!.oppgaver
+            else -> throw finnOppgaverException(entity)
+        }
+    }
+
     fun hentOppgaverUriOptionalStatuskategori(
         journalpostId: String,
         oppgavetype: List<String>,
@@ -112,6 +146,34 @@ class OppgaveClient(
             .build()
             .toUri()
 
+    fun finnOppgaverUriOptionalBehandlingstemaBehandlingstype(
+        fristFom: LocalDate,
+        fristTom: LocalDate,
+        tema: String,
+        oppgavetype: String,
+        statuskategori: String,
+        behandlingstema: String?,
+        behandlingstype: String?
+    ): URI {
+        val uriComponentsBuilder = UriComponentsBuilder
+            .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
+            .queryParam("fristFom", fristFom.toString())
+            .queryParam("fristTom", fristTom.toString())
+            .queryParam("tema", tema)
+            .queryParam("oppgavetype", oppgavetype)
+            .queryParam("statuskategori", statuskategori)
+        behandlingstema?.let {
+            uriComponentsBuilder
+                .queryParam("behandlingstema", behandlingstema)
+        }
+        behandlingstype?.let {
+            uriComponentsBuilder
+                .queryParam("behandlingstype", behandlingstype)
+        }
+        return uriComponentsBuilder.build().toUri()
+    }
+
+
     fun opprettelseException(
         oppgaveOpprettelse: OppgaveOpprettelse,
         entity: ResponseEntity<Oppgave>
@@ -133,6 +195,10 @@ class OppgaveClient(
         journalpostId: String,
         entity: ResponseEntity<Oppgave>
     ) = oppgaveException("Feil under henting av oppgave. id=$journalpostId", entity.body)
+
+    fun finnOppgaverException(
+        entity: ResponseEntity<Oppgaver>
+    ) = oppgaveException("Feil under søk på oppgaver.", entity.body)
 
     fun oppgaveException(
         msg: String,

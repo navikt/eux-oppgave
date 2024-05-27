@@ -59,4 +59,31 @@ class OppgaverApiImpl(
             .behandleSedFraJournalpostId(behandleSedFraJournalpostIdOpenApiType.journalpostId)
             .oppgaveOpenApiType
             .toCreatedResponseEntity()
+
+    @Protected
+    override fun finnOppgaver(
+        finnOppgaverOpenApiType: FinnOppgaverOpenApiType
+    ): ResponseEntity<FinnOppgaverResponsOpenApiType> =
+        oppgaveService
+            .mdc()
+            .finnOppgaver(
+                fristFom = finnOppgaverOpenApiType.fristFom,
+                fristTom = finnOppgaverOpenApiType.fristFom,
+                tema = finnOppgaverOpenApiType.tema,
+                oppgavetype = finnOppgaverOpenApiType.oppgavetype,
+                behandlingstema = finnOppgaverOpenApiType.behandlingstema,
+                behandlingstype = finnOppgaverOpenApiType.behandlingstype
+            )
+            .finnOppgaverResponsOpenApiType
+            .toOkResponseEntity()
+
+    @Protected
+    override fun oppdaterOppgave(
+        oppgaveOpenApiType: OppgaveOpenApiType
+    ): ResponseEntity<OppgaveOpenApiType> =
+        oppgaveService
+            .mdc(journalpostId = oppgaveOpenApiType.journalpostId)
+            .oppdaterOppgave(oppgaveOpenApiType.euxOppgave)
+            .oppgaveOpenApiType
+            .toOkResponseEntity()
 }
