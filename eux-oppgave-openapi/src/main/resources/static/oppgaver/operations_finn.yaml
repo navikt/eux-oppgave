@@ -1,0 +1,30 @@
+post:
+  tags:
+    - Eux Oppgave API
+  summary: Finn
+  description: Finn oppgaver basert på frister, tema og type.
+  operationId: finnOppgaver
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/FinnOppgaverOpenApiType'
+
+  responses:
+    '200':
+      description: Funnet
+      content:
+        'application/json':
+          schema:
+            $ref: 'model.yaml#/FinnOppgaverResponsOpenApiType'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

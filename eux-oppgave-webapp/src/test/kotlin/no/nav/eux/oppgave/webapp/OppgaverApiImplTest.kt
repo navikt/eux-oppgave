@@ -1,13 +1,10 @@
 package no.nav.eux.oppgave.webapp
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.nav.eux.oppgave.webapp.common.behandleSedFraJournalpostIdUrl
-import no.nav.eux.oppgave.webapp.common.oppgaverFerdigstillUrl
-import no.nav.eux.oppgave.webapp.common.oppgaverTildelEnhetsnrUrl
-import no.nav.eux.oppgave.webapp.common.oppgaverUrl
-import no.nav.eux.oppgave.webapp.dataset.oppgaverFerdigstillDataset
-import no.nav.eux.oppgave.webapp.dataset.oppgaverOpprettelse
-import no.nav.eux.oppgave.webapp.dataset.oppgaverTildelEnhetsnrDataset
+import no.nav.eux.oppgave.openapi.model.FinnOppgaverResponsOpenApiType
+import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
+import no.nav.eux.oppgave.webapp.common.*
+import no.nav.eux.oppgave.webapp.dataset.*
 import no.nav.eux.oppgave.webapp.model.TestModelBehandleSedFraJournalpostId
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillRespons
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillingStatus.OPPGAVE_FERDIGSTILT
@@ -17,6 +14,7 @@ import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import java.time.LocalDate
 
 class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
 
@@ -118,5 +116,61 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             ".".httpEntity
         )
         assertThat(createResponse.statusCode.value()).isEqualTo(400)
+    }
+
+    @Test
+    fun `POST finn oppgaver med behandlingstema - forespørsel, valid - 200`() {
+        val oppgaverFinnParameterUrl = "/api/v1/oppgaver" +
+                "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR&oppgavetype=FREM&statuskategori=AAPEN" +
+                "&behandlingstema=ab0058"
+
+
+        val finnOppgaverRespons = restTemplate
+            .postForEntity<FinnOppgaverResponsOpenApiType>(
+                oppgaverFinnUrl,
+                finnOppgaverDatasetBehandlingstema.httpEntity
+            )
+        assertThat(
+            requestBodies.containsKey(oppgaverFinnParameterUrl)
+        )
+        assertThat(finnOppgaverRespons.statusCode.value()).isEqualTo(200)
+
+        assertThat(finnOppgaverRespons.body!!.oppgaver!!.get(0).id).isEqualTo(190402)
+
+    }
+
+    @Test
+    fun `POST finn oppgaver med behandlingstype - forespørsel, valid - 200`() {
+        val oppgaverFinnParameterUrl = "/api/v1/oppgaver" +
+                "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR&oppgavetype=FREM&statuskategori=AAPEN" +
+                "&behandlingstype=ae0106"
+
+        val finnOppgaverRespons = restTemplate
+            .postForEntity<FinnOppgaverResponsOpenApiType>(
+                oppgaverFinnUrl,
+                finnOppgaverDatasetBehandlingstema.httpEntity
+            )
+        assertThat(
+            requestBodies.containsKey(oppgaverFinnParameterUrl)
+        )
+        assertThat(finnOppgaverRespons.statusCode.value()).isEqualTo(200)
+
+        assertThat(finnOppgaverRespons.body!!.oppgaver!!.get(0).id).isEqualTo(190402)
+    }
+
+    @Test
+    fun `PATCH oppdater oppgave - forespørsel, valid - 200`() {
+
+        val oppdaterOppgaveRespons = restTemplate
+            .patchForObject<OppgaveOpenApiType>(
+                oppgaverUrl,
+                oppdaterOppgaveDataset.httpEntity,
+                OppgaveOpenApiType::class.java
+            )
+        assertThat(
+            requestBodies[oppgaverUrl + "/190402"]!!.jsonNode
+        ).isNotEmpty
+
+        assertThat(oppdaterOppgaveRespons.versjon).isEqualTo(4)
     }
 }

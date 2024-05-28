@@ -8,6 +8,7 @@ import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTELSE_FEILE
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTET
 import no.nav.eux.oppgave.persistence.EuxOppgaveStatusRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class OppgaveService(
@@ -61,4 +62,35 @@ class OppgaveService(
             throw e
         }
     }
+
+    fun finnOppgaver(
+        fristFom: LocalDate,
+        fristTom: LocalDate,
+        tema: String,
+        oppgavetype: String,
+        behandlingstema: String?,
+        behandlingstype: String?
+    ): List<EuxOppgave> {
+        val oppgaver = client.finnOppgaver(
+            fristFom,
+            fristTom,
+            tema,
+            oppgavetype,
+            statuskategori = "AAPEN",
+            behandlingstema,
+            behandlingstype
+        )
+        log.info { "Fant ${oppgaver.size} oppgaver" }
+        return oppgaver.map { it.euxOppgave }
+    }
+
+    fun oppdaterOppgave(euxOppgaveOppdatering: EuxOppgave) =
+        try {
+            val oppgave = client.patch(euxOppgaveOppdatering.id, euxOppgaveOppdatering.oppgave)
+            oppgave.euxOppgave
+
+        } catch (e: Exception) {
+            log.error(e) { "Oppdatering av oppgave $euxOppgaveOppdatering.id feilet" }
+            euxOppgaveOppdatering
+        }
 }

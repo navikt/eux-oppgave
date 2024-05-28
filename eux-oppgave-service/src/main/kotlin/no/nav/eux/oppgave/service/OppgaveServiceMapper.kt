@@ -2,6 +2,7 @@ package no.nav.eux.oppgave.service
 
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
+import no.nav.eux.oppgave.integration.model.Status
 import no.nav.eux.oppgave.model.common.toEnum
 import no.nav.eux.oppgave.model.dto.EuxOppgave
 import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
@@ -109,3 +110,28 @@ fun Oppgave.toEuxOppgaveTildelerEnhetsnummer(navIdent: String) =
         opprettetBruker = "tildeler-enhetsnummer",
         endretBruker = navIdent
     )
+
+val EuxOppgave.oppgave
+    get() =
+        Oppgave(
+            id = id,
+            oppgavetype = oppgavetype,
+            tildeltEnhetsnr = tildeltEnhetsnr,
+            aktivDato = aktivDato,
+            prioritet = euxOppgavePrioritet.name.toEnum(),
+            versjon = versjon,
+            aktoerId = aktoerId,
+            behandlingstema = behandlingstema,
+            behandlingstype = behandlingstype,
+            journalpostId = journalpostId,
+            saksreferanse = saksreferanse,
+            beskrivelse = beskrivelse,
+            fristFerdigstillelse = fristFerdigstillelse,
+            opprettetAvEnhetsnr = opprettetAvEnhetsnr,
+            status = euxOppgaveStatus?.name?.toEnum<Status>() ?: Status.AAPNET,
+            opprettetTidspunkt = opprettetTidspunkt,
+            ferdigstiltTidspunkt = ferdigstiltTidspunkt,
+            endretTidspunkt = endretTidspunkt,
+            tema = tema,
+            behandlesAvApplikasjon = behandlesAvApplikasjon,
+        )

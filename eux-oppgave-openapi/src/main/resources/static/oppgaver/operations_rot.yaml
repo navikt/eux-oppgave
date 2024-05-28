@@ -28,3 +28,32 @@ post:
       $ref: '../common/responses.yaml#/409'
     '500':
       $ref: '../common/responses.yaml#/500'
+patch:
+  tags:
+    - Eux Oppgave API
+  summary: Oppdater
+  description: Oppdater oppgave.
+  operationId: oppdaterOppgave
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/OppgaveOpenApiType'
+  responses:
+    '200':
+      description: Oppdatert
+      content:
+        'application/json':
+          schema:
+            $ref: 'model.yaml#/OppgaveOpenApiType'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

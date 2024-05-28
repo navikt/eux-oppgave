@@ -7,3 +7,5 @@ const val behandleSedFraJournalpostIdUrl = "/api/v1/oppgaver/behandleSedFraJourn
 const val oppgaverFerdigstillUrl = "/api/v1/oppgaver/ferdigstill"
 
 const val oppgaverTildelEnhetsnrUrl = "/api/v1/oppgaver/tildelEnhetsnr"
+
+const val oppgaverFinnUrl = "/api/v1/oppgaver/finn"
