@@ -68,7 +68,7 @@ class OppgaverApiImpl(
             .mdc()
             .finnOppgaver(
                 fristFom = finnOppgaverOpenApiType.fristFom,
-                fristTom = finnOppgaverOpenApiType.fristFom,
+                fristTom = finnOppgaverOpenApiType.fristTom,
                 tema = finnOppgaverOpenApiType.tema,
                 oppgavetype = finnOppgaverOpenApiType.oppgavetype,
                 behandlingstema = finnOppgaverOpenApiType.behandlingstema,
