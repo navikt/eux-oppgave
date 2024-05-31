@@ -69,7 +69,9 @@ class OppgaveService(
         tema: String,
         oppgavetype: String,
         behandlingstema: String?,
-        behandlingstype: String?
+        behandlingstype: String?,
+        limit: Int?,
+        offset: Int?
     ): List<EuxOppgave> {
         val oppgaver = client.finnOppgaver(
             fristFom,
@@ -78,7 +80,9 @@ class OppgaveService(
             oppgavetype,
             statuskategori = "AAPEN",
             behandlingstema,
-            behandlingstype
+            behandlingstype,
+            limit,
+            offset
         )
         log.info { "Fant ${oppgaver.size} oppgaver" }
         return oppgaver.map { it.euxOppgave }

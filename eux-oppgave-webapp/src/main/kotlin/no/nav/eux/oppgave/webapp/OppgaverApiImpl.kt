@@ -72,7 +72,9 @@ class OppgaverApiImpl(
                 tema = finnOppgaverOpenApiType.tema,
                 oppgavetype = finnOppgaverOpenApiType.oppgavetype,
                 behandlingstema = finnOppgaverOpenApiType.behandlingstema,
-                behandlingstype = finnOppgaverOpenApiType.behandlingstype
+                behandlingstype = finnOppgaverOpenApiType.behandlingstype,
+                limit = finnOppgaverOpenApiType.limit,
+                offset = finnOppgaverOpenApiType.offset
             )
             .finnOppgaverResponsOpenApiType
             .toOkResponseEntity()

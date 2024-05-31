@@ -88,7 +88,9 @@ class OppgaveClient(
         oppgavetype: String,
         statuskategori: String,
         behandlingstema: String?,
-        behandlingstype: String?
+        behandlingstype: String?,
+        limit: Int?,
+        offset: Int?
     ): List<Oppgave> {
         val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
             .get()
@@ -100,7 +102,9 @@ class OppgaveClient(
                     oppgavetype,
                     statuskategori,
                     behandlingstema,
-                    behandlingstype
+                    behandlingstype,
+                    limit,
+                    offset
                 )
             )
             .accept(APPLICATION_JSON)
@@ -153,7 +157,9 @@ class OppgaveClient(
         oppgavetype: String,
         statuskategori: String,
         behandlingstema: String?,
-        behandlingstype: String?
+        behandlingstype: String?,
+        limit: Int?,
+        offset: Int?
     ): URI {
         val uriComponentsBuilder = UriComponentsBuilder
             .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
@@ -169,6 +175,14 @@ class OppgaveClient(
         behandlingstype?.let {
             uriComponentsBuilder
                 .queryParam("behandlingstype", behandlingstype)
+        }
+        limit?.let {
+            uriComponentsBuilder
+                .queryParam("limit", limit)
+        }
+        offset?.let {
+            uriComponentsBuilder
+                .queryParam("offset", offset)
         }
         return uriComponentsBuilder.build().toUri()
     }

@@ -143,7 +143,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
     fun `POST finn oppgaver med behandlingstype - forespørsel, valid - 200`() {
         val oppgaverFinnParameterUrl = "/api/v1/oppgaver" +
                 "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR&oppgavetype=FREM&statuskategori=AAPEN" +
-                "&behandlingstype=ae0106"
+                "&behandlingstype=ae0106&limit=200&offset=10"
 
         val finnOppgaverRespons = restTemplate
             .postForEntity<FinnOppgaverResponsOpenApiType>(
