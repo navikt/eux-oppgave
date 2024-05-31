@@ -164,6 +164,10 @@ FinnOppgaverOpenApiType:
       $ref: '../properties/oppgave.yaml#/behandlingstema'
     behandlingstype:
       $ref: '../properties/oppgave.yaml#/behandlingstype'
+    limit:
+      $ref: '../properties/paginering.yaml#/limit'
+    offset:
+      $ref: '../properties/paginering.yaml#/offset'
 
 FinnOppgaverResponsOpenApiType:
   type: object

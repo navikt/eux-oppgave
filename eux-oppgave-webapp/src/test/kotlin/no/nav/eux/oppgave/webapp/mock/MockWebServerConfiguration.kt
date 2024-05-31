@@ -55,7 +55,7 @@ class MockWebServerConfiguration(
             getOppgaverUri(1234, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AVSLUTTET") -> getOppgaverResponse()
-            finnOppgaverUriBehandlingstema(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ab0058") -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstema(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ab0058", 200, 10) -> getOppgaverResponse()
             finnOppgaverUriBehandlingstype(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ae0106") -> getOppgaverResponse()
             else -> defaultResponse()
         }
@@ -124,10 +124,12 @@ class MockWebServerConfiguration(
         tema: String,
         oppgavetype: String,
         statuskategori: String,
-        behandlingstema: String
+        behandlingstema: String,
+        limit: Int,
+        offset: Int
     ) = "/api/v1/oppgaver" +
             "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=$oppgavetype&statuskategori=$statuskategori" +
-            "&behandlingstema=$behandlingstema"
+            "&behandlingstema=$behandlingstema&limit=$limit&offset=$offset"
 
     fun finnOppgaverUriBehandlingstype(
         fristFom: LocalDate,

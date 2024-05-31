@@ -1,0 +1,9 @@
+limit:
+  type: integer
+  description: >-
+    Begrensning i antall returnerte oppgaver. Default verdi: 10
+
+offset:
+  type: integer
+  description: >-
+    Offset for paginering i søk.

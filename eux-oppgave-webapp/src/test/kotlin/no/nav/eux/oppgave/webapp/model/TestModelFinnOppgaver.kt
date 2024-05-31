@@ -8,5 +8,7 @@ data class TestModelFinnOppgaver(
     val tema: String,
     val oppgavetype: String,
     val behandlingstema: String?,
-    val behandlingstype: String?
+    val behandlingstype: String?,
+    val limit: Int?,
+    val offset: Int?
 )

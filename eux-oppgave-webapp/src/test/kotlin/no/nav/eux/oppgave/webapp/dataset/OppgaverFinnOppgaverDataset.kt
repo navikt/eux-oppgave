@@ -13,7 +13,9 @@ val finnOppgaverDatasetBehandlingstema = TestModelFinnOppgaver(
     tema = "BAR",
     oppgavetype = "FREM",
     behandlingstema = "ab0058",
-    null
+    null,
+    limit = 200,
+    offset = 10
 )
 val finnOppgaverDatasetBehandlingstype = TestModelFinnOppgaver(
     fristFom = LocalDate.now(),
@@ -21,6 +23,7 @@ val finnOppgaverDatasetBehandlingstype = TestModelFinnOppgaver(
     tema = "BAR",
     oppgavetype = "FREM",
     null,
-    behandlingstype = "ae0106"
-
+    behandlingstype = "ae0106",
+    null,
+    null
 )
