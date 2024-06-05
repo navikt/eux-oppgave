@@ -78,6 +78,9 @@ spec:
         - application: {{ application.eux-barnetrygd.name }}
           namespace: {{ application.eux-barnetrygd.namespace }}
           cluster: {{ cluster.fss }}
+        - application: {{ application.eux-barnetrygd.name }}
+          namespace: {{ application.eux-barnetrygd.namespace }}
+          cluster: {{ cluster.gcp }}
     outbound:
       external:
         - host: oppgave.prod-fss-pub.nais.io
