@@ -1,6 +1,7 @@
 package no.nav.eux.oppgave.webapp
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.kotest.assertions.json.shouldMatchJsonResource
 import no.nav.eux.oppgave.openapi.model.FinnOppgaverResponsOpenApiType
 import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
 import no.nav.eux.oppgave.webapp.common.*
@@ -25,14 +26,8 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 oppgaverUrl,
                 oppgaverOpprettelse.httpEntity
             )
-        assertThat(
-            requestBodies["/api/v1/oppgaver"]!!.jsonNode
-        )
-            .isEqualTo(
-                ObjectMapper().readTree(
-                    javaClass.getResource("/dataset/oppgave-opprett.json")!!.readText()
-                )
-            )
+        val request = requestBodies["/api/v1/oppgaver"]!!
+        request shouldMatchJsonResource "/dataset/oppgave-opprett.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(201)
     }
 
@@ -43,16 +38,8 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 behandleSedFraJournalpostIdUrl,
                 TestModelBehandleSedFraJournalpostId("453857122").httpEntity
             )
-        assertThat(
-            requestBodies["/api/v1/oppgaver"]!!.jsonNode
-        )
-            .isEqualTo(
-                ObjectMapper().readTree(
-                    javaClass
-                        .getResource("/dataset/oppgave-opprett-behandleSedFraJournalpostId.json")!!
-                        .readText()
-                )
-            )
+        val request = requestBodies["/api/v1/oppgaver"]!!
+        request shouldMatchJsonResource "/dataset/oppgave-opprett-behandleSedFraJournalpostId.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(201)
     }
 
@@ -63,14 +50,8 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 oppgaverFerdigstillUrl,
                 oppgaverFerdigstillDataset.httpEntity
             )
-        assertThat(
-            requestBodies["/api/v1/oppgaver/190402"]!!.jsonNode
-        )
-            .isEqualTo(
-                ObjectMapper().readTree(
-                    javaClass.getResource("/dataset/oppgaver-ferdigstill.json")!!.readText()
-                )
-            )
+        val request = requestBodies["/api/v1/oppgaver/190402"]!!
+        request shouldMatchJsonResource "/dataset/oppgaver-ferdigstill.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(200)
         assertThat(createResponse.body!!.oppgaver[0].status)
             .isEqualTo(OPPGAVE_FERDIGSTILT)
@@ -121,56 +102,44 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
     @Test
     fun `POST finn oppgaver med behandlingstema - forespørsel, valid - 200`() {
         val oppgaverFinnParameterUrl = "/api/v1/oppgaver" +
-                "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR&oppgavetype=FREM&statuskategori=AAPEN" +
+                "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR" +
+                "&oppgavetype=FREM&statuskategori=AAPEN" +
                 "&behandlingstema=ab0058"
-
-
         val finnOppgaverRespons = restTemplate
             .postForEntity<FinnOppgaverResponsOpenApiType>(
                 oppgaverFinnUrl,
                 finnOppgaverDatasetBehandlingstema.httpEntity
             )
-        assertThat(
-            requestBodies.containsKey(oppgaverFinnParameterUrl)
-        )
+        assertThat(requestBodies.containsKey(oppgaverFinnParameterUrl))
         assertThat(finnOppgaverRespons.statusCode.value()).isEqualTo(200)
-
         assertThat(finnOppgaverRespons.body!!.oppgaver!!.get(0).id).isEqualTo(190402)
-
     }
 
     @Test
     fun `POST finn oppgaver med behandlingstype - forespørsel, valid - 200`() {
         val oppgaverFinnParameterUrl = "/api/v1/oppgaver" +
-                "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR&oppgavetype=FREM&statuskategori=AAPEN" +
+                "?fristFom=${LocalDate.now()}fristFom&fristTom=${LocalDate.now()}fristTom&tema=BAR" +
+                "&oppgavetype=FREM&statuskategori=AAPEN" +
                 "&behandlingstype=ae0106&limit=200&offset=10"
-
         val finnOppgaverRespons = restTemplate
             .postForEntity<FinnOppgaverResponsOpenApiType>(
                 oppgaverFinnUrl,
                 finnOppgaverDatasetBehandlingstema.httpEntity
             )
-        assertThat(
-            requestBodies.containsKey(oppgaverFinnParameterUrl)
-        )
+        assertThat(requestBodies.containsKey(oppgaverFinnParameterUrl))
         assertThat(finnOppgaverRespons.statusCode.value()).isEqualTo(200)
-
         assertThat(finnOppgaverRespons.body!!.oppgaver!!.get(0).id).isEqualTo(190402)
     }
 
     @Test
     fun `PATCH oppdater oppgave - forespørsel, valid - 200`() {
-
         val oppdaterOppgaveRespons = restTemplate
-            .patchForObject<OppgaveOpenApiType>(
+            .patchForObject(
                 oppgaverUrl,
                 oppdaterOppgaveDataset.httpEntity,
                 OppgaveOpenApiType::class.java
             )
-        assertThat(
-            requestBodies[oppgaverUrl + "/190402"]!!.jsonNode
-        ).isNotEmpty
-
+        assertThat(requestBodies["$oppgaverUrl/190402"]!!.jsonNode).isNotEmpty
         assertThat(oppdaterOppgaveRespons.versjon).isEqualTo(4)
     }
 }
