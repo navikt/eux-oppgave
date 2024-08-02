@@ -1,16 +1,15 @@
 package no.nav.eux.oppgave.integration.client
 
-import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.config.DualOppgaveRestTemplate
 import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
 import no.nav.eux.oppgave.integration.model.Oppgaver
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.toEntity
-import org.springframework.web.util.UriComponents
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 import java.time.LocalDate
@@ -21,64 +20,42 @@ class OppgaveClient(
     val oppgaveUrl: String,
     val dualOppgaveRestTemplate: DualOppgaveRestTemplate
 ) {
-    val log = logger {}
 
-    fun opprettOppgave(oppgaveOpprettelse: OppgaveOpprettelse): Oppgave {
-        val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
+    fun opprettOppgave(oppgaveOpprettelse: OppgaveOpprettelse): Oppgave = tryWithOppgaveErrorHandling {
+        dualOppgaveRestTemplate
             .post()
             .uri("${oppgaveUrl}/api/v1/oppgaver")
             .contentType(APPLICATION_JSON)
             .body(oppgaveOpprettelse)
             .retrieve()
-            .toEntity()
-        when {
-            entity.statusCode.is2xxSuccessful -> return entity.body!!
-            else -> throw opprettelseException(oppgaveOpprettelse, entity)
-        }
+            .toEntity<Oppgave>()
+            .body!!
     }
 
-    fun patch(id: Int, patch: Any): Oppgave {
-        val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
+    fun patch(id: Int, patch: Any): Oppgave = tryWithOppgaveErrorHandling {
+        dualOppgaveRestTemplate
             .patch()
             .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
             .contentType(APPLICATION_JSON)
             .body(patch)
             .retrieve()
-            .toEntity()
-        when {
-            entity.statusCode.is2xxSuccessful -> return entity.body!!
-            else -> throw patchException(id, entity)
-        }
-    }
-
-    fun hentOppgave(id: String): Oppgave {
-        val entity: ResponseEntity<Oppgave> = dualOppgaveRestTemplate
-            .get()
-            .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
-            .accept(APPLICATION_JSON)
-            .retrieve()
-            .toEntity()
-        when {
-            entity.statusCode.is2xxSuccessful -> return entity.body!!
-            else -> throw hentOppgaveException(id, entity)
-        }
+            .toEntity<Oppgave>()
+            .body!!
     }
 
     fun hentOppgaver(
         journalpostId: String,
         oppgavetype: List<String> = listOf("JFR", "FDR"),
         statuskategori: String? = "AAPEN"
-    ): List<Oppgave> {
-        val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
+    ): List<Oppgave> = tryWithOppgaveErrorHandling {
+        dualOppgaveRestTemplate
             .get()
             .uri(hentOppgaverUriOptionalStatuskategori(journalpostId, oppgavetype, statuskategori))
             .accept(APPLICATION_JSON)
             .retrieve()
-            .toEntity()
-        when {
-            entity.statusCode.is2xxSuccessful -> return entity.body!!.oppgaver
-            else -> throw hentException(journalpostId, entity)
-        }
+            .toEntity<Oppgaver>()
+            .body!!
+            .oppgaver
     }
 
     fun finnOppgaver(
@@ -91,29 +68,27 @@ class OppgaveClient(
         behandlingstype: String?,
         limit: Int?,
         offset: Int?
-    ): List<Oppgave> {
-        val entity: ResponseEntity<Oppgaver> = dualOppgaveRestTemplate
+    ): List<Oppgave> = tryWithOppgaveErrorHandling {
+        dualOppgaveRestTemplate
             .get()
             .uri(
                 finnOppgaverUriOptionalBehandlingstemaBehandlingstype(
-                    fristFom,
-                    fristTom,
-                    tema,
-                    oppgavetype,
-                    statuskategori,
-                    behandlingstema,
-                    behandlingstype,
-                    limit,
-                    offset
+                    fristFom = fristFom,
+                    fristTom = fristTom,
+                    tema = tema,
+                    oppgavetype = oppgavetype,
+                    statuskategori = statuskategori,
+                    behandlingstema = behandlingstema,
+                    behandlingstype = behandlingstype,
+                    limit = limit,
+                    offset = offset
                 )
             )
             .accept(APPLICATION_JSON)
             .retrieve()
-            .toEntity()
-        when {
-            entity.statusCode.is2xxSuccessful -> return entity.body!!.oppgaver
-            else -> throw finnOppgaverException(entity)
-        }
+            .toEntity<Oppgaver>()
+            .body!!
+            .oppgaver
     }
 
     fun hentOppgaverUriOptionalStatuskategori(
@@ -187,38 +162,15 @@ class OppgaveClient(
         return uriComponentsBuilder.build().toUri()
     }
 
-
-    fun opprettelseException(
-        oppgaveOpprettelse: OppgaveOpprettelse,
-        entity: ResponseEntity<Oppgave>
-    ) = oppgaveException(
-        "Feil under opprettelse av oppgave. journalpostId=${oppgaveOpprettelse.journalpostId}", entity.body
-    )
-
-    fun patchException(
-        id: Int,
-        entity: ResponseEntity<Oppgave>
-    ) = oppgaveException("Feil under patching av oppgaven. id=$id", entity.body)
-
-    fun hentException(
-        journalpostId: String,
-        entity: ResponseEntity<Oppgaver>
-    ) = oppgaveException("Feil under henting av oppgaver. journalpostId=$journalpostId", entity.body)
-
-    fun hentOppgaveException(
-        journalpostId: String,
-        entity: ResponseEntity<Oppgave>
-    ) = oppgaveException("Feil under henting av oppgave. id=$journalpostId", entity.body)
-
-    fun finnOppgaverException(
-        entity: ResponseEntity<Oppgaver>
-    ) = oppgaveException("Feil under søk på oppgaver.", entity.body)
-
-    fun oppgaveException(
-        msg: String,
-        body: Any?
-    ): RuntimeException {
-        log.error { "$msg, body=$body" }
-        return RuntimeException(msg)
-    }
+    private inline fun <T> tryWithOppgaveErrorHandling(kall: () -> T): T =
+        try {
+            kall()
+        } catch (e: HttpClientErrorException) {
+            if (e.statusCode == BAD_REQUEST) {
+                val oppgaveUgyldigRequest = e.getResponseBodyAs(OppgaveUgyldigRequest::class.java)!!
+                throw OppgaveUgyldigRequestException(oppgaveUgyldigRequest)
+            } else {
+                throw e
+            }
+        }
 }
