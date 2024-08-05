@@ -14,6 +14,7 @@ import java.net.URLDecoder.decode
 import java.nio.charset.StandardCharsets.UTF_8
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDate.now
 
 @Configuration
 class MockWebServerConfiguration(
@@ -29,24 +30,24 @@ class MockWebServerConfiguration(
         server.dispatcher = dispatcher()
     }
 
-    fun mockResponse(request: RecordedRequest) =
+    fun mockResponse(request: RecordedRequest, body: String) =
         when (request.method) {
-            POST.name() -> mockResponsePost(request)
+            POST.name() -> mockResponsePost(request, body)
             GET.name() -> mockResponseGet(request)
-            PATCH.name() -> mockResponsePatch(request)
+            PATCH.name() -> mockResponsePatch(request, body)
             else -> defaultResponse()
         }
 
-    fun mockResponsePost(request: RecordedRequest) =
+    fun mockResponsePost(request: RecordedRequest, body: String) =
         when (request.uriEndsWith) {
             "/oauth2/v2.0/token" -> tokenResponse(formParameters(request.body.readUtf8()))
-            "/api/v1/oppgaver" -> oppgaverResponse()
+            "/api/v1/oppgaver" -> oppgaverResponse(body)
             else -> defaultResponse()
         }
 
-    fun mockResponsePatch(request: RecordedRequest) =
+    fun mockResponsePatch(request: RecordedRequest, body: String) =
         when (request.uriEndsWith) {
-            "/api/v1/oppgaver/190402" -> oppgaverResponse()
+            "/api/v1/oppgaver/190402" -> oppgaverResponse(body)
             else -> defaultResponse()
         }
 
@@ -55,8 +56,8 @@ class MockWebServerConfiguration(
             getOppgaverUri(1234, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AVSLUTTET") -> getOppgaverResponse()
-            finnOppgaverUriBehandlingstema(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ab0058", 200, 10) -> getOppgaverResponse()
-            finnOppgaverUriBehandlingstype(LocalDate.now(), LocalDate.now(), "BAR", "FREM", "AAPEN", "ae0106") -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstema("BAR", "FREM", "AAPEN", "ab0058", 200, 10) -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstype("BAR", "FREM", "AAPEN", "ae0106") -> getOppgaverResponse()
             else -> defaultResponse()
         }
 
@@ -68,12 +69,19 @@ class MockWebServerConfiguration(
 
     val RecordedRequest.uriEndsWith get() = requestUrl.toString().split("/mock")[1]
 
-    fun oppgaverResponse() =
-        MockResponse().apply {
-            setResponseCode(200)
-            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            setBody(oppgaverResponse)
-        }
+    fun oppgaverResponse(body: String) =
+        if (body.contains("feilmelding"))
+            MockResponse().apply {
+                setResponseCode(400)
+                setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                setBody(oppgaverResponseFeilmelding)
+            }
+        else
+            MockResponse().apply {
+                setResponseCode(200)
+                setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                setBody(oppgaverResponse)
+            }
 
     fun getOppgaverResponse() =
         MockResponse().apply {
@@ -82,9 +90,6 @@ class MockWebServerConfiguration(
             setBody(getOppgaverResponse)
         }
 
-    val oppgaverResponse = javaClass.getResource("/dataset/oppgave.json")!!.readText()
-
-    val getOppgaverResponse = javaClass.getResource("/dataset/oppgaver.json")!!.readText()
 
     fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {
@@ -119,34 +124,37 @@ class MockWebServerConfiguration(
             "?journalpostId=$journalpostId&statuskategori=$statuskategori&oppgavetype=JFR&oppgavetype=FDR"
 
     fun finnOppgaverUriBehandlingstema(
-        fristFom: LocalDate,
-        fristTom: LocalDate,
         tema: String,
         oppgavetype: String,
         statuskategori: String,
         behandlingstema: String,
         limit: Int,
-        offset: Int
+        offset: Int,
+        fristFom: LocalDate = now(),
+        fristTom: LocalDate = now(),
     ) = "/api/v1/oppgaver" +
-            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=$oppgavetype&statuskategori=$statuskategori" +
+            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=" +
+            "$oppgavetype&statuskategori=$statuskategori" +
             "&behandlingstema=$behandlingstema&limit=$limit&offset=$offset"
 
     fun finnOppgaverUriBehandlingstype(
-        fristFom: LocalDate,
-        fristTom: LocalDate,
         tema: String,
         oppgavetype: String,
         statuskategori: String,
-        behandlingstype: String
+        behandlingstype: String,
+        fristFom: LocalDate = now(),
+        fristTom: LocalDate = now(),
     ) = "/api/v1/oppgaver" +
-            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=$oppgavetype&statuskategori=$statuskategori" +
+            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=" +
+            "$oppgavetype&statuskategori=$statuskategori" +
             "&behandlingstype=$behandlingstype"
 
     private final fun dispatcher() = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             log.info { "received ${request.method} ${request.requestUrl} with headers=${request.headers}" }
-            requestBodies[request.uriEndsWith] = request.body.readUtf8()
-            return mockResponse(request)
+            val body = request.body.readUtf8()
+            requestBodies[request.uriEndsWith] = body
+            return mockResponse(request, body)
         }
     }
 }

@@ -27,7 +27,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 oppgaverOpprettelse.httpEntity
             )
         val request = requestBodies["/api/v1/oppgaver"]!!
-        request shouldMatchJsonResource "/dataset/oppgave-opprett.json"
+        request shouldMatchJsonResource "/dataset/expected/oppgave-opprett.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(201)
     }
 
@@ -39,7 +39,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 TestModelBehandleSedFraJournalpostId("453857122").httpEntity
             )
         val request = requestBodies["/api/v1/oppgaver"]!!
-        request shouldMatchJsonResource "/dataset/oppgave-opprett-behandleSedFraJournalpostId.json"
+        request shouldMatchJsonResource "/dataset/expected/oppgave-opprett-behandleSedFraJournalpostId.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(201)
     }
 
@@ -51,7 +51,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 oppgaverFerdigstillDataset.httpEntity
             )
         val request = requestBodies["/api/v1/oppgaver/190402"]!!
-        request shouldMatchJsonResource "/dataset/oppgaver-ferdigstill.json"
+        request shouldMatchJsonResource "/dataset/expected/oppgaver-ferdigstill.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(200)
         assertThat(createResponse.body!!.oppgaver[0].status)
             .isEqualTo(OPPGAVE_FERDIGSTILT)
@@ -112,7 +112,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             )
         assertThat(requestBodies.containsKey(oppgaverFinnParameterUrl))
         assertThat(finnOppgaverRespons.statusCode.value()).isEqualTo(200)
-        assertThat(finnOppgaverRespons.body!!.oppgaver!!.get(0).id).isEqualTo(190402)
+        assertThat(finnOppgaverRespons.body!!.oppgaver!![0].id).isEqualTo(190402)
     }
 
     @Test

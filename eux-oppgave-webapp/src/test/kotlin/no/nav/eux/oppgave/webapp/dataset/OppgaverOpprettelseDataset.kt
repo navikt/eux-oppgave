@@ -22,3 +22,22 @@ val oppgaverOpprettelse = TestModelOppgaverOpprettelse(
     opprettetBruker = "test",
     metadata = mapOf(Pair("RINA_SAKID", "123"))
 )
+
+val oppgaverOpprettelseFeilmelding = TestModelOppgaverOpprettelse(
+    aktoerId = "2850955164683",
+    aktivDato = LocalDate.parse("2024-12-01"),
+    prioritet = LAV,
+    tema = "GEN",
+    oppgavetype = "JFR",
+    behandlingstema = "test",
+    behandlingstype = "test",
+    journalpostId = "453857122",
+    saksreferanse = "test",
+    tildeltEnhetsnr = "test",
+    beskrivelse = "feilmelding",
+    fristFerdigstillelse = LocalDate.parse("2024-12-01"),
+    opprettetAvEnhetsnr = "test",
+    behandlesAvApplikasjon = "test",
+    opprettetBruker = "test",
+    metadata = mapOf(Pair("RINA_SAKID", "123"))
+)

@@ -2,11 +2,6 @@ package no.nav.eux.oppgave.webapp.dataset
 
 import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
 import no.nav.eux.oppgave.openapi.model.Prioritet
-import no.nav.eux.oppgave.webapp.model.EuxOppgavePrioritetEnum.LAV
-import no.nav.eux.oppgave.webapp.model.TestModelFinnOppgaver
-import no.nav.eux.oppgave.webapp.model.TestModelFinnOppgaverRespons
-import no.nav.eux.oppgave.webapp.model.TestModelOppgaverOpprettelse
-import no.nav.eux.oppgave.webapp.model.TestModelTildelEnhetsnr
 import java.time.LocalDate
 
 val oppdaterOppgaveDataset = OppgaveOpenApiType(
@@ -27,4 +22,3 @@ val oppdaterOppgaveDataset = OppgaveOpenApiType(
     id = 190402,
     versjon = 1
 )
-
