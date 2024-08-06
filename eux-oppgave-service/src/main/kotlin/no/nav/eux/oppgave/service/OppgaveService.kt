@@ -88,13 +88,13 @@ class OppgaveService(
         return oppgaver.map { it.euxOppgave }
     }
 
-    fun oppdaterOppgave(euxOppgaveOppdatering: EuxOppgave) =
+    fun oppdaterOppgave(euxOppgaveOppdatering: EuxOppgave): EuxOppgave =
         try {
-            val oppgave = client.patch(euxOppgaveOppdatering.id, euxOppgaveOppdatering.oppgave)
-            oppgave.euxOppgave
-
+            client
+                .patch(euxOppgaveOppdatering.id, euxOppgaveOppdatering.oppgave)
+                .euxOppgave
         } catch (e: Exception) {
-            log.error(e) { "Oppdatering av oppgave $euxOppgaveOppdatering.id feilet" }
+            log.error(e) { "Oppdatering av oppgave ${euxOppgaveOppdatering.id} feilet" }
             euxOppgaveOppdatering
         }
 }
