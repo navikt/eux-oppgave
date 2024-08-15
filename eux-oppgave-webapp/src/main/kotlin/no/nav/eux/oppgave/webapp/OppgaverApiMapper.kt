@@ -34,6 +34,7 @@ val EuxOppgave.oppgaveOpenApiType
 
 fun OppgaveCreateOpenApiType.euxOppgaveOpprettelse(navIdent: String) =
     EuxOppgaveOpprettelse(
+        oppgaveUuid = oppgaveUuid,
         aktoerId = aktoerId,
         aktivDato = aktivDato,
         prioritet = prioritet.name.toEnum(),

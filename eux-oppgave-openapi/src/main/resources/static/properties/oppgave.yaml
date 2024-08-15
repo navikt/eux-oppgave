@@ -1,3 +1,9 @@
+oppgaveUuid:
+  type: string
+  format: uuid
+  description: >
+    Unik id for oppgaven i EUX domenet. Ved å sende inn i opprettelse blir kallet idempotent.
+
 id:
   type: integer
   description: >
