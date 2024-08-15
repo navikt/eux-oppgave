@@ -1,8 +1,10 @@
 package no.nav.eux.oppgave.model.dto
 
 import java.time.LocalDate
+import java.util.*
 
 data class EuxOppgaveOpprettelse(
+    val oppgaveUuid: UUID?,
     val aktoerId: String?,
     val aktivDato: LocalDate,
     val prioritet: EuxOppgavePrioritetEnum,

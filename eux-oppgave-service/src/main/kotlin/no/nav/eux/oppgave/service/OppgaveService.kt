@@ -6,28 +6,31 @@ import no.nav.eux.oppgave.model.dto.EuxOppgave
 import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTELSE_FEILET
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTET
+import no.nav.eux.oppgave.model.exception.OppgaveStatusEksistererException
 import no.nav.eux.oppgave.persistence.EuxOppgaveStatusRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
 class OppgaveService(
     val client: OppgaveClient,
-    val exuOppgaveStatusRepository: EuxOppgaveStatusRepository,
+    val oppgaveStatusRepository: EuxOppgaveStatusRepository,
 ) {
     val log = logger {}
 
     fun opprettOppgave(euxOppgaveOpprettelse: EuxOppgaveOpprettelse): EuxOppgave {
         log.info { "Oppretter oppgave..." }
-        val euxOppgaveStatus = exuOppgaveStatusRepository.save(euxOppgaveOpprettelse.euxOppgaveStatus)
+        euxOppgaveOpprettelse.sjekkStatus()
+        val euxOppgaveStatus = oppgaveStatusRepository.save(euxOppgaveOpprettelse.euxOppgaveStatus)
         try {
             val oppgave = client.opprettOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
-            exuOppgaveStatusRepository.save(euxOppgaveStatus.copy(oppgaveId = oppgave.id, status = OPPRETTET))
+            oppgaveStatusRepository.save(euxOppgaveStatus.copy(oppgaveId = oppgave.id, status = OPPRETTET))
             log.info { "Oppgave opprettet. id=${oppgave.id}, journalpostId=${oppgave.journalpostId}" }
             return oppgave.euxOppgave
         } catch (e: Exception) {
             log.error(e) { "Oppgaveopprettelse feilet" }
-            exuOppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTELSE_FEILET))
+            oppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTELSE_FEILET))
             throw e
         }
     }
@@ -50,15 +53,15 @@ class OppgaveService(
         val behandleSedOppgave = eksisterendeOppgave.copy(oppgavetype = "BEH_SED")
         log.info { "Eksisterende oppgave: $eksisterendeOppgave" }
         log.info { "Behandle SED oppgave: $behandleSedOppgave" }
-        val euxOppgaveStatus = exuOppgaveStatusRepository.save(behandleSedOppgave.euxOppgaveStatus)
+        val euxOppgaveStatus = oppgaveStatusRepository.save(behandleSedOppgave.euxOppgaveStatus)
         try {
             val oppgave = client.opprettOppgave(behandleSedOppgave.oppgaveOpprettelse)
-            exuOppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTET))
+            oppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTET))
             log.info { "Oppgave opprettet. id=${oppgave.id}, journalpostId=${oppgave.journalpostId}" }
             return oppgave.euxOppgave
         } catch (e: Exception) {
             log.error(e) { "Oppgaveopprettelse feilet. journalpostId=${behandleSedOppgave.journalpostId}" }
-            exuOppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTELSE_FEILET))
+            oppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTELSE_FEILET))
             throw e
         }
     }
@@ -97,4 +100,14 @@ class OppgaveService(
             log.error(e) { "Oppdatering av oppgave ${euxOppgaveOppdatering.id} feilet" }
             euxOppgaveOppdatering
         }
+
+    fun EuxOppgaveOpprettelse.sjekkStatus() {
+        if (oppgaveUuid != null) {
+            val eksisterendeStatus = oppgaveStatusRepository.findByIdOrNull(oppgaveUuid!!)
+            if (eksisterendeStatus != null) {
+                log.warn { "Oppgavestatus med id $oppgaveUuid finnes allerede" }
+                throw OppgaveStatusEksistererException.oppgaveEksisterer
+            }
+        }
+    }
 }

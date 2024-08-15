@@ -58,6 +58,8 @@ OppgaveCreateOpenApiType:
     - prioritet
     - tema
   properties:
+    oppgaveUuid:
+      $ref: '../properties/oppgave.yaml#/oppgaveUuid'
     aktoerId:
       $ref: '../properties/person.yaml#/aktoerId'
     oppgavetype:

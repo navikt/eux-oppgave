@@ -9,6 +9,7 @@ import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
 import no.nav.eux.oppgave.model.dto.EuxOppgaveStatusEnum
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.TILDELER_ENHETSNR
+import java.util.UUID.randomUUID
 
 val EuxOppgaveOpprettelse.oppgaveOpprettelse
     get() =
@@ -75,6 +76,7 @@ val Oppgave.euxOppgave
 
 val EuxOppgaveOpprettelse.euxOppgaveStatus
     get() = EuxOppgaveStatus(
+        oppgaveUuid = oppgaveUuid ?: randomUUID(),
         tema = tema,
         status = EuxOppgaveStatus.Status.UNDER_OPPRETTELSE,
         beskrivelse = beskrivelse,
