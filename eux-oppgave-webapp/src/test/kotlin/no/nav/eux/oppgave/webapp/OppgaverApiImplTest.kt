@@ -32,6 +32,34 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
     }
 
     @Test
+    fun `POST oppgaver - forespørsel, valid, med uuid - 201`() {
+        val createResponse = restTemplate
+            .postForEntity<String>(
+                oppgaverUrl,
+                oppgaverOpprettelseMedUuid.httpEntity
+            )
+        val request = requestBodies["/api/v1/oppgaver"]!!
+        request shouldMatchJsonResource "/dataset/expected/oppgave-opprett.json"
+        assertThat(createResponse.statusCode.value()).isEqualTo(201)
+    }
+
+    @Test
+    fun `POST oppgaver - med uuid, conflict - 409`() {
+        restTemplate
+            .postForEntity<String>(
+                oppgaverUrl,
+                oppgaverOpprettelseMedUuid.httpEntity
+            )
+        val createResponse2 = restTemplate
+            .postForEntity<String>(
+                oppgaverUrl,
+                oppgaverOpprettelseMedUuid.httpEntity
+            )
+        assertThat(createResponse2.statusCode.value()).isEqualTo(409)
+        createResponse2.body shouldMatchJsonResource "/dataset/expected/oppgave-opprett-conflict.json"
+    }
+
+    @Test
     fun `POST oppgaver behandleSedFraJournalpostId - forespørsel, valid - 201`() {
         val createResponse = restTemplate
             .postForEntity<String>(

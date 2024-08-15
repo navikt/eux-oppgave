@@ -1,8 +1,10 @@
 package no.nav.eux.oppgave.webapp.model
 
 import java.time.LocalDate
+import java.util.*
 
 data class TestModelOppgaverOpprettelse(
+    val oppgaveUuid: UUID?,
     val aktoerId: String,
     val aktivDato: LocalDate,
     val prioritet: EuxOppgavePrioritetEnum,
