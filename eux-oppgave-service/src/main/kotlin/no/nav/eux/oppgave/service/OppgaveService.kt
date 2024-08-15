@@ -2,6 +2,7 @@ package no.nav.eux.oppgave.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.client.OppgaveClient
+import no.nav.eux.oppgave.integration.client.OpprettOppgaveRetryableClient
 import no.nav.eux.oppgave.model.dto.EuxOppgave
 import no.nav.eux.oppgave.model.dto.EuxOppgaveOpprettelse
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTELSE_FEILET
@@ -15,6 +16,7 @@ import java.time.LocalDate
 @Service
 class OppgaveService(
     val client: OppgaveClient,
+    val opprettOppgaveRetryableClient: OpprettOppgaveRetryableClient,
     val oppgaveStatusRepository: EuxOppgaveStatusRepository,
 ) {
     val log = logger {}
@@ -24,7 +26,8 @@ class OppgaveService(
         euxOppgaveOpprettelse.sjekkStatus()
         val euxOppgaveStatus = oppgaveStatusRepository.save(euxOppgaveOpprettelse.euxOppgaveStatus)
         try {
-            val oppgave = client.opprettOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
+            val oppgave = opprettOppgaveRetryableClient
+                .opprettUnikOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
             oppgaveStatusRepository.save(euxOppgaveStatus.copy(oppgaveId = oppgave.id, status = OPPRETTET))
             log.info { "Oppgave opprettet. id=${oppgave.id}, journalpostId=${oppgave.journalpostId}" }
             return oppgave.euxOppgave

@@ -72,7 +72,3 @@ class OpprettOppgaveRetryableClient(
         throw e
     }
 }
-
-class NestenLikOppgaveEksistererException(
-    override val message: String = "Det eksisterer allerede en oppgave med gitt journalpostId og oppgavetype",
-) : RuntimeException(message)
