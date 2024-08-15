@@ -7,6 +7,7 @@ import no.nav.eux.oppgave.integration.model.Oppgaver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.toEntity
@@ -32,6 +33,7 @@ class OppgaveClient(
             .body!!
     }
 
+    @Retryable
     fun patch(id: Int, patch: Any): Oppgave = tryWithOppgaveErrorHandling {
         dualOppgaveRestTemplate
             .patch()
@@ -43,6 +45,7 @@ class OppgaveClient(
             .body!!
     }
 
+    @Retryable
     fun hentOppgaver(
         journalpostId: String,
         oppgavetype: List<String> = listOf("JFR", "FDR"),
@@ -58,6 +61,7 @@ class OppgaveClient(
             .oppgaver
     }
 
+    @Retryable
     fun finnOppgaver(
         fristFom: LocalDate,
         fristTom: LocalDate,
