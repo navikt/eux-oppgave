@@ -65,8 +65,7 @@ class IntegrationConfig {
             }
         }
     }
-
-
+    
     private fun bearerTokenInterceptor(
         clientProperties: ClientProperties,
         oAuth2AccessTokenService: OAuth2AccessTokenService
