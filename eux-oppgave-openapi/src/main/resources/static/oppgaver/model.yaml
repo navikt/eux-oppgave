@@ -92,6 +92,8 @@ OppgaveCreateOpenApiType:
       $ref: '../properties/oppgave.yaml#/tema'
     metadata:
       $ref: '../properties/oppgave.yaml#/metadata'
+    lagNestenLikOppgave:
+      $ref: '../properties/oppgave.yaml#/lagNestenLikOppgave'
 
 FerdigstillOpenApiType:
   type: object

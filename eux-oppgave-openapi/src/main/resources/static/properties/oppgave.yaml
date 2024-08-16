@@ -167,3 +167,11 @@ metadata:
     type: object
     properties:
       type: string
+
+lagNestenLikOppgave:
+  type: boolean
+  default: true
+  description: >-
+    Angir om det skal lages en nesten lik oppgave. Dette betyr at en ny oppgave
+    opprettes selv om det finnes en tilsvarende åpen med samme journalpostId og 
+    oppgavetype. Default er true.

@@ -32,6 +32,18 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
     }
 
     @Test
+    fun `POST oppgaver - forespørsel, valid, ikke lag nesten lik oppgave - 201`() {
+        val createResponse = restTemplate
+            .postForEntity<String>(
+                oppgaverUrl,
+                oppgaverOpprettelseIkkeLagNestenLik.httpEntity
+            )
+        val request = requestBodies["/api/v1/oppgaver"]!!
+        request shouldMatchJsonResource "/dataset/expected/oppgave-opprett-nesten-lik.json"
+        assertThat(createResponse.statusCode.value()).isEqualTo(201)
+    }
+
+    @Test
     fun `POST oppgaver - forespørsel, valid, med uuid - 201`() {
         val createResponse = restTemplate
             .postForEntity<String>(

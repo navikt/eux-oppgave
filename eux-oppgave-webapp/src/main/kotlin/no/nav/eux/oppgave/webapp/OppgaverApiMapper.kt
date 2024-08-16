@@ -50,7 +50,8 @@ fun OppgaveCreateOpenApiType.euxOppgaveOpprettelse(navIdent: String) =
         behandlesAvApplikasjon = behandlesAvApplikasjon,
         tema = tema,
         opprettetBruker = navIdent,
-        metadata = metadata?.mapValues { it.value.toString() } ?: emptyMap()
+        metadata = metadata?.mapValues { it.value.toString() } ?: emptyMap(),
+        lagNestenLikOppgave = lagNestenLikOppgave ?: true,
     )
 
 val List<OppgaveFerdigstilling>.ferdigstillResponsOpenApiType
