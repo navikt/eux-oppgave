@@ -22,7 +22,29 @@ val oppgaverOpprettelse = TestModelOppgaverOpprettelse(
     opprettetAvEnhetsnr = "test",
     behandlesAvApplikasjon = "test",
     opprettetBruker = "test",
-    metadata = mapOf(Pair("RINA_SAKID", "123"))
+    metadata = mapOf(Pair("RINA_SAKID", "123")),
+    lagNestenLikOppgave = null,
+)
+
+val oppgaverOpprettelseIkkeLagNestenLik = TestModelOppgaverOpprettelse(
+    oppgaveUuid = null,
+    aktoerId = "2850955164683",
+    aktivDato = LocalDate.parse("2024-12-01"),
+    prioritet = LAV,
+    tema = "GEN",
+    oppgavetype = "JFR",
+    behandlingstema = "test",
+    behandlingstype = "test",
+    journalpostId = "453857123",
+    saksreferanse = "test",
+    tildeltEnhetsnr = "test",
+    beskrivelse = "desc",
+    fristFerdigstillelse = LocalDate.parse("2024-12-01"),
+    opprettetAvEnhetsnr = "test",
+    behandlesAvApplikasjon = "test",
+    opprettetBruker = "test",
+    metadata = mapOf(Pair("RINA_SAKID", "123")),
+    lagNestenLikOppgave = false,
 )
 
 val oppgaverOpprettelseFeilmelding = TestModelOppgaverOpprettelse(
@@ -42,7 +64,8 @@ val oppgaverOpprettelseFeilmelding = TestModelOppgaverOpprettelse(
     opprettetAvEnhetsnr = "test",
     behandlesAvApplikasjon = "test",
     opprettetBruker = "test",
-    metadata = mapOf(Pair("RINA_SAKID", "123"))
+    metadata = mapOf(Pair("RINA_SAKID", "123")),
+    lagNestenLikOppgave = true,
 )
 
 val oppgaverOpprettelseMedUuid = TestModelOppgaverOpprettelse(
@@ -62,5 +85,6 @@ val oppgaverOpprettelseMedUuid = TestModelOppgaverOpprettelse(
     opprettetAvEnhetsnr = "test",
     behandlesAvApplikasjon = "test",
     opprettetBruker = "test",
-    metadata = mapOf(Pair("RINA_SAKID", "123"))
+    metadata = mapOf(Pair("RINA_SAKID", "123")),
+    lagNestenLikOppgave = true,
 )

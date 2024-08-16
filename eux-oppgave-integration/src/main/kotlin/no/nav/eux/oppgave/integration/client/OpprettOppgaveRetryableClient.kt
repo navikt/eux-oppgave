@@ -42,8 +42,10 @@ class OpprettOppgaveRetryableClient(
                 journalpostId = journalpostId,
                 oppgavetype = oppgavetype
             )
-        else
+        else {
+            log.info { "Oppgave allerede opprettet for journalpostId=$journalpostId, oppgavetype=$oppgavetype" }
             eksisterendeOppgaver.first()
+        }
     }
 
     private fun tryOpprettOppgave(

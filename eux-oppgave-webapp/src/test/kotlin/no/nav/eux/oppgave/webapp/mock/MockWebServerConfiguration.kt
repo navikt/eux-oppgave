@@ -56,6 +56,7 @@ class MockWebServerConfiguration(
             getOppgaverUri(1234, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AVSLUTTET") -> getOppgaverResponse()
+            getOppgaverUri(453857123, "AAPEN", "JFR") -> getOppgaverResponseEmpty()
             finnOppgaverUriBehandlingstema("BAR", "FREM", "AAPEN", "ab0058", 200, 10) -> getOppgaverResponse()
             finnOppgaverUriBehandlingstype("BAR", "FREM", "AAPEN", "ae0106") -> getOppgaverResponse()
             else -> defaultResponse()
@@ -90,6 +91,13 @@ class MockWebServerConfiguration(
             setBody(getOppgaverResponse)
         }
 
+    fun getOppgaverResponseEmpty() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(getOppgaverResponseEmpty)
+        }
+            .also { log.info { "--------------------- why?" } }
 
     fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {
@@ -120,8 +128,18 @@ class MockWebServerConfiguration(
           "access_token": "token"
         }"""
 
-    fun getOppgaverUri(journalpostId: Int, statuskategori: String) = "/api/v1/oppgaver" +
+    fun getOppgaverUri(
+        journalpostId: Int,
+        statuskategori: String
+    ) = "/api/v1/oppgaver" +
             "?journalpostId=$journalpostId&statuskategori=$statuskategori&oppgavetype=JFR&oppgavetype=FDR"
+
+    fun getOppgaverUri(
+        journalpostId: Int,
+        statuskategori: String,
+        oppgavetype: String
+    ) = "/api/v1/oppgaver" +
+            "?journalpostId=$journalpostId&statuskategori=$statuskategori&oppgavetype=$oppgavetype"
 
     fun finnOppgaverUriBehandlingstema(
         tema: String,

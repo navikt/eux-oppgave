@@ -20,7 +20,8 @@ data class TestModelOppgaverOpprettelse(
     val opprettetAvEnhetsnr: String?,
     val behandlesAvApplikasjon: String?,
     val opprettetBruker: String,
-    val metadata: Map<String, String>
+    val metadata: Map<String, String>,
+    val lagNestenLikOppgave: Boolean?,
 )
 
 enum class EuxOppgavePrioritetEnum {

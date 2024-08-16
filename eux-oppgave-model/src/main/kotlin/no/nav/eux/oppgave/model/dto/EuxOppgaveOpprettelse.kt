@@ -20,5 +20,6 @@ data class EuxOppgaveOpprettelse(
     val opprettetAvEnhetsnr: String?,
     val behandlesAvApplikasjon: String?,
     val opprettetBruker: String,
-    val metadata: Map<String, String>
+    val metadata: Map<String, String>,
+    val lagNestenLikOppgave: Boolean
 )

@@ -16,7 +16,7 @@ import java.time.LocalDate
 @Service
 class OppgaveService(
     val client: OppgaveClient,
-    val opprettOppgaveRetryableClient: OpprettOppgaveRetryableClient,
+    val retryableClient: OpprettOppgaveRetryableClient,
     val oppgaveStatusRepository: EuxOppgaveStatusRepository,
 ) {
     val log = logger {}
@@ -26,8 +26,10 @@ class OppgaveService(
         euxOppgaveOpprettelse.sjekkStatus()
         val euxOppgaveStatus = oppgaveStatusRepository.save(euxOppgaveOpprettelse.euxOppgaveStatus)
         try {
-            val oppgave = opprettOppgaveRetryableClient
-                .opprettUnikOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
+            val oppgave = when (euxOppgaveOpprettelse.lagNestenLikOppgave) {
+                true -> client.opprettOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
+                false -> retryableClient.opprettUnikOppgave(euxOppgaveOpprettelse.oppgaveOpprettelse)
+            }
             oppgaveStatusRepository.save(euxOppgaveStatus.copy(oppgaveId = oppgave.id, status = OPPRETTET))
             log.info { "Oppgave opprettet. id=${oppgave.id}, journalpostId=${oppgave.journalpostId}" }
             return oppgave.euxOppgave
