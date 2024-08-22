@@ -109,9 +109,11 @@ class OppgaveService(
     fun EuxOppgaveOpprettelse.sjekkStatus() {
         if (oppgaveUuid != null) {
             val eksisterendeStatus = oppgaveStatusRepository.findByIdOrNull(oppgaveUuid!!)
-            if (eksisterendeStatus != null) {
+            if (eksisterendeStatus != null && eksisterendeStatus.status != OPPRETTELSE_FEILET) {
                 log.warn { "Oppgavestatus med id $oppgaveUuid finnes allerede" }
                 throw OppgaveStatusEksistererException.oppgaveEksisterer
+            } else if (eksisterendeStatus != null) {
+                log.warn { "Retry med tidligere feilet opprettelse" }
             }
         }
     }
