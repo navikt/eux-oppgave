@@ -30,3 +30,13 @@ client:
 cluster:
   fss: dev-fss
   gcp: dev-gcp
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    memory: 512Mi
+
+replicas:
+  min: 1
+  max: 2

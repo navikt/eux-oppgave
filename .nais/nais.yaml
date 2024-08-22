@@ -33,16 +33,16 @@ spec:
     initialDelay: 20
     timeout: 70
   replicas:
-    min: 1
-    max: 2
-    cpuThresholdPercentage: 50
+    min: {{ replicas.min }}
+    max: {{ replicas.max }}
+    cpuThresholdPercentage: 60
   resources:
     limits:
       cpu: "1"
-      memory: 512Mi
+      memory: {{ resources.limits.memory }}
     requests:
-      cpu: 250m
-      memory: 512Mi
+      cpu: 800m
+      memory: {{ resources.requests.memory }}
   azure:
     application:
       enabled: true

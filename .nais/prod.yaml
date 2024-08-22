@@ -30,3 +30,13 @@ client:
 cluster:
   fss: prod-fss
   gcp: prod-gcp
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    memory: 512Mi
+
+replicas:
+  min: 2
+  max: 4
