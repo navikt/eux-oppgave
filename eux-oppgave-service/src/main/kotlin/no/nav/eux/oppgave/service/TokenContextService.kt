@@ -15,4 +15,12 @@ class TokenContextService(
             ?.get("NAVident")
             ?.toString()
             ?: "ukjent"
+
+    val navIdentOrNull
+        get() = tokenValidationContextHolder
+            .getTokenValidationContext()
+            .firstValidToken
+            ?.jwtTokenClaims
+            ?.get("NAVident")
+            ?.toString()
 }

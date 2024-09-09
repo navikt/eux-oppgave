@@ -33,7 +33,7 @@ class FerdigstillService(
             .flatMap { client.hentOppgaver(it) }
             .also { log.info { "Ferdigstiller ${it.size} oppgaver" } }
             .also { it.settStatusUnderFerdigstilling() }
-            .map { patch(it.id, OppgavePatch(it.versjon, contextService.navIdent, FERDIGSTILT, personident)) }
+            .map { patch(it.id, OppgavePatch(it.versjon, contextService.navIdentOrNull, FERDIGSTILT, personident)) }
             .map { it.oppdaterEuxStatus() }
 
     fun List<Oppgave>.settStatusUnderFerdigstilling() =
