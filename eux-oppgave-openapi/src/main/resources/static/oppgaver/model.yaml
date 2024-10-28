@@ -182,3 +182,18 @@ FinnOppgaverResponsOpenApiType:
         $ref: '#/OppgaveOpenApiType'
       description: Funnede oppgaver
 
+EndreOppgavetypeOpenApiType:
+  type: object
+  required:
+    - ider
+    - oppgavetype
+  properties:
+    ider:
+      type: array
+      items:
+        $ref: '../properties/oppgave.yaml#/id'
+      description: ID på oppgavene som skal oppdateres
+    kommentar:
+      $ref: '../properties/oppgave.yaml#/kommentar'
+    oppgavetype:
+      $ref: '../properties/oppgave.yaml#/oppgavetype'

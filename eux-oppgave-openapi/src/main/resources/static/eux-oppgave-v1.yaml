@@ -23,3 +23,5 @@ paths:
     $ref: 'oppgaver/operations_tildelEnhetsnr.yaml'
   '/oppgaver/finn':
     $ref: 'oppgaver/operations_finn.yaml'
+  '/oppgaver/oppgavetype':
+    $ref: 'oppgaver/operations_oppgavetype.yaml'

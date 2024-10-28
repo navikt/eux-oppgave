@@ -3,8 +3,8 @@ package no.nav.eux.oppgave.service
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.client.OppgaveClient
 import no.nav.eux.oppgave.integration.model.Oppgave
-import no.nav.eux.oppgave.integration.model.OppgavePatch
 import no.nav.eux.oppgave.integration.model.Status.FERDIGSTILT
+import no.nav.eux.oppgave.integration.model.patch.OppgavePatch
 import no.nav.eux.oppgave.model.dto.OppgaveFerdigstilling
 import no.nav.eux.oppgave.model.dto.OppgaveFerdigstillingStatus.FERDIGSTILLING_FEILET
 import no.nav.eux.oppgave.model.dto.OppgaveFerdigstillingStatus.OPPGAVE_FERDIGSTILT
