@@ -1,0 +1,26 @@
+patch:
+  tags:
+    - Eux Oppgave API
+  summary: Patch oppgavetype
+  description: Patch oppgavetype
+  operationId: patchOppgavetype
+  requestBody:
+    required: true
+    content:
+      'application/json':
+        schema:
+          $ref: 'model.yaml#/EndreOppgavetypeOpenApiType'
+
+  responses:
+    '204':
+      $ref: '../common/responses.yaml#/204'
+    '400':
+      $ref: '../common/responses.yaml#/400'
+    '401':
+      $ref: '../common/responses.yaml#/401'
+    '403':
+      $ref: '../common/responses.yaml#/403'
+    '409':
+      $ref: '../common/responses.yaml#/409'
+    '500':
+      $ref: '../common/responses.yaml#/500'

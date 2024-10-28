@@ -22,6 +22,16 @@ class OppgaveClient(
     val dualOppgaveRestTemplate: DualOppgaveRestTemplate
 ) {
 
+    fun finn(id: Int): Oppgave = tryWithOppgaveErrorHandling {
+        dualOppgaveRestTemplate
+            .get()
+            .uri("${oppgaveUrl}/api/v1/oppgaver/$id")
+            .accept(APPLICATION_JSON)
+            .retrieve()
+            .toEntity<Oppgave>()
+            .body!!
+    }
+
     fun opprettOppgave(oppgaveOpprettelse: OppgaveOpprettelse): Oppgave = tryWithOppgaveErrorHandling {
         dualOppgaveRestTemplate
             .post()

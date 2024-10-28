@@ -12,7 +12,8 @@ class OppgaverApiImpl(
     val oppgaveService: OppgaveService,
     val ferdigstillService: FerdigstillService,
     val tokenContextService: TokenContextService,
-    val tildelEnhetsnummerService: TildelEnhetsnummerService
+    val tildelEnhetsnummerService: TildelEnhetsnummerService,
+    val oppgavetypeService: OppgavetypeService,
 ) : OppgaverApi {
 
     @Protected
@@ -88,4 +89,16 @@ class OppgaverApiImpl(
             .oppdaterOppgave(oppgaveOpenApiType.euxOppgave)
             .oppgaveOpenApiType
             .toOkResponseEntity()
+
+    @Protected
+    override fun patchOppgavetype(
+        endreOppgavetypeOpenApiType: EndreOppgavetypeOpenApiType
+    ): ResponseEntity<Unit> =
+        oppgavetypeService
+            .patch(
+                ider = endreOppgavetypeOpenApiType.ider,
+                oppgavetype = endreOppgavetypeOpenApiType.oppgavetype,
+                kommentar = endreOppgavetypeOpenApiType.kommentar
+            )
+            .toEmptyResponseEntity()
 }

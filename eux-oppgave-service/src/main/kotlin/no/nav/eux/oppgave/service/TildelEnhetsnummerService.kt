@@ -3,8 +3,8 @@ package no.nav.eux.oppgave.service
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.oppgave.integration.client.OppgaveClient
 import no.nav.eux.oppgave.integration.model.Oppgave
-import no.nav.eux.oppgave.integration.model.OppgavePatchKommentar
-import no.nav.eux.oppgave.integration.model.OppgaveTildeltEnhetsnrPatch
+import no.nav.eux.oppgave.integration.model.patch.OppgavePatchKommentar
+import no.nav.eux.oppgave.integration.model.patch.OppgaveTildeltEnhetsnrPatch
 import no.nav.eux.oppgave.integration.model.Status
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.*
