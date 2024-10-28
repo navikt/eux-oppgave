@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class OppgavetypeService(
-    val client: OppgaveClient
+    val client: OppgaveClient,
+    val contextService: TokenContextService,
 ) {
     val log = logger {}
 
@@ -20,14 +21,17 @@ class OppgavetypeService(
 
     fun patch(id: Int, oppgavetype: String, kommentar: String?) {
         val eksisterendeOppgave = client.finn(id)
+        val nyOppgaveBeskrivelse = OppgaveBeskrivelse(
+            navIdent = contextService.navIdent,
+            tekst = kommentar ?: "Oppgavetype endret til $oppgavetype"
+        )
         val patch = OppgaveTypePatch(
             versjon = eksisterendeOppgave.versjon,
             oppgavetype = oppgavetype,
             kommentar = OppgavePatchKommentar(
-                tekst = kommentar ?: "Oppgavetype endret til $oppgavetype",
-                automatiskGenerert = true
+                tekst = kommentar ?: "Oppgavetype endret til $oppgavetype"
             ),
-            beskrivelse = kommentar ?: "Oppgavetype endret til $oppgavetype"
+            beskrivelse = eksisterendeOppgave.beskrivelse med nyOppgaveBeskrivelse
         )
         client.patch(id, patch)
         log.info { "Oppdaterte oppgave $id til $oppgavetype med kommentar: $kommentar" }
