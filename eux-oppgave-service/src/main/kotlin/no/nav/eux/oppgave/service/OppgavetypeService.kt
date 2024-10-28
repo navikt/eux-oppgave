@@ -33,8 +33,12 @@ class OppgavetypeService(
             ),
             beskrivelse = eksisterendeOppgave.beskrivelse med nyOppgaveBeskrivelse
         )
-        client.patch(id, patch)
-        log.info { "Oppdaterte oppgave $id til $oppgavetype med kommentar: $kommentar" }
+        try {
+            client.patch(id, patch)
+            log.info { "Oppdaterte oppgave $id til $oppgavetype med kommentar: $kommentar" }
+        } catch (e: Exception) {
+            log.error(e) { "Kunne ikke oppdatere oppgave $id til $oppgavetype" }
+        }
     }
 
 }
