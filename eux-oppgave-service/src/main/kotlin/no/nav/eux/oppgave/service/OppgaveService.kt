@@ -23,7 +23,6 @@ class OppgaveService(
     val log = logger {}
 
     fun opprettOppgave(euxOppgaveOpprettelse: EuxOppgaveOpprettelse): EuxOppgave {
-        log.info { "Oppretter oppgave..." }
         euxOppgaveOpprettelse.sjekkStatus()
         val euxOppgaveStatus = oppgaveStatusRepository.save(euxOppgaveOpprettelse.euxOppgaveStatus)
         try {

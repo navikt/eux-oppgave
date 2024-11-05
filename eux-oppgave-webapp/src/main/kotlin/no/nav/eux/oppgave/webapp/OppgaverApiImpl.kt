@@ -1,5 +1,6 @@
 package no.nav.eux.oppgave.webapp
 
+import no.nav.eux.logging.mdc
 import no.nav.eux.oppgave.openapi.api.OppgaverApi
 import no.nav.eux.oppgave.openapi.model.*
 import no.nav.eux.oppgave.service.*
