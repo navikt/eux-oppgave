@@ -32,6 +32,25 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
     }
 
     @Test
+    fun `POST oppgaver - forespørsel, duplikat journalpostId - 409`() {
+        val createResponse = restTemplate
+            .postForEntity<String>(
+                oppgaverUrl,
+                oppgaverOpprettelse.httpEntity
+            )
+        val request = requestBodies["/api/v1/oppgaver"]!!
+        request shouldMatchJsonResource "/dataset/expected/oppgave-opprett.json"
+        assertThat(createResponse.statusCode.value()).isEqualTo(201)
+
+        val createResponseDuplicate = restTemplate
+            .postForEntity<String>(
+                oppgaverUrl,
+                oppgaverOpprettelse.httpEntity
+            )
+        assertThat(createResponseDuplicate.statusCode.value()).isEqualTo(409)
+    }
+
+    @Test
     fun `POST oppgaver - forespørsel, valid, ikke lag nesten lik oppgave - 201`() {
         val createResponse = restTemplate
             .postForEntity<String>(

@@ -9,6 +9,7 @@ import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTELSE_FEILE
 import no.nav.eux.oppgave.model.entity.EuxOppgaveStatus.Status.OPPRETTET
 import no.nav.eux.oppgave.model.exception.OppgaveStatusEksistererException
 import no.nav.eux.oppgave.persistence.EuxOppgaveStatusRepository
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -33,6 +34,13 @@ class OppgaveService(
             oppgaveStatusRepository.save(euxOppgaveStatus.copy(oppgaveId = oppgave.id, status = OPPRETTET))
             log.info { "Oppgave opprettet. id=${oppgave.id}, journalpostId=${oppgave.journalpostId}" }
             return oppgave.euxOppgave
+        } catch (e: DataIntegrityViolationException) {
+            val message = e.message
+            if (message != null && message.contains("duplicate key value violates unique constraint")) {
+                log.error(e) { "Oppgavestatus med unik verdi finnes allerede" }
+                throw OppgaveStatusEksistererException("Oppgavestatus finnes allerede")
+            }
+            throw e
         } catch (e: Exception) {
             log.error(e) { "Oppgaveopprettelse feilet" }
             oppgaveStatusRepository.save(euxOppgaveStatus.copy(status = OPPRETTELSE_FEILET))
@@ -109,6 +117,7 @@ class OppgaveService(
     fun EuxOppgaveOpprettelse.sjekkStatus() {
         if (oppgaveUuid != null) {
             val eksisterendeStatus = oppgaveStatusRepository.findByIdOrNull(oppgaveUuid!!)
+
             if (eksisterendeStatus != null && eksisterendeStatus.status != OPPRETTELSE_FEILET) {
                 log.warn { "Oppgavestatus med id $oppgaveUuid finnes allerede" }
                 throw OppgaveStatusEksistererException.oppgaveEksisterer
