@@ -1,3 +1,3 @@
-FROM ghcr.io/navikt/baseimages/temurin:21
-
-ADD eux-oppgave-webapp/target/eux-oppgave.jar /app/app.jar
+FROM gcr.io/distroless/java21
+COPY eux-oppgave-webapp/target/eux-oppgave.jar /app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
