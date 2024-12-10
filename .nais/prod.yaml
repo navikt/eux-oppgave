@@ -6,9 +6,6 @@ database:
   tier: db-custom-1-3840
 
 application:
-  eux-neessi:
-    name: eux-neessi
-    namespace: eessibasis
   eux-fagmodul-journalfoering:
     name: eux-fagmodul-journalfoering
     namespace: eessibasis

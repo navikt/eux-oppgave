@@ -60,12 +60,6 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: {{ application.eux-neessi.name }}
-          namespace: {{ application.eux-neessi.namespace }}
-          cluster: {{ cluster.fss }}
-        - application: {{ application.eux-neessi.name }}
-          namespace: {{ application.eux-neessi.namespace }}
-          cluster: {{ cluster.gcp }}
         - application: {{ application.eux-fagmodul-journalfoering.name }}
           namespace: {{ application.eux-fagmodul-journalfoering.namespace }}
           cluster: {{ cluster.fss }}
