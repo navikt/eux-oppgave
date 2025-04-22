@@ -7,6 +7,7 @@ import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType
 import no.nav.eux.oppgave.webapp.common.*
 import no.nav.eux.oppgave.webapp.dataset.*
 import no.nav.eux.oppgave.webapp.model.TestModelBehandleSedFraJournalpostId
+import no.nav.eux.oppgave.webapp.model.TestModelBehandleSedFraJournalpostIdMedAktoerId
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillRespons
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillingStatus.OPPGAVE_FERDIGSTILT
 import org.assertj.core.api.Assertions.assertThat
@@ -99,6 +100,19 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             )
         val request = requestBodies["/api/v1/oppgaver"]!!
         request shouldMatchJsonResource "/dataset/expected/oppgave-opprett-behandleSedFraJournalpostId.json"
+        assertThat(createResponse.statusCode.value()).isEqualTo(201)
+    }
+
+    @Test
+    fun `POST oppgaver behandleSedFraJournalpostId - forespørsel, med aktoerId, valid - 201`() {
+        val createResponse = restTemplate
+            .postForEntity<String>(
+                behandleSedFraJournalpostIdUrl,
+                TestModelBehandleSedFraJournalpostIdMedAktoerId("453857122", "2280720130426").httpEntity
+            )
+        val request = requestBodies["/api/v1/oppgaver"]!!
+        request shouldMatchJsonResource
+                "/dataset/expected/oppgave-opprett-behandleSedFraJournalpostIdMedPersonident.json"
         assertThat(createResponse.statusCode.value()).isEqualTo(201)
     }
 

@@ -14,7 +14,7 @@ import java.util.UUID.randomUUID
 val EuxOppgaveOpprettelse.oppgaveOpprettelse
     get() =
         OppgaveOpprettelse(
-            aktoerId = aktoerId,
+            personident = aktoerId,
             beskrivelse = beskrivelse,
             tildeltEnhetsnr = tildeltEnhetsnr,
             journalpostId = journalpostId,
@@ -33,7 +33,7 @@ val EuxOppgaveOpprettelse.oppgaveOpprettelse
 val Oppgave.oppgaveOpprettelse
     get() =
         OppgaveOpprettelse(
-            aktoerId = aktoerId,
+            personident = aktoerId,
             beskrivelse = beskrivelse,
             tildeltEnhetsnr = tildeltEnhetsnr,
             journalpostId = journalpostId,

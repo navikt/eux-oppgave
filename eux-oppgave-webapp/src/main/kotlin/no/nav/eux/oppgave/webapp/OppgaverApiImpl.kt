@@ -58,7 +58,10 @@ class OppgaverApiImpl(
     ) =
         oppgaveService
             .mdc(journalpostId = behandleSedFraJournalpostIdOpenApiType.journalpostId)
-            .behandleSedFraJournalpostId(behandleSedFraJournalpostIdOpenApiType.journalpostId)
+            .behandleSedFraJournalpostId(
+                journalpostId = behandleSedFraJournalpostIdOpenApiType.journalpostId,
+                personident = behandleSedFraJournalpostIdOpenApiType.personident
+            )
             .oppgaveOpenApiType
             .toCreatedResponseEntity()
 

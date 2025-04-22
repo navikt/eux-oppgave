@@ -147,6 +147,8 @@ BehandleSedFraJournalpostIdOpenApiType:
   properties:
     journalpostId:
       $ref: '../properties/oppgave.yaml#/journalpostId'
+    personident:
+      $ref: '../properties/person.yaml#/personident'
 
 FinnOppgaverOpenApiType:
   type: object

@@ -47,7 +47,7 @@ class OppgaveService(
         }
     }
 
-    fun behandleSedFraJournalpostId(journalpostId: String): EuxOppgave {
+    fun behandleSedFraJournalpostId(journalpostId: String, personident: String?): EuxOppgave {
         val oppgaverAapen = client.hentOppgaver(journalpostId = journalpostId, statuskategori = "AAPEN")
         val oppgaverAvsluttet = client.hentOppgaver(journalpostId = journalpostId, statuskategori = "AVSLUTTET")
         log.info { "Journalposten har ${oppgaverAapen.size} åpne oppgaver" }
@@ -62,7 +62,8 @@ class OppgaveService(
         val eksisterendeOppgave = oppgaver
             .firstOrNull()
             ?: throw IllegalArgumentException("Fant ingen oppgaver for journalpostId=$journalpostId")
-        val behandleSedOppgave = eksisterendeOppgave.copy(oppgavetype = "BEH_SED")
+        val personidentNyOppgave = personident ?: eksisterendeOppgave.aktoerId
+        val behandleSedOppgave = eksisterendeOppgave.copy(oppgavetype = "BEH_SED", aktoerId = personidentNyOppgave)
         log.info { "Eksisterende oppgave: $eksisterendeOppgave" }
         log.info { "Behandle SED oppgave: $behandleSedOppgave" }
         val euxOppgaveStatus = oppgaveStatusRepository.save(behandleSedOppgave.euxOppgaveStatus)

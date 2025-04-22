@@ -3,7 +3,7 @@ package no.nav.eux.oppgave.integration.model
 import java.time.LocalDate
 
 data class OppgaveOpprettelse(
-    val aktoerId: String?,
+    val personident: String?,
     val aktivDato: LocalDate,
     val prioritet: Prioritet,
     val tema: String,
