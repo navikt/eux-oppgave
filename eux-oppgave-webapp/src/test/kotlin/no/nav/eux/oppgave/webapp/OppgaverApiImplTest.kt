@@ -12,7 +12,8 @@ import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillRespons
 import no.nav.eux.oppgave.webapp.model.TestModelFerdigstillingStatus.OPPGAVE_FERDIGSTILT
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.boot.resttestclient.patchForObject
+import org.springframework.boot.resttestclient.postForEntity
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -213,6 +214,6 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
                 OppgaveOpenApiType::class.java
             )
         assertThat(requestBodies["$oppgaverUrl/190402"]!!.jsonNode).isNotEmpty
-        assertThat(oppdaterOppgaveRespons.versjon).isEqualTo(4)
+        assertThat(oppdaterOppgaveRespons!!.versjon).isEqualTo(4)
     }
 }
