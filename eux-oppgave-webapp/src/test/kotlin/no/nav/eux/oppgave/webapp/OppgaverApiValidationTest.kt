@@ -5,7 +5,7 @@ import no.nav.eux.oppgave.webapp.common.oppgaverUrl
 import no.nav.eux.oppgave.webapp.dataset.oppgaverOpprettelse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.web.client.postForEntity
+import org.springframework.boot.resttestclient.postForEntity
 
 class OppgaverApiValidationTest : AbstractOppgaverApiImplTest() {
 

@@ -5,8 +5,10 @@ import no.nav.eux.oppgave.integration.model.Oppgave
 import no.nav.eux.oppgave.integration.model.OppgaveOpprettelse
 import no.nav.eux.oppgave.integration.model.Oppgaver
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
@@ -17,7 +19,7 @@ import java.time.LocalDate
 
 @Component
 class OppgaveClient(
-    @Value("\${endpoint.oppgave}")
+    @param:Value("\${endpoint.oppgave}")
     val oppgaveUrl: String,
     val dualOppgaveRestTemplate: DualOppgaveRestTemplate
 ) {
@@ -98,7 +100,7 @@ class OppgaveClient(
                     offset = offset
                 )
             )
-            .accept(APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
             .retrieve()
             .toEntity<Oppgaver>()
             .body!!
@@ -120,7 +122,7 @@ class OppgaveClient(
         oppgavetype: List<String>
     ) =
         UriComponentsBuilder
-            .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
+            .fromUriString("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
             .queryParam("oppgavetype", oppgavetype)
             .build()
@@ -132,7 +134,7 @@ class OppgaveClient(
         statuskategori: String
     ) =
         UriComponentsBuilder
-            .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
+            .fromUriString("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("journalpostId", journalpostId)
             .queryParam("statuskategori", statuskategori)
             .queryParam("oppgavetype", oppgavetype)
@@ -151,7 +153,7 @@ class OppgaveClient(
         offset: Int?
     ): URI {
         val uriComponentsBuilder = UriComponentsBuilder
-            .fromHttpUrl("${oppgaveUrl}/api/v1/oppgaver")
+            .fromUriString("${oppgaveUrl}/api/v1/oppgaver")
             .queryParam("fristFom", fristFom.toString())
             .queryParam("fristTom", fristTom.toString())
             .queryParam("tema", tema)
