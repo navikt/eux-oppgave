@@ -83,7 +83,7 @@
                     <args>
                         <arg>-Xjsr305=strict</arg>
                     </args>
-                    <jvmTarget>24</jvmTarget>
+                    <jvmTarget>21</jvmTarget>
                     <compilerPlugins>
                         <plugin>jpa</plugin>
                         <plugin>spring</plugin>

@@ -69,7 +69,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>24</jvmTarget>
+                    <jvmTarget>21</jvmTarget>
                     <compilerPlugins>
                         <plugin>jpa</plugin>
                         <plugin>spring</plugin>
