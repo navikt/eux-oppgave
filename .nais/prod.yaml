@@ -35,5 +35,5 @@ resources:
     memory: 512Mi
 
 replicas:
-  min: 0
-  max: 0
+  min: 2
+  max: 4
