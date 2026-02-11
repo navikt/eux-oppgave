@@ -4,7 +4,6 @@ import no.nav.eux.logging.mdc
 import no.nav.eux.oppgave.openapi.api.OppgaverApi
 import no.nav.eux.oppgave.openapi.model.*
 import no.nav.eux.oppgave.service.*
-import no.nav.security.token.support.core.api.Protected
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,7 +16,6 @@ class OppgaverApiImpl(
     val oppgavetypeService: OppgavetypeService,
 ) : OppgaverApi {
 
-    @Protected
     override fun opprettOppgave(
         oppgaveCreateOpenApiType: OppgaveCreateOpenApiType
     ): ResponseEntity<OppgaveOpenApiType> =
@@ -27,7 +25,6 @@ class OppgaverApiImpl(
             .oppgaveOpenApiType
             .toCreatedResponseEntity()
 
-    @Protected
     override fun ferdigstillOppgaver(
         ferdigstillOpenApiType: FerdigstillOpenApiType
     ): ResponseEntity<FerdigstillResponsOpenApiType> =
@@ -39,7 +36,6 @@ class OppgaverApiImpl(
             .ferdigstillResponsOpenApiType
             .toOkResponseEntity()
 
-    @Protected
     override fun tildelEnhetsnummer(
         tildelEnhetsnrOpenApiType: TildelEnhetsnrOpenApiType
     ): ResponseEntity<Unit> =
@@ -52,7 +48,6 @@ class OppgaverApiImpl(
             )
             .toEmptyResponseEntity()
 
-    @Protected
     override fun behandleSedFraJournalpostId(
         behandleSedFraJournalpostIdOpenApiType: BehandleSedFraJournalpostIdOpenApiType
     ) =
@@ -65,7 +60,6 @@ class OppgaverApiImpl(
             .oppgaveOpenApiType
             .toCreatedResponseEntity()
 
-    @Protected
     override fun finnOppgaver(
         finnOppgaverOpenApiType: FinnOppgaverOpenApiType
     ): ResponseEntity<FinnOppgaverResponsOpenApiType> =
@@ -84,7 +78,6 @@ class OppgaverApiImpl(
             .finnOppgaverResponsOpenApiType
             .toOkResponseEntity()
 
-    @Protected
     override fun oppdaterOppgave(
         oppgaveOpenApiType: OppgaveOpenApiType
     ): ResponseEntity<OppgaveOpenApiType> =
@@ -94,7 +87,6 @@ class OppgaverApiImpl(
             .oppgaveOpenApiType
             .toOkResponseEntity()
 
-    @Protected
     override fun patchOppgavetype(
         endreOppgavetypeOpenApiType: EndreOppgavetypeOpenApiType
     ): ResponseEntity<Unit> =
