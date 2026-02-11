@@ -1,32 +1,31 @@
-no.nav.security.jwt:
-  expirythreshold: 1
-  issuer:
-    azuread:
-      discoveryurl: http://localhost:${mock-oauth2-server.port}/issuer1/.well-known/openid-configuration
-      accepted_audience: demoapplication
-
-  client:
-    registration:
-
-      oppgave-credentials-client-secret-basic:
-        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
-        grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
-        scope: test
-        authentication:
-          client-id: testclient
-          client-secret: testsecret
-          client-auth-method: client_secret_basic
-
-      oppgave-credentials-private-key-jwt:
-        token-endpoint-url: http://localhost:9500/mock/oauth2/v2.0/token
-        grant-type: client_credentials
-        scope: test
-        authentication:
-          client-id: cluster:namespace:app1
-          client-jwk: src/test/resources/jwk.json
-          client-auth-method: private_key_jwt
-
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:${mock-oauth2-server.port}/issuer1
+          audiences:
+            - demoapplication
+      client:
+        registration:
+          oppgave-credentials-client-secret-basic:
+            authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
+            client-id: testclient
+            client-secret: testsecret
+            client-authentication-method: client_secret_basic
+            scope: test
+            provider: azure
+          oppgave-credentials-private-key-jwt:
+            authorization-grant-type: client_credentials
+            client-id: testclient
+            client-secret: testsecret
+            client-authentication-method: client_secret_basic
+            scope: test
+            provider: azure
+        provider:
+          azure:
+            token-uri: http://localhost:9500/mock/oauth2/v2.0/token
+
   flyway:
     clean-disabled: false
 

@@ -1,13 +1,13 @@
 package no.nav.eux.oppgave.integration.config
 
-import no.nav.security.token.support.core.context.TokenValidationContextHolder
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
 
 @Component
 class DualOppgaveRestTemplate(
-    val tokenValidationContextHolder: TokenValidationContextHolder,
     val oppgaveRestTemplatePrivateKeyJwt: RestTemplate,
     val oppgaveRestTemplateClientSecretBasic: RestTemplate,
 ) {
@@ -27,9 +27,6 @@ class DualOppgaveRestTemplate(
         }
 
     fun contextHasNavIdent(): Boolean =
-        tokenValidationContextHolder
-            .getTokenValidationContext()
-            .firstValidToken
-            ?.jwtTokenClaims
-            ?.get("NAVident") != null
+        (SecurityContextHolder.getContext().authentication?.principal as? Jwt)
+            ?.getClaim<String>("NAVident") != null
 }
