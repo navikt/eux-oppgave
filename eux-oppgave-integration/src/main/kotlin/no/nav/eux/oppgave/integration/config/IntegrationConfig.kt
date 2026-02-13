@@ -23,6 +23,23 @@ class IntegrationConfig {
     val log = logger {}
 
     @Bean
+    fun authorizedClientManager(
+        clientRegistrationRepository: ClientRegistrationRepository,
+        authorizedClientService: OAuth2AuthorizedClientService
+    ): OAuth2AuthorizedClientManager {
+        val authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
+            .clientCredentials()
+            .provider(JwtBearerOAuth2AuthorizedClientProvider())
+            .build()
+        val manager = AuthorizedClientServiceOAuth2AuthorizedClientManager(
+            clientRegistrationRepository,
+            authorizedClientService
+        )
+        manager.setAuthorizedClientProvider(authorizedClientProvider)
+        return manager
+    }
+
+    @Bean
     fun oppgaveRestTemplateClientSecretBasic(
         restTemplateBuilder: RestTemplateBuilder,
         authorizedClientManager: OAuth2AuthorizedClientManager
