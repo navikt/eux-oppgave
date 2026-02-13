@@ -11,8 +11,11 @@ import org.springframework.retry.RetryCallback
 import org.springframework.retry.RetryContext
 import org.springframework.retry.RetryListener
 import org.springframework.retry.annotation.EnableRetry
-import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager
+import org.springframework.security.authentication.AnonymousAuthenticationToken
+import org.springframework.security.core.authority.AuthorityUtils
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.client.*
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.web.client.RestTemplate
 import java.util.UUID.randomUUID
 
@@ -21,6 +24,23 @@ import java.util.UUID.randomUUID
 class IntegrationConfig {
 
     val log = logger {}
+
+    @Bean
+    fun authorizedClientManager(
+        clientRegistrationRepository: ClientRegistrationRepository,
+        authorizedClientService: OAuth2AuthorizedClientService
+    ): OAuth2AuthorizedClientManager {
+        val authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
+            .clientCredentials()
+            .provider(JwtBearerOAuth2AuthorizedClientProvider())
+            .build()
+        val manager = AuthorizedClientServiceOAuth2AuthorizedClientManager(
+            clientRegistrationRepository,
+            authorizedClientService
+        )
+        manager.setAuthorizedClientProvider(authorizedClientProvider)
+        return manager
+    }
 
     @Bean
     fun oppgaveRestTemplateClientSecretBasic(
@@ -57,9 +77,11 @@ class IntegrationConfig {
         authorizedClientManager: OAuth2AuthorizedClientManager,
         registrationId: String
     ) = ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
+        val authentication = SecurityContextHolder.getContext().authentication
+            ?: AnonymousAuthenticationToken("eux-oppgave", "eux-oppgave", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"))
         val authorizeRequest = OAuth2AuthorizeRequest
             .withClientRegistrationId(registrationId)
-            .principal("eux-oppgave")
+            .principal(authentication)
             .build()
         val authorizedClient = authorizedClientManager.authorize(authorizeRequest)
         request.headers.setBearerAuth(authorizedClient!!.accessToken.tokenValue)
