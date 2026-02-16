@@ -1,5 +1,6 @@
 package no.nav.eux.oppgave.integration.config
 
+import com.nimbusds.jose.jwk.JWK
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import org.springframework.boot.restclient.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
@@ -12,11 +13,15 @@ import org.springframework.retry.RetryContext
 import org.springframework.retry.RetryListener
 import org.springframework.retry.annotation.EnableRetry
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager
+import org.springframework.security.oauth2.client.ClientCredentialsOAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
+import org.springframework.security.oauth2.client.DelegatingOAuth2AuthorizedClientProvider
+import org.springframework.security.oauth2.client.endpoint.NimbusJwtClientAuthenticationParametersConverter
+import org.springframework.security.oauth2.client.endpoint.OAuth2ClientCredentialsGrantRequest
+import org.springframework.security.oauth2.client.endpoint.RestClientClientCredentialsTokenResponseClient
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.web.client.RestTemplate
 import java.util.UUID.randomUUID
@@ -32,10 +37,18 @@ class IntegrationConfig {
         clientRegistrationRepository: ClientRegistrationRepository,
         authorizedClientService: OAuth2AuthorizedClientService
     ): OAuth2AuthorizedClientManager {
-        val authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
-            .clientCredentials()
-            .provider(JwtBearerOAuth2AuthorizedClientProvider())
-            .build()
+        val tokenResponseClient = RestClientClientCredentialsTokenResponseClient()
+        tokenResponseClient.addParametersConverter(
+            NimbusJwtClientAuthenticationParametersConverter<OAuth2ClientCredentialsGrantRequest> { _ ->
+                JWK.parse(System.getenv("AZURE_APP_JWK"))
+            }
+        )
+        val clientCredentialsProvider = ClientCredentialsOAuth2AuthorizedClientProvider()
+        clientCredentialsProvider.setAccessTokenResponseClient(tokenResponseClient)
+        val authorizedClientProvider = DelegatingOAuth2AuthorizedClientProvider(
+            clientCredentialsProvider,
+            JwtBearerOAuth2AuthorizedClientProvider()
+        )
         val manager = AuthorizedClientServiceOAuth2AuthorizedClientManager(
             clientRegistrationRepository,
             authorizedClientService
