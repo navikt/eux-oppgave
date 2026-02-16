@@ -11,8 +11,13 @@ import org.springframework.retry.RetryCallback
 import org.springframework.retry.RetryContext
 import org.springframework.retry.RetryListener
 import org.springframework.retry.annotation.EnableRetry
+import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager
+import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.web.client.RestTemplate
 import java.util.UUID.randomUUID
 
