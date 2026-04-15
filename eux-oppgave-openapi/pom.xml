@@ -13,6 +13,7 @@
     
     <properties>
         <openapi.spec>${project.basedir}/src/main/resources/static/eux-oppgave-v1.yaml</openapi.spec>
+        <tomcat.version>11.0.21</tomcat.version>
     </properties>
 
     <dependencies>
