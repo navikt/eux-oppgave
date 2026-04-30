@@ -1,6 +1,6 @@
 post:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Opprett
   description: Opprett ny NAV Oppgave basert en eksisterende oppgave knyttet til journalpostId
   operationId: behandleSedFraJournalpostId

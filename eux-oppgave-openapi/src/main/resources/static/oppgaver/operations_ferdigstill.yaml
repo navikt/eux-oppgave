@@ -1,6 +1,6 @@
 post:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Ferdigstill
   description: Ferdigstill NAV Oppgaver
   operationId: ferdigstillOppgaver

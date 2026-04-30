@@ -1,6 +1,6 @@
 patch:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Patch oppgavetype
   description: Patch oppgavetype
   operationId: patchOppgavetype

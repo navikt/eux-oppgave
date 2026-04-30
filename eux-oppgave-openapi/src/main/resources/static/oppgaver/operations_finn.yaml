@@ -1,6 +1,6 @@
 post:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Finn
   description: Finn oppgaver basert på frister, tema og type.
   operationId: finnOppgaver

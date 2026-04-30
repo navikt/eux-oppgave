@@ -1,6 +1,6 @@
 post:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Tildel enhetsnummer
   description: Tildel enhetsnummer
   operationId: tildelEnhetsnummer

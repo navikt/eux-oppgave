@@ -7,7 +7,7 @@ import java.time.LocalDate
 val oppdaterOppgaveDataset = OppgaveOpenApiType(
     aktoerId = "2850955164683",
     aktivDato = LocalDate.parse("2024-12-01"),
-    prioritet = Prioritet.lAV,
+    prioritet = Prioritet.LAV,
     tema = "GEN",
     oppgavetype = "JFR",
     behandlingstema = "test",
