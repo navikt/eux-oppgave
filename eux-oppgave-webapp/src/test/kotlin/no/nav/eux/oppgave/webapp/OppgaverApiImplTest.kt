@@ -1,6 +1,6 @@
 package no.nav.eux.oppgave.webapp
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import io.kotest.assertions.json.shouldMatchJsonResource
 import no.nav.eux.oppgave.openapi.model.FinnOppgaverResponsOpenApiType
 import no.nav.eux.oppgave.openapi.model.OppgaveOpenApiType

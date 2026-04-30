@@ -6,22 +6,22 @@ info:
     name: vegard.lundeberg.hillestad@nav.no
   version: v1
 servers:
-  - url: 'http://localhost:8080/api/v1'
+  - url: '/'
 tags:
-  - name: Eux Oppgave API
+  - name: Oppgaver
     description: >-
       API til bruk av EUX apper for å håndtere NAV Oppgaver
 
 paths:
-  '/oppgaver':
+  '/api/v1/oppgaver':
     $ref: 'oppgaver/operations_rot.yaml'
-  '/oppgaver/behandleSedFraJournalpostId':
+  '/api/v1/oppgaver/behandleSedFraJournalpostId':
     $ref: 'oppgaver/operations_behandleSedFraJournalpostId.yaml'
-  '/oppgaver/ferdigstill':
+  '/api/v1/oppgaver/ferdigstill':
     $ref: 'oppgaver/operations_ferdigstill.yaml'
-  '/oppgaver/tildelEnhetsnr':
+  '/api/v1/oppgaver/tildelEnhetsnr':
     $ref: 'oppgaver/operations_tildelEnhetsnr.yaml'
-  '/oppgaver/finn':
+  '/api/v1/oppgaver/finn':
     $ref: 'oppgaver/operations_finn.yaml'
-  '/oppgaver/oppgavetype':
+  '/api/v1/oppgaver/oppgavetype':
     $ref: 'oppgaver/operations_oppgavetype.yaml'

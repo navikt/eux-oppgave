@@ -1,7 +1,7 @@
 package no.nav.eux.oppgave.webapp
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.ObjectMapper
 import no.nav.eux.oppgave.Application
 import no.nav.eux.oppgave.webapp.mock.RequestBodies
 import no.nav.security.mock.oauth2.MockOAuth2Server

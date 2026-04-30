@@ -1,6 +1,6 @@
 post:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Opprett
   description: Opprett ny NAV Oppgave
   operationId: opprettOppgave
@@ -30,7 +30,7 @@ post:
       $ref: '../common/responses.yaml#/500'
 patch:
   tags:
-    - Eux Oppgave API
+    - Oppgaver
   summary: Oppdater
   description: Oppdater oppgave.
   operationId: oppdaterOppgave
