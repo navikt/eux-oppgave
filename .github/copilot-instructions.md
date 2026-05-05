@@ -1,5 +1,9 @@
 # Copilot Instructions — eux-oppgave
 
+## Build and Test
+
+We run a local postgress and env. variables are set. meaning, a simple `mvnd clean install` should pass, if not, ask user to start a postgress instance.
+
 ## Architecture
 
 This is a Spring Boot 4 / Kotlin microservice that wraps NAV's external Oppgave API, adding idempotency tracking, retry logic, and dual OAuth2 authentication. It runs on NAIS (GCP Kubernetes) in the `eessibasis` namespace.
