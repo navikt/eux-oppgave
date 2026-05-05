@@ -1,33 +1,5 @@
 # Copilot Instructions — eux-oppgave
 
-## Build & Test
-
-```bash
-# Full build with tests (requires PostgreSQL running, see below)
-mvn clean install --settings ./.github/settings.xml --no-transfer-progress -B
-
-# Build without tests
-mvn clean install -DskipTests --settings ./.github/settings.xml -B
-
-# Run a single test class
-mvn test -pl eux-oppgave-webapp -Dtest=OppgaverApiImplTest --settings ./.github/settings.xml -B
-
-# Run a single test method
-mvn test -pl eux-oppgave-webapp -Dtest="OppgaverApiImplTest#POST oppgaver - forespørsel, valid - 201" --settings ./.github/settings.xml -B
-```
-
-Tests require a local PostgreSQL database:
-
-```bash
-docker run -d --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:18
-```
-
-With environment variables:
-
-```bash
-export DATABASE_HOST=localhost DATABASE_PORT=5432 DATABASE_DATABASE=postgres DATABASE_USERNAME=postgres DATABASE_PASSWORD=postgres
-```
-
 ## Architecture
 
 This is a Spring Boot 4 / Kotlin microservice that wraps NAV's external Oppgave API, adding idempotency tracking, retry logic, and dual OAuth2 authentication. It runs on NAIS (GCP Kubernetes) in the `eessibasis` namespace.

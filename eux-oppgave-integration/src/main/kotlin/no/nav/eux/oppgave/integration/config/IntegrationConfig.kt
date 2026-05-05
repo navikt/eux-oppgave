@@ -12,6 +12,8 @@ import org.springframework.retry.RetryCallback
 import org.springframework.retry.RetryContext
 import org.springframework.retry.RetryListener
 import org.springframework.retry.annotation.EnableRetry
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager
 import org.springframework.security.oauth2.client.ClientCredentialsOAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider
@@ -92,12 +94,16 @@ class IntegrationConfig {
         authorizedClientManager: OAuth2AuthorizedClientManager,
         registrationId: String
     ) = ClientHttpRequestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
+        val authentication: Authentication? = SecurityContextHolder.getContext().authentication
         val authorizeRequest = OAuth2AuthorizeRequest
             .withClientRegistrationId(registrationId)
-            .principal("eux-oppgave")
+            .apply {
+                if (authentication != null) principal(authentication) else principal("eux-oppgave")
+            }
             .build()
         val authorizedClient = authorizedClientManager.authorize(authorizeRequest)
-        request.headers.setBearerAuth(authorizedClient!!.accessToken.tokenValue)
+            ?: error("Kunne ikke autorisere klient '$registrationId'")
+        request.headers.setBearerAuth(authorizedClient.accessToken.tokenValue)
         request.headers.set("X-Correlation-ID", randomUUID().toString())
         execution.execute(request, body)
     }
