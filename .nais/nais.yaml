@@ -87,3 +87,11 @@ spec:
       value: {{ client.oppgave.endpoint }}
     - name: CLIENT_OPPGAVE_SCOPE
       value: {{ client.oppgave.scope }}
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki
