@@ -24,7 +24,9 @@ import org.springframework.security.oauth2.client.DelegatingOAuth2AuthorizedClie
 import org.springframework.security.oauth2.client.endpoint.NimbusJwtClientAuthenticationParametersConverter
 import org.springframework.security.oauth2.client.endpoint.OAuth2ClientCredentialsGrantRequest
 import org.springframework.security.oauth2.client.endpoint.RestClientClientCredentialsTokenResponseClient
+import org.springframework.security.oauth2.client.endpoint.RestClientJwtBearerTokenResponseClient
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
+import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import java.util.UUID.randomUUID
 
@@ -47,9 +49,17 @@ class IntegrationConfig {
         )
         val clientCredentialsProvider = ClientCredentialsOAuth2AuthorizedClientProvider()
         clientCredentialsProvider.setAccessTokenResponseClient(tokenResponseClient)
+        val jwtBearerTokenResponseClient = RestClientJwtBearerTokenResponseClient()
+        jwtBearerTokenResponseClient.addParametersConverter { _ ->
+            LinkedMultiValueMap<String, String>().apply {
+                add("requested_token_use", "on_behalf_of")
+            }
+        }
+        val jwtBearerProvider = JwtBearerOAuth2AuthorizedClientProvider()
+        jwtBearerProvider.setAccessTokenResponseClient(jwtBearerTokenResponseClient)
         val authorizedClientProvider = DelegatingOAuth2AuthorizedClientProvider(
             clientCredentialsProvider,
-            JwtBearerOAuth2AuthorizedClientProvider()
+            jwtBearerProvider
         )
         val manager = AuthorizedClientServiceOAuth2AuthorizedClientManager(
             clientRegistrationRepository,
