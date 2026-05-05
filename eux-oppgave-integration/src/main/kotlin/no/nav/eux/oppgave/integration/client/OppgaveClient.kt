@@ -45,7 +45,7 @@ class OppgaveClient(
             .body!!
     }
 
-    @Retryable
+    @Retryable(noRetryFor = [OppgaveUgyldigRequestException::class])
     fun patch(id: Int, patch: Any): Oppgave = tryWithOppgaveErrorHandling {
         dualOppgaveRestTemplate
             .patch()
@@ -57,7 +57,7 @@ class OppgaveClient(
             .body!!
     }
 
-    @Retryable
+    @Retryable(noRetryFor = [OppgaveUgyldigRequestException::class])
     fun hentOppgaver(
         journalpostId: String,
         oppgavetype: List<String> = listOf("JFR", "FDR"),
@@ -73,7 +73,7 @@ class OppgaveClient(
             .oppgaver
     }
 
-    @Retryable
+    @Retryable(noRetryFor = [OppgaveUgyldigRequestException::class])
     fun finnOppgaver(
         fristFom: LocalDate,
         fristTom: LocalDate,

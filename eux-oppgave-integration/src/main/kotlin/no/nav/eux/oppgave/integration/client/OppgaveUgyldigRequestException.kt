@@ -9,5 +9,4 @@ data class OppgaveUgyldigRequest(
 
 class OppgaveUgyldigRequestException(
     val oppgaveUgyldigRequest: OppgaveUgyldigRequest,
-    override val message: String = "",
-) : RuntimeException(message)
+) : RuntimeException(oppgaveUgyldigRequest.feilmelding)

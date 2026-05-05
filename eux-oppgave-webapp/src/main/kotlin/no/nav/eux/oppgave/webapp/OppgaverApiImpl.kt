@@ -32,14 +32,16 @@ class OppgaverApiImpl(
 
     override fun ferdigstillOppgaver(
         ferdigstillOpenApiType: FerdigstillOpenApiType
-    ): ResponseEntity<FerdigstillResponsOpenApiType> =
-        ferdigstillService
+    ): ResponseEntity<FerdigstillResponsOpenApiType> {
+        log.info { "Ferdigstill oppgaver: $ferdigstillOpenApiType" }
+        return ferdigstillService
             .ferdigstillOppgaver(
                 journalpostIder = ferdigstillOpenApiType.journalpostIder,
                 personident = ferdigstillOpenApiType.personident
             )
             .ferdigstillResponsOpenApiType
             .toOkResponseEntity()
+    }
 
     override fun tildelEnhetsnummer(
         tildelEnhetsnrOpenApiType: TildelEnhetsnrOpenApiType
