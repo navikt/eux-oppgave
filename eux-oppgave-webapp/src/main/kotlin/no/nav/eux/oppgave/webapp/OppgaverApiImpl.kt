@@ -1,5 +1,6 @@
 package no.nav.eux.oppgave.webapp
 
+import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import no.nav.eux.logging.mdc
 import no.nav.eux.oppgave.openapi.api.OppgaverApi
 import no.nav.eux.oppgave.openapi.model.*
@@ -16,14 +17,18 @@ class OppgaverApiImpl(
     val oppgavetypeService: OppgavetypeService,
 ) : OppgaverApi {
 
+    val log = logger {}
+
     override fun opprettOppgave(
         oppgaveCreateOpenApiType: OppgaveCreateOpenApiType
-    ): ResponseEntity<OppgaveOpenApiType> =
-        oppgaveService
+    ): ResponseEntity<OppgaveOpenApiType> {
+        log.info { "Opprett Oppgave: $oppgaveCreateOpenApiType" }
+        return oppgaveService
             .mdc(journalpostId = oppgaveCreateOpenApiType.journalpostId)
             .opprettOppgave(oppgaveCreateOpenApiType.euxOppgaveOpprettelse(tokenContextService.navIdent))
             .oppgaveOpenApiType
             .toCreatedResponseEntity()
+    }
 
     override fun ferdigstillOppgaver(
         ferdigstillOpenApiType: FerdigstillOpenApiType
