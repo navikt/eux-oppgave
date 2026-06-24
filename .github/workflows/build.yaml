@@ -14,7 +14,6 @@ on:
 
 env:
   APP_NAME: eux-oppgave
-  IMAGE: ghcr.io/${{ github.repository }}/eux-oppgave
   DATABASE_HOST: localhost
   DATABASE_PORT: 5432
   DATABASE_DATABASE: postgres
@@ -59,27 +58,17 @@ jobs:
           --settings ./.github/settings.xml
           --no-transfer-progress -B
 
-      - name: Set Image Name
-        run: >
-          echo "DOCKER_IMAGE=${IMAGE}:${{ github.sha }}" >> $GITHUB_ENV
-
-      - name: Build docker image
-        run: >
-          docker build -t ${IMAGE}:${{ github.sha }} .
-
-      - name: Login to Github Package Registry
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-
-      - name: Push Docker image
-        run: >
-          docker push ${IMAGE}:${{ github.sha }}
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: eessibasis
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
     outputs:
       docker-image: >
-        ${{ env.IMAGE }}:${{ github.sha }}
+        ${{ steps.docker-build-push.outputs.image }}
 
   dry-run-q2:
     name: 'Dry run to NAIS - Q2'
