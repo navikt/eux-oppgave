@@ -160,8 +160,8 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
         assertThat(requestBody).contains("beskrivelse")
         val result = ObjectMapper().readTree(requestBody)
         assertThat(result["versjon"].intValue()).isEqualTo(4)
-        assertThat(result["tildeltEnhetsnr"].textValue()).isEqualTo("2950")
-        assertThat(result["tilordnetRessurs"].textValue()).isNull()
+        assertThat(result["tildeltEnhetsnr"].stringValue()).isEqualTo("2950")
+        assertThat(result["tilordnetRessurs"].stringValue()).isNull()
     }
 
     @Test
