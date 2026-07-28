@@ -9,3 +9,5 @@ const val oppgaverFerdigstillUrl = "/api/v1/oppgaver/ferdigstill"
 const val oppgaverTildelEnhetsnrUrl = "/api/v1/oppgaver/tildelEnhetsnr"
 
 const val oppgaverFinnUrl = "/api/v1/oppgaver/finn"
+
+const val oppgaverOppgavetypeUrl = "/api/v1/oppgaver/oppgavetype"

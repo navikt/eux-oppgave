@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class OppgaverApiFeilmeldingTest : AbstractOppgaverApiImplTest() {
 
     @Test
-    fun `POST oppgaver - feilmelding - 400`() {
+    fun `POST oppgaver - forespørsel avvist av Oppgave - 400`() {
         val createResponse = restTestClient
             .post()
             .uri(oppgaverUrl)

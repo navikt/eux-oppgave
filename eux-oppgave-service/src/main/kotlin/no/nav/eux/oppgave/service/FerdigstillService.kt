@@ -33,7 +33,7 @@ class FerdigstillService(
             .flatMap { client.hentOppgaver(it) }
             .also { log.info { "Ferdigstiller ${it.size} oppgaver" } }
             .also { it.settStatusUnderFerdigstilling() }
-            .map { patch(it.id, OppgavePatch(it.versjon, contextService.navIdentOrNull, FERDIGSTILT, personident)) }
+            .map { patch(it, OppgavePatch(it.versjon, contextService.navIdentOrNull, FERDIGSTILT, personident)) }
             .map { it.oppdaterEuxStatus() }
 
     fun List<Oppgave>.settStatusUnderFerdigstilling() =
@@ -78,26 +78,27 @@ class FerdigstillService(
                 )
             }
 
-    fun patch(id: Int, patch: OppgavePatch) =
+    fun patch(oppgave: Oppgave, patch: OppgavePatch) =
         try {
-            val oppgave = client.patch(id, patch)
-            when (oppgave.status) {
+            val oppdatertOppgave = client.patch(oppgave.id, patch)
+            when (oppdatertOppgave.status) {
                 FERDIGSTILT -> OppgaveFerdigstilling(
-                    euxOppgave = oppgave.euxOppgave,
+                    euxOppgave = oppdatertOppgave.euxOppgave,
                     status = OPPGAVE_FERDIGSTILT,
-                    beskrivelse = "Oppgave ${oppgave.id} ble ferdigstilt"
+                    beskrivelse = "Oppgave ${oppdatertOppgave.id} ble ferdigstilt"
                 )
                 else -> OppgaveFerdigstilling(
-                    euxOppgave = oppgave.euxOppgave,
+                    euxOppgave = oppdatertOppgave.euxOppgave,
                     status = FERDIGSTILLING_FEILET,
                     beskrivelse = "Kall mot oppgave feilet ikke, men oppgave ble ikke ferdigstilt"
                 )
             }
         } catch (e: Exception) {
-            log.error(e) { "Ferdigstilling av oppgave $id feilet" }
+            log.error(e) { "Ferdigstilling av oppgave ${oppgave.id} feilet" }
             OppgaveFerdigstilling(
+                euxOppgave = oppgave.euxOppgave,
                 status = FERDIGSTILLING_FEILET,
-                beskrivelse = "Ferdigstilling av oppgave $id feilet pga. manglende respons fra oppgave-systemet"
+                beskrivelse = "Ferdigstilling av oppgave ${oppgave.id} feilet pga. manglende respons fra oppgave-systemet"
             )
         }
 }
