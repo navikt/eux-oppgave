@@ -8,6 +8,10 @@ val oppgaverOppgavetypeDataset = EndreOppgavetypeOpenApiType(
     kommentar = "Oppgavetype endret"
 )
 
+val oppgaverOppgavetypeUtenKommentarDataset = oppgaverOppgavetypeDataset.copy(
+    kommentar = null
+)
+
 val oppgaverOppgavetypeFlerDataset = EndreOppgavetypeOpenApiType(
     ider = listOf(999999, 190402),
     oppgavetype = "BEH_SED",

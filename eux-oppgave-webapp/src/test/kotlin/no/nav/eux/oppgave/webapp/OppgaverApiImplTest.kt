@@ -257,7 +257,13 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             .expectStatus().isEqualTo(200)
             .expectBody(OppgaveOpenApiType::class.java)
             .returnResult()
-        assertThat(requestBodies["$oppgaverUrl/190402"]!!.jsonNode).isNotEmpty
+        val request = requestBodies["$oppgaverUrl/190402"]!!.jsonNode
+        assertThat(request["id"].intValue()).isEqualTo(190402)
+        assertThat(request["versjon"].intValue()).isEqualTo(1)
+        assertThat(request["oppgavetype"].stringValue()).isEqualTo("JFR")
+        assertThat(request["journalpostId"].stringValue()).isEqualTo("453857122")
+        assertThat(request["status"].stringValue()).isEqualTo("AAPNET")
+        assertThat(request["beskrivelse"].stringValue()).isEqualTo("desc")
         assertThat(oppdaterOppgaveRespons.responseBody!!.versjon).isEqualTo(4)
     }
 
@@ -280,7 +286,7 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
     }
 
     @Test
-    fun `POST oppgaver ferdigstill - ekstern oppgave ikke ferdigstilt - 200`() {
+    fun `POST oppgaver ferdigstill - uten personident, ekstern oppgave ikke ferdigstilt - 200`() {
         val createResponse = restTestClient
             .post()
             .uri(oppgaverFerdigstillUrl)
@@ -294,6 +300,12 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
             .isEqualTo(FERDIGSTILLING_FEILET)
         assertThat(createResponse.responseBody!!.oppgaver[0].beskrivelse)
             .isEqualTo("Kall mot oppgave feilet ikke, men oppgave ble ikke ferdigstilt")
+        assertThat(createResponse.responseBody!!.oppgaver[0].oppgave!!.id).isEqualTo(888888)
+        assertThat(createResponse.responseBody!!.oppgaver[0].oppgave!!.status!!.name).isEqualTo("AAPNET")
+        val request = requestBodies["/api/v1/oppgaver/888888"]!!.jsonNode
+        assertThat(request["versjon"].intValue()).isEqualTo(4)
+        assertThat(request["status"].stringValue()).isEqualTo("FERDIGSTILT")
+        assertThat(request["personident"].stringValue()).isNull()
     }
 
     @Test
@@ -310,12 +322,14 @@ class OppgaverApiImplTest : AbstractOppgaverApiImplTest() {
         with(createResponse.responseBody!!.oppgaver) {
             assertThat(this).hasSize(2)
             assertThat(this[0].status).isEqualTo(OPPGAVE_FERDIGSTILT)
+            assertThat(this[0].oppgave!!.id).isEqualTo(190402)
             assertThat(this[1].status).isEqualTo(FERDIGSTILLING_FEILET)
             assertThat(this[1].oppgave!!.id).isEqualTo(999999)
             assertThat(this[1].beskrivelse)
                 .isEqualTo("Ferdigstilling av oppgave 999999 feilet pga. manglende respons fra oppgave-systemet")
         }
-        assertThat(requestBodies["/api/v1/oppgaver/999999"]!!.jsonNode).isNotEmpty
+        requestBodies["/api/v1/oppgaver/999999"]!! shouldMatchJsonResource
+                "/dataset/expected/oppgaver-ferdigstill.json"
     }
 
     @Test

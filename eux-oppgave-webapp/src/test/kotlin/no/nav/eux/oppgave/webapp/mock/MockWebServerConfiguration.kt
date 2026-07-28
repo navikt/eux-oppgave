@@ -83,8 +83,9 @@ class MockWebServerConfiguration(
 
     fun defaultResponse() =
         MockResponse().apply {
+            setResponseCode(404)
             setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            setBody("""{"ping": "pong"}""")
+            setBody("""{"error": "No mock configured for request"}""")
         }
 
     val RecordedRequest.uriEndsWith get() = requestUrl.toString().split("/mock")[1]

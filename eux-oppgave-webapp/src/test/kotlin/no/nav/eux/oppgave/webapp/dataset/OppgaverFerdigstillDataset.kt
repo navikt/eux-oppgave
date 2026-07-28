@@ -9,7 +9,7 @@ val oppgaverFerdigstillDataset = TestModelOppgaverFerdigstill(
 
 val oppgaverFerdigstillFeiletDataset = TestModelOppgaverFerdigstill(
     journalpostIder = listOf("333333"),
-    personident = "2850955164683"
+    personident = null
 )
 
 val oppgaverFerdigstillDelvisFeiletDataset = TestModelOppgaverFerdigstill(

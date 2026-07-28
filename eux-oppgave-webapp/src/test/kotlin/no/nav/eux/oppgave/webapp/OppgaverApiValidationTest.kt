@@ -23,6 +23,7 @@ class OppgaverApiValidationTest : AbstractOppgaverApiImplTest() {
             .expectBody(MethodArgumentNotValidExceptionAdvice.ApiError::class.java)
             .returnResult()
         with(createResponse.responseBody!!.errors[0]) {
+            assertThat(field).isEqualTo("tildeltEnhetsnr")
             assertThat(rejectedValue).isEqualTo("12345")
             assertThat(defaultMessage).isEqualTo("size must be between 4 and 4")
         }
@@ -40,6 +41,7 @@ class OppgaverApiValidationTest : AbstractOppgaverApiImplTest() {
             .expectBody(MethodArgumentNotValidExceptionAdvice.ApiError::class.java)
             .returnResult()
         with(createResponse.responseBody!!.errors[0]) {
+            assertThat(field).isEqualTo("opprettetAvEnhetsnr")
             assertThat(rejectedValue).isEqualTo("12345")
             assertThat(defaultMessage).isEqualTo("size must be between 4 and 4")
         }
@@ -57,6 +59,7 @@ class OppgaverApiValidationTest : AbstractOppgaverApiImplTest() {
             .expectBody(MethodArgumentNotValidExceptionAdvice.ApiError::class.java)
             .returnResult()
         with(createResponse.responseBody!!.errors[0]) {
+            assertThat(field).isEqualTo("tildeltEnhetsnr")
             assertThat(rejectedValue).isEqualTo("12345")
             assertThat(defaultMessage).isEqualTo("size must be between 4 and 4")
         }
