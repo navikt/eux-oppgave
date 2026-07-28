@@ -88,3 +88,7 @@ val oppgaverOpprettelseMedUuid = TestModelOppgaverOpprettelse(
     metadata = mapOf(Pair("RINA_SAKID", "123")),
     lagNestenLikOppgave = true,
 )
+
+val oppgaverOpprettelseFeilmeldingMedUuid = oppgaverOpprettelseMedUuid.copy(
+    beskrivelse = "feilmelding"
+)

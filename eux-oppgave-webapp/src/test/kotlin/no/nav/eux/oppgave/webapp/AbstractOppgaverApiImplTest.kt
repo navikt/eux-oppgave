@@ -44,6 +44,7 @@ abstract class AbstractOppgaverApiImplTest {
             jdbcTemplate,
             "eux_oppgave_status",
         )
+        requestBodies.clear()
     }
 
     val String.jsonNode: JsonNode get() = ObjectMapper().readTree(this)

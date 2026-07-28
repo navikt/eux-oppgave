@@ -2,6 +2,8 @@ package no.nav.eux.oppgave.webapp.mock
 
 import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import jakarta.annotation.PreDestroy
+import no.nav.eux.oppgave.webapp.dataset.finnOppgaverFristFom
+import no.nav.eux.oppgave.webapp.dataset.finnOppgaverFristTom
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -14,7 +16,6 @@ import java.net.URLDecoder.decode
 import java.nio.charset.StandardCharsets.UTF_8
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDate.now
 
 @Configuration
 class MockWebServerConfiguration(
@@ -48,17 +49,35 @@ class MockWebServerConfiguration(
     fun mockResponsePatch(request: RecordedRequest, body: String) =
         when (request.uriEndsWith) {
             "/api/v1/oppgaver/190402" -> oppgaverResponse(body)
+            "/api/v1/oppgaver/888888" -> oppgaveIkkeFerdigstiltResponse()
+            "/api/v1/oppgaver/999999" -> mockResponse500()
             else -> defaultResponse()
         }
 
     fun mockResponseGet(request: RecordedRequest) =
         when (request.uriEndsWith) {
+            "/api/v1/oppgaver/190402" -> getSingleOppgaveResponse()
+            "/api/v1/oppgaver/999999" -> getSingleOppgaveResponse999999()
             getOppgaverUri(1234, "AAPEN") -> getOppgaverResponse()
+            getOppgaverUri(111111, "AAPEN") -> getOppgaverResponseBehSed()
+            getOppgaverUri(111111, "AVSLUTTET") -> getOppgaverResponseEmpty()
+            getOppgaverUri(222222, "AAPEN") -> getOppgaverResponseFeilet()
+            getOppgaverUri(333333, "AAPEN") -> getOppgaverResponseIkkeFerdigstilt()
             getOppgaverUri(453857122, "AAPEN") -> getOppgaverResponse()
             getOppgaverUri(453857122, "AVSLUTTET") -> getOppgaverResponse()
             getOppgaverUri(453857123, "AAPEN", "JFR") -> getOppgaverResponseEmpty()
-            finnOppgaverUriBehandlingstema("BAR", "FREM", "AAPEN", "ab0058", 200, 10) -> getOppgaverResponse()
-            finnOppgaverUriBehandlingstype("BAR", "FREM", "AAPEN", "ae0106") -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstema(
+                "BAR", "FREM", "AAPEN", "ab0058", 200, 10,
+                finnOppgaverFristFom, finnOppgaverFristTom
+            ) -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstema(
+                "BAR", "FREM", "AAPEN", "ab0058",
+                finnOppgaverFristFom, finnOppgaverFristTom
+            ) -> getOppgaverResponse()
+            finnOppgaverUriBehandlingstype(
+                "BAR", "FREM", "AAPEN", "ae0106", 200, 10,
+                finnOppgaverFristFom, finnOppgaverFristTom
+            ) -> getOppgaverResponse()
             else -> defaultResponse()
         }
 
@@ -97,7 +116,55 @@ class MockWebServerConfiguration(
             setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
             setBody(getOppgaverResponseEmpty)
         }
-            .also { log.info { "--------------------- why?" } }
+
+    fun getSingleOppgaveResponse() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(oppgaverResponse)
+        }
+
+    fun getSingleOppgaveResponse999999() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(getOppgaveResponse999999)
+        }
+
+    fun getOppgaverResponseBehSed() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(getOppgaverResponseBehSed)
+        }
+
+    fun getOppgaverResponseFeilet() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(getOppgaverResponseFeilet)
+        }
+
+    fun getOppgaverResponseIkkeFerdigstilt() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(getOppgaverResponseIkkeFerdigstilt)
+        }
+
+    fun oppgaveIkkeFerdigstiltResponse() =
+        MockResponse().apply {
+            setResponseCode(200)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody(getOppgaveResponseIkkeFerdigstilt)
+        }
+
+    fun mockResponse500() =
+        MockResponse().apply {
+            setResponseCode(500)
+            setHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            setBody("""{"error": "Internal Server Error"}""")
+        }
 
     fun tokenResponse(formParams: Map<String, String>) =
         MockResponse().apply {
@@ -148,24 +215,38 @@ class MockWebServerConfiguration(
         behandlingstema: String,
         limit: Int,
         offset: Int,
-        fristFom: LocalDate = now(),
-        fristTom: LocalDate = now(),
+        fristFom: LocalDate,
+        fristTom: LocalDate,
     ) = "/api/v1/oppgaver" +
             "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=" +
             "$oppgavetype&statuskategori=$statuskategori" +
             "&behandlingstema=$behandlingstema&limit=$limit&offset=$offset"
+
+    fun finnOppgaverUriBehandlingstema(
+        tema: String,
+        oppgavetype: String,
+        statuskategori: String,
+        behandlingstema: String,
+        fristFom: LocalDate,
+        fristTom: LocalDate,
+    ) = "/api/v1/oppgaver" +
+            "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=" +
+            "$oppgavetype&statuskategori=$statuskategori" +
+            "&behandlingstema=$behandlingstema"
 
     fun finnOppgaverUriBehandlingstype(
         tema: String,
         oppgavetype: String,
         statuskategori: String,
         behandlingstype: String,
-        fristFom: LocalDate = now(),
-        fristTom: LocalDate = now(),
+        limit: Int,
+        offset: Int,
+        fristFom: LocalDate,
+        fristTom: LocalDate,
     ) = "/api/v1/oppgaver" +
             "?fristFom=$fristFom&fristTom=$fristTom&tema=$tema&oppgavetype=" +
             "$oppgavetype&statuskategori=$statuskategori" +
-            "&behandlingstype=$behandlingstype"
+            "&behandlingstype=$behandlingstype&limit=$limit&offset=$offset"
 
     private final fun dispatcher() = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
