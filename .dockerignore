@@ -1,0 +1,39 @@
+# Git & CI
+.git
+.gitignore
+.gitattributes
+.github
+
+# Dokumentasjon
+*.md
+docs
+
+# IDE / editor
+.idea
+*.iml
+.vscode
+
+# Lokale miljøvariabler & hemmeligheter — skal aldri inn i build-context
+.env
+.env.*
+*.pem
+*.key
+*.p12
+
+# Maven-kildekode og wrapper (jar bygges utenfor imaget)
+**/src
+.mvn
+mvnw
+mvnw.cmd
+
+# Build-output fra moduler som ikke er runtime-artefaktet
+target
+eux-oppgave-openapi/target
+eux-oppgave-model/target
+eux-oppgave-service/target
+eux-oppgave-persistence/target
+eux-oppgave-integration/target
+
+# Behold kun den kjørbare jar-en som Dockerfile kopierer
+eux-oppgave-webapp/target/*
+!eux-oppgave-webapp/target/eux-oppgave.jar
