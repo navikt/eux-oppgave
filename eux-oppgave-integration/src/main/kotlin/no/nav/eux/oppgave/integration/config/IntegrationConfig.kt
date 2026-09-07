@@ -5,6 +5,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import org.springframework.boot.restclient.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.convert.converter.Converter
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
@@ -27,6 +28,7 @@ import org.springframework.security.oauth2.client.endpoint.RestClientClientCrede
 import org.springframework.security.oauth2.client.endpoint.RestClientJwtBearerTokenResponseClient
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 import java.util.UUID.randomUUID
 
@@ -42,11 +44,12 @@ class IntegrationConfig {
         authorizedClientService: OAuth2AuthorizedClientService
     ): OAuth2AuthorizedClientManager {
         val tokenResponseClient = RestClientClientCredentialsTokenResponseClient()
-        tokenResponseClient.addParametersConverter(
+        @Suppress("UNCHECKED_CAST")
+        val parametersConverter =
             NimbusJwtClientAuthenticationParametersConverter<OAuth2ClientCredentialsGrantRequest> { _ ->
                 JWK.parse(System.getenv("AZURE_APP_JWK"))
-            }
-        )
+            } as Converter<OAuth2ClientCredentialsGrantRequest, MultiValueMap<String, String>>
+        tokenResponseClient.addParametersConverter(parametersConverter)
         val clientCredentialsProvider = ClientCredentialsOAuth2AuthorizedClientProvider()
         clientCredentialsProvider.setAccessTokenResponseClient(tokenResponseClient)
         val jwtBearerTokenResponseClient = RestClientJwtBearerTokenResponseClient()
