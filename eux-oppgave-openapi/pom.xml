@@ -13,7 +13,6 @@
     
     <properties>
         <openapi.spec>${project.basedir}/src/main/resources/static/eux-oppgave-v1.yaml</openapi.spec>
-        <tomcat.version>11.0.21</tomcat.version>
     </properties>
 
     <dependencies>
@@ -73,7 +72,6 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -87,7 +85,6 @@
                     <args>
                         <arg>-Xjsr305=strict</arg>
                     </args>
-                    <jvmTarget>21</jvmTarget>
                     <compilerPlugins>
                         <plugin>jpa</plugin>
                         <plugin>spring</plugin>
